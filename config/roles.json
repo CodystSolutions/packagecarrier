@@ -1,0 +1,49 @@
+{
+    "roles": [
+      {
+        "name": "masteradmin",
+        "permissions": [
+            "create_task",
+            "read_task",
+            "update_task",
+            "add_role", 
+            "view_role", 
+            "view_user",
+            "update_role"
+        ]
+    },
+      {
+        "name": "superadmin",
+        "permissions": [
+            "create_task",
+            "read_task",
+            "update_task",
+            "delete_task"
+        ]
+       },
+      {
+        "name": "admin",
+        "permissions": [
+          "create_task",
+          "read_task",
+          "update_task",
+          "delete_task"
+        ]
+      },
+      {
+        "name": "manager",
+        "permissions": [
+          "create_task",
+          "read_task",
+          "update_task"
+        ]
+      },
+      {
+        "name": "employee",
+        "permissions": [
+          "create_task",
+          "read_task"
+        ]
+      }
+    ]
+  }

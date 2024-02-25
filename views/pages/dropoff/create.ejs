@@ -1,0 +1,519 @@
+<%- include('../../partials/head'); %>
+
+         <style>
+           .stepwizard-row .wizard-step a.btn {
+               padding: 20px 0px !important; 
+            }
+            .stepwizard-row #user.active a {
+               /* background: #eefff4;
+               border-color: #28a745; */
+               background: var(--iq-primary);
+               border-color: var(--iq-primary);
+               color: white
+            }
+            .stepwizard-row #document.active a {
+               /* background: #eefff4;
+               border-color: #28a745; */
+               background: var(--iq-primary);
+               border-color: var(--iq-primary);
+               color: white
+            }
+            .stepwizard-row #bank.active a {
+               /* background: #eefff4;
+               border-color: #28a745; */
+               background: var(--iq-primary);
+               border-color: var(--iq-primary);
+               color: white
+            }
+            .stepwizard-row #confirm.active a {
+               background: #28a745;
+               border-color: #28a745;
+               color: white
+
+            }
+         </style>
+         <!-- Page Content  -->
+         <div id="content-page" class="content-page">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-sm-12 col-lg-12">
+                     <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                           <div class="iq-header-title">
+                              <h4 class="card-title">Drop Off form</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <div class="stepwizard mt-4">
+                              <div class="stepwizard-row setup-panel">
+                                 <div id="user" class="wizard-step active">
+                                    <a href="#user-detail" class="active btn">
+                                    <!-- <i class="ri-lock-unlock-line text-primary"></i> -->
+                                    <span>Sender Details</span>
+                                    </a>
+                                 </div>
+                                
+                                 <div id="document" class="wizard-step">
+                                    <a href="#document-detail" class="btn btn-default disabled" >
+                                    <!-- <i class="ri-user-fill text-danger"></i> -->
+                                    <span>Package Details</span>
+                                    </a>
+                                 </div>
+                                 
+                                 <div id="bank" class="wizard-step">
+                                    <a href="#bank-detail" class="btn btn-default disabled">
+                                    <!-- <i class="ri-camera-fill text-success"></i> -->
+                                    <span>Payment</span>
+                                    </a>
+                                 </div>
+                                 <div id="confirm" class="wizard-step">
+                                    <a href="#cpnfirm-data" class="btn btn-default disabled">
+                                    <!-- <i class="ri-check-fill text-warning"></i> -->
+                                    <span>Confirmation</span>
+                                    </a>
+
+                                 </div>
+                              </div>
+                           </div>
+                           <form class="form" id="dropoffform">
+                              <div class="row setup-content" id="user-detail">
+                                 <div class="col-sm-12">
+                                    <div class="col-md-12 p-0">
+                                       <h5 class="mb-4">Sender Information:</h5>
+                                       <div class="row">
+                                          <div class="form-group col-md-6">
+                                             <label class="control-label">First Name *</label>
+                                             <input  maxlength="100" id="sender_first_name" name="sender_first_name" type="text" class="form-control"  />
+                                          </div>
+                                          <div class="form-group col-md-6">
+                                             <label class="control-label">Last Name *</label>
+                                             <input maxlength="100" id="sender_last_name" name="sender_last_name" type="text"  class="form-control"/>
+                                          </div>
+
+                                          <div class="col-md-6 form-group">
+                                             <label for="emailid" class="control-label">Email *</label>
+                                             <input type="email" id="sender_email"  name="sender_email"  id="email" class="form-control" >
+                                          </div>
+                                          
+                                          <div class="col-md-6 form-group">
+                                             <label for="cno" class="control-label">Contact Number: *</label>
+                                             <input type="text" class="form-control"   name="sender_contact"  id="sender_contact" />
+                                          </div>
+                                          <div class="col-md-12 mb-3 form-group">
+                                             <label for="address" class="control-label">Address: </label>
+                                             <input  name="sender_address"  class="form-control" id="sender_address" />
+                                          </div>
+                                          <div class="col-md-12 mb-3 form-group">
+                                             <label for="address" class="control-label">Source Branch: </label>
+                                             <input  name="source"  class="form-control" id="source" />
+                                          </div>
+                                       </div>
+                                       <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row setup-content" id="document-detail">
+                                 <div class="col-sm-12">
+                                    <div class="col-md-12 p-0">
+                                       <h5 class="mb-4">Package Details:</h5>
+                                       <div class="row">
+                                          <div class="col-md-6 form-group">
+                                             <label for="weight" class="control-label">Weight: *</label>
+                                             <input type="number" step="0.01" class="form-control" required="required" id="weight" name="weight" >
+                                          </div>
+                                          <div class="col-md-6 form-group">
+                                             <div class="form-group">
+                                                <label for="category" class="control-label">Category: *</label>
+                                                <select class="form-control" id="category" name="category" required>
+                                                   <option>Select</option>
+                                                   <option>Clothing</option>
+                                                   <option>Electronic Item</option>
+                                                   <option>Document</option>
+                                                   <option>Beauty</option>
+                                                   <option>Car Parts</option>
+                                                </select>
+                                             </div>
+                                          </div>
+                                         
+                                          <div class="col-md-12">
+                                             <div class="form-group">
+                                                <label for="description" class="control-label">Description: </label>
+                                                <input name="description"  id="description" class="form-control" />
+                                             </div>
+                                          </div>
+                                          <div class="col-md-12">
+                                             <div class="form-group">
+                                                <label for="notes" class="control-label">Notes: </label>
+                                                <textarea name="notes" id="notes" class="form-control" rows="2"></textarea>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <h5 class="mb-4">Receiver Information:</h5>
+                                       <div class="row">
+                                          <div class="form-group col-md-6">
+                                             <label class="control-label">First Name *</label>
+                                             <input  maxlength="100" name="receiver_first_name"  id="receiver_first_name" type="text" class="form-control"  />
+                                          </div>
+                                          <div class="form-group col-md-6">
+                                             <label class="control-label">Last Name *</label>
+                                             <input maxlength="100" name="receiver_last_name"  id="receiver_last_name"  type="text"  class="form-control"/>
+                                          </div>
+
+                                          <div class="col-md-6 form-group">
+                                             <label for="emailid" class="control-label">Email *</label>
+                                             <input type="email"  name="receiver_email"  id="receiver_email" class="form-control" >
+                                          </div>
+                                          
+                                          <div class="col-md-6 form-group">
+                                             <label for="cno" class="control-label">Contact Number: *</label>
+                                             <input type="text" class="form-control"  name="receiver_contact"   id="receiver_contact" />
+                                          </div>
+                                          <div class="col-md-12 mb-3 form-group">
+                                             <label for="address" class="control-label">Address: </label>
+                                             <input  name="receiver_address"  class="form-control" id="receiver_address" />
+                                          </div>
+                                          <div class="col-md-12 mb-3 form-group">
+                                             <label for="address" class="control-label">Destination Branch: </label>
+                                             <input name="destination"  class="form-control" id="destination" />
+                                          </div>
+                                       </div>
+                                       <button class="btn btn-primary nextBtn btn-lg pull-right" onclick="getrate()" type="button" >Next</button>
+                                    </div>
+                                 </div>
+                              </div>
+                             
+                              <div class="row setup-content" id="bank-detail">
+                                 <div class="col-sm-12">
+                                    <div class="col-md-12 p-0">
+                                       <h5 class="mb-4">Payment</h5>
+                                       <div class="row">
+                                          <div class="row col-md-9">
+                                             <div class="col-md-12 form-group">
+                                                <label for="panno" class="control-label">Method *</label>
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                   <input type="radio" checked id="method" value="prepaid" name="method" class="custom-control-input">
+                                                   <label class="custom-control-label" for="method"> Prepaid</label>
+                                                </div>
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                   <input type="radio" id="method" value="pay on collect" name="method" class="custom-control-input">
+                                                   <label class="custom-control-label" for="method"> Pay on Collect</label>
+                                                </div>
+                                            </div>
+                                             <div class="col-md-12 form-group">
+                                                <label for="paymentmethod" class="control-label">Payment Method: *</label>
+                                                <input type="text" class="form-control" required="required" id="paymentmethod" name="paymentmethod" >
+                                             </div>
+                                             <div class="col-md-6 form-group">
+                                                <label for="cctype" class="control-label">Credit Card Type: *</label>
+                                                <input type="text" class="form-control" required="required" id="cctype" name="cctype" >
+                                             </div>
+                                             <div class="col-md-6 form-group">
+                                                <label for="cclast4" class="control-label">Credit Card Last 4 : *</label>
+                                                <input type="text" class="form-control" required="required" id="cclast4" name="cclast4" >
+                                             </div>
+                                             <input hidden id="totalinput" name="total" value="" />
+                                             <div class="col-md-6 form-group">
+                                                <label for="tendered" class="control-label">Tendered Amount: *</label>
+                                                <input type="text" class="form-control"  onblur="calculatechange()" required="required" id="tendered" name="tendered">
+                                             </div>
+                                             <div class="col-md-6 form-group">
+                                                <label for="change" class="control-label">Change: </label>
+                                                <input type="text" class="form-control" required="required" id="change" name="change" readonly>
+                                             </div>
+                                             <div class="col-md-12 form-group">
+                                                <label for="reference" class="control-label">Reference Number: *</label>
+                                                <input type="text" class="form-control"  id="reference" name="reference">
+                                             </div>
+                                            
+                                          </div>
+
+                                          <div class="row col-md-3">
+                                             <div class="iq-card bg-primary text-white">
+                                                <div class="iq-card-body border text-center rounded">
+                                                   <span class="font-size-16 text-uppercase">Total</span>
+                                                   <h2 class="mb-4 display-3 font-weight-bolder text-white" >$<span id="totalid">99</span><small class="font-size-14 text-white-50">JMD</small></h2>
+                                                   <ul class="list-unstyled line-height-4 mb-0 ">
+                                                      <li >Weight: <span id="weighttext"></span> lbs</li>
+                                                      <li >Rate: $ <span id="ratettext"></span> </li>
+                                                      <li >Charges: $  <span id="chhargestext"></span> </li>
+
+                                                      <li >Subtotal: $ <span id="subtotalttext"></span></li>
+                                                      <li >Total: $<span id="totalttext"></span></li>
+                                                   </ul>
+                                                </div>
+                                             </div>
+                                          </div>
+                                         
+                                       </div>
+                                       <button class="btn btn-primary nextBtn btn-lg pull-right" type="submit" >Next</button>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row setup-content" id="cpnfirm-data">
+                                 <div class="col-sm-12">
+                                    <div class="col-md-12 p-0">
+                                       <h5 class="mb-4 text-center" id="submittingtext">Please wait while we save...</h5>
+
+                                       <div class=" text-center justify-content-center" id="successinfo">
+                                          <div > <img style="width: 50px;" src="/images/page-img/img-success.png" class="fit-image" alt="img-success"> </div>
+                                          <br/>
+                                          <p>Tracking Number: <span style="font-weight: 700;" id="trackingnumtext"></span></p>
+                                          <br/>
+                                          <div><a class="btn btn-primary" id="receiptbtn" target="_blank" href="">Print Receipt</a></div>
+                                          <br/>
+                                          <div><a class="btn btn-primary" id="labelbtn"  target="_blank" href="">Print Label</a></div>
+                                          <br/>
+                                          <div><a class="btn btn-primary" id="anotherdropoffbtn"  href="/dropoff/create">Create another drop off request</a></div>
+
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+
+<!--                      
+                     <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                           <div class="iq-header-title">
+                              <h4 class="card-title">Simple Wizard</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <form id="form-wizard1" class="text-center mt-4">
+                              <ul id="top-tab-list" class="p-0">
+                                 <li class="active" id="account">
+                                    <a href="javascript:void();">
+                                    <i class="ri-lock-unlock-line"></i><span>Account</span>
+                                    </a>
+                                 </li>
+                                 <li id="personal">
+                                    <a href="javascript:void();">
+                                    <i class="ri-user-fill"></i><span>Personal</span>
+                                    </a>
+                                 </li>
+                                 <li id="payment">
+                                    <a href="javascript:void();">
+                                    <i class="ri-camera-fill"></i><span>Image</span>
+                                    </a>
+                                 </li>
+                                 <li id="confirm">
+                                    <a href="javascript:void();">
+                                    <i class="ri-check-fill"></i><span>Finish</span>
+                                    </a>
+                                 </li>
+                              </ul>
+                              <fieldset>
+                                 <div class="form-card text-left">
+                                    <div class="row">
+                                       <div class="col-7">
+                                          <h5 class="mb-4">Account Information:</h5>
+                                       </div>
+                                       <div class="col-5">
+                                          <h2 class="steps">Step 1 - 4</h2>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>Email: *</label>
+                                             <input required type="email" class="form-control" name="email" placeholder="Email Id">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>Username: *</label>
+                                             <input required type="text" class="form-control" name="uname" placeholder="UserName">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>Password: *</label>
+                                             <input type="password" class="form-control" name="pwd" placeholder="Password">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>Confirm Password: *</label>
+                                             <input type="password" class="form-control" name="cpwd" placeholder="Confirm Password">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <button type="button" name="next" class="btn btn-primary nextBtn next action-button float-right" value="Next">Next</button>
+                              </fieldset>
+                              <fieldset>
+                                 <div class="form-card text-left">
+                                    <div class="row">
+                                       <div class="col-7">
+                                          <h5 class="mb-4">Personal Information:</h5>
+                                       </div>
+                                       <div class="col-5">
+                                          <h2 class="steps">Step 2 - 4</h2>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>First Name: *</label>
+                                             <input type="text" class="form-control" name="fname" placeholder="First Name">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>Last Name: *</label>
+                                             <input type="text" class="form-control" name="lname" placeholder="Last Name">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>Contact No.: *</label>
+                                             <input type="text" class="form-control" name="phno" placeholder="Contact No.">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <label>Alternate Contact No.: *</label>
+                                             <input type="text" class="form-control" name="phno_2" placeholder="Alternate Contact No.">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <button type="button" name="next" class="btn btn-primary next action-button float-right" value="Next">Next</button>
+                                 <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-right mr-3" value="Previous">Previous</button>
+                              </fieldset>
+                              <fieldset>
+                                 <div class="form-card text-left">
+                                    <div class="row">
+                                       <div class="col-7">
+                                          <h5 class="mb-4">Image Upload:</h5>
+                                       </div>
+                                       <div class="col-5">
+                                          <h2 class="steps">Step 3 - 4</h2>
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Upload Your Photo:</label>
+                                       <input type="file" class="form-control" name="pic" accept="image/*">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Upload Signature Photo:</label>
+                                       <input type="file" class="form-control" name="pic-2" accept="image/*">
+                                    </div>
+                                 </div>
+                                 <button type="button" name="next" class="btn btn-primary next action-button float-right" value="Submit">Submit</button>
+                                 <button type="button" name="previous" class="btn btn-dark previous action-button-previous float-right mr-3" value="Previous">Previous</button>
+                              </fieldset>
+                              <fieldset>
+                                 <div class="form-card">
+                                    <div class="row">
+                                       <div class="col-7">
+                                          <h5 class="mb-4 text-left">Finish:</h5>
+                                       </div>
+                                       <div class="col-5">
+                                          <h2 class="steps">Step 4 - 4</h2>
+                                       </div>
+                                    </div>
+                                    <br><br>
+                                    <h2 class="text-success text-center"><strong>SUCCESS !</strong></h2>
+                                    <br>
+                                    <div class="row justify-content-center">
+                                       <div class="col-3"> <img src="images/page-img/img-success.png" class="fit-image" alt="fit-image"> </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="row justify-content-center">
+                                       <div class="col-7 text-center">
+                                          <h5 class="purple-text text-center">You Have Successfully Signed Up</h5>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </fieldset>
+                           </form>
+                        </div>
+                     </div> -->
+
+
+                     
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Wrapper END -->
+       <!-- Footer -->
+      <footer class="iq-footer">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-lg-6">
+                  <ul class="list-inline mb-0">
+                     <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
+                     <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
+                  </ul>
+               </div>
+               <div class="col-lg-6 text-right">
+                  Copyright 2020 <a href="#">FinDash</a> All Rights Reserved.
+               </div>
+            </div>
+         </div>
+      </footer>
+      <!-- Footer END -->
+     
+    
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="/js/jquery.min.js"></script>
+      <script src="/js/popper.min.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <!-- Appear JavaScript -->
+      <script src="/js/jquery.appear.js"></script>
+      <!-- Countdown JavaScript -->
+      <script src="/js/countdown.min.js"></script>
+      <!-- Counterup JavaScript -->
+      <script src="/js/waypoints.min.js"></script>
+      <script src="/js/jquery.counterup.min.js"></script>
+      <!-- Wow JavaScript -->
+      <script src="/js/wow.min.js"></script>
+      <!-- Apexcharts JavaScript -->
+      <script src="/js/apexcharts.js"></script>
+      <!-- Slick JavaScript -->
+      <script src="/js/slick.min.js"></script>
+      <!-- Select2 JavaScript -->
+      <script src="/js/select2.min.js"></script>
+      <!-- Owl Carousel JavaScript -->
+      <script src="/js/owl.carousel.min.js"></script>
+      <!-- Magnific Popup JavaScript -->
+      <script src="/js/jquery.magnific-popup.min.js"></script>
+      <!-- Smooth Scrollbar JavaScript -->
+      <script src="/js/smooth-scrollbar.js"></script>
+      <!-- lottie JavaScript -->
+      <script src="/js/lottie.js"></script>
+      <!-- am core JavaScript -->
+      <script src="/js/core.js"></script>
+      <!-- am charts JavaScript -->
+      <script src="/js/charts.js"></script>
+      <!-- am animated JavaScript -->
+      <script src="/js/animated.js"></script>
+      <!-- am kelly JavaScript -->
+      <script src="/js/kelly.js"></script>
+      <!-- am maps JavaScript -->
+      <script src="/js/maps.js"></script>
+      <!-- am worldLow JavaScript -->
+      <script src="/js/worldLow.js"></script>
+      <!-- Style Customizer -->
+      <script src="/js/style-customizer.js"></script>
+      <!-- Chart Custom JavaScript -->
+      <script src="/js/chart-custom.js"></script>
+      <!-- Custom JavaScript -->
+      <script src="/js/custom.js"></script>
+
+      <script src="/js/appscripts/dropoff.js"></script>
+      <script>
+
+         // A $( document ).ready() block.
+         $( document ).ready(function() {
+            populateform()
+         })
+      </script>
+   </body>
+</html>

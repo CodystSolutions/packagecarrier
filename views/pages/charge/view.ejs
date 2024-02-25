@@ -1,0 +1,213 @@
+<%- include('../../partials/head'); %>
+
+
+         
+         <!-- Page Content  -->
+         <div id="content-page" class="content-page">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-sm-12 col-lg-6">
+                     <!-- <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                           <div class="iq-header-title">
+                              <h4 class="card-title">Rates</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <p>Adjust rates below</p>
+                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRateModal">
+                           Add Rates
+                          </button>
+                          <table class="table table-head-fixed text-nowrap">
+                            <thead>
+                              <tr>
+                                <th>Weight</th>
+                                <th>Rate</th>
+                                <th>Action</th>
+          
+                               
+          
+                              </tr>
+                            </thead>
+                            <tbody id="myTable">
+                              <% for(var x = 0; x < rates.length ;x ++) {%>
+                                  <tr>
+                                      <td><%=rates[x].weight%> LBS</td>
+                                      <td><%=rates[x].rate.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></td>
+          
+                                     
+                                     
+                                      <td>
+                                       
+                                        <a class="btn btn-sm btn-outline-primary" title="Edit"  href="/settings/rate/update/<%=rates[x].id%>"> <i class="fa fa-pencil"></i></a>
+                                          <a class="btn btn-sm btn-outline-danger" title="Remove" data-ratetitle="<%= rates[x].title %>"   data-rateid="<%= rates[x].id %>"       data-toggle="modal" data-target="#exampleModal"><i class="fa fa-trash " style="color: red"></i></a>
+          
+                                      </td>
+                                       
+                                    </tr>
+                              <% } %>
+                           
+                            </tbody>
+                          </table>
+                        </div>
+                     </div> -->
+                    
+                     <div class="iq-card">
+                      <div class="iq-card-header d-flex justify-content-between">
+                         <div class="iq-header-title">
+                            <h4 class="card-title">Rates</h4>
+                         </div>
+                      </div>
+                      <div class="iq-card-body">
+                        <div class=" d-flex justify-content-between">
+                          <p>Adjust rates below</p>
+                          <button type="button" style="float: right" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addRateModal">
+                          Add Rates
+                         </button>
+                        </div>
+                       
+                        <table class="table table-head-fixed text-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Weight</th>
+                              <th>Rate</th>
+                              <th>Action</th>
+        
+                             
+        
+                            </tr>
+                          </thead>
+                          <tbody id="myTable">
+                            <% for(var x = 0; x < rates.length ;x ++) {%>
+                              
+                                <tr>
+                                    <td><%=rates[x].weight%> LBS</td>
+                                    <form id="updaterate<%= x%>" onsubmit=" return false; ">
+                                      <td>
+                                        <input name="rate" value="<%=rates[x].rate %>"  />
+                                        <input hidden name="id" value="<%=rates[x].id %>" />
+
+                                        <button onclick="submitrate(<%= x%>)"  type="submit" class="btn btn-primary">Edit</button>
+                                      </td>
+
+                                    </form>
+                                    <td>
+                                      <a class="btn btn-sm btn-outline-danger" title="Remove" data-ratetitle="<%= rates[x].title %>"   data-rateid="<%= rates[x].id %>"       data-toggle="modal" data-target="#exampleModal"><i class="fa fa-trash " style="color: red"></i></a>
+
+                                    </td>
+                                      
+                                   
+                                  </tr>
+
+                                  <% } %>
+                         
+                          </tbody>
+                        </table>
+                      </div>
+                   </div>
+                  </div>
+                  <div class="col-sm-12 col-lg-6">
+                   
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                           <div class="iq-header-title">
+                              <h4 class="card-title">Increment By Rate</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <p>Adjust per additional pound rate</p>
+                           <form class="form-inline" id="createBaseRate">
+                            <div style="font-size:0.875rem"> 
+                              <span>Base rate: </span>
+                              $<input name="amount"  type="number" step="0.01"  value="<%= baserate %>" style="border-top: none; border-left: none; border-right: none"  />
+                              <span>JMD</span>
+                          
+                          
+                          </div>
+                          <input hidden type="text" name="type" value="base_rate">
+        
+                          <button  type="submit" class="ml-2 btn-sm btn btn-outline-primary">Save</button>
+        
+                          </form>
+                          <br/>
+                          <form class="form-inline" id="createAdditionalRate">
+                            <div style="font-size:0.875rem"> 
+                           
+                            <span>Increment by:   </span>
+                            $<input name="amount"  type="number" step="0.01" value="<%= incrementrate %>" style="border-top: none; border-left: none; border-right: none"  />
+                            <span>JMD</span>
+                          
+                          
+                          </div>
+                          <input hidden type="text" name="type" value="additional_rate">
+        
+                          <button  type="submit" class="ml-2 btn-sm  btn btn-outline-primary">Save </button>
+        
+                          </form>
+                          
+                        <br/>
+                        <small class="text-muted">For example: For each additional weight not predefined, the base rate to be used is $500 JMD and will be incremented by $300 JMD. 
+                            Therefore calculations will be done as follows for a package that weighs 10 pounds -> 500(base rate) + (9 (weight of item - 1) * 300 (increment)) = $3200 JMD.          
+                        </small>
+                        <small class="text-muted">
+                          Note: The base rate is not always equal to the lowest weight rate
+                        </small>
+                        </div>
+                     </div>
+                   
+                 </div>
+                
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+      <div class="modal fade" id="addRateModal" tabindex="-1" role="dialog" aria-labelledby="addRateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addRateModalLabel">add Rate</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form id="addrate" >
+      
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <!-- text input -->
+                            <div class="form-group">
+                              <label>Weight (LB)</label>
+                              <input type="number" class="form-control" name="weight"  required>
+                            </div>
+                       </div>
+                       <div class="col-sm-4">
+                        <!-- text input -->
+                            <div class="form-group">
+                                <label>Rate ($) </label>
+                                <input type="number"  step="0.01" class="form-control" name="rate" required>
+                            </div>
+                        </div>
+    
+                        
+                    </div>
+    
+                    <input hidden type="text" name="type" value="weight_rate">
+                 
+                   
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button  type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+      
+          </div>
+        </div>
+    </div>
+    
+<%- include('../../partials/footer'); %>
+<script src="/js/appscripts/rate.js"></script>

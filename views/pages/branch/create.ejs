@@ -1,0 +1,66 @@
+<%- include('../../partials/head'); %>
+  <!-- Page Content  -->
+  <div id="content-page" class="content-page">
+    <div class="container-fluid">
+       <div class="row">
+         
+          <div class="col-sm-12 col-lg-12">
+           
+            <div class="iq-card">
+                <div class="iq-card-header d-flex justify-content-between">
+                   <div class="iq-header-title">
+                      <h4 class="card-title">Branch Management</h4>
+                   </div>
+                </div>
+                <div class="iq-card-body">
+                   <p>Add branch information</p>
+                   <form id="addbranch">
+                      <div class="form-group">
+                         <label for="exampleInputText1">Name </label>
+                         <input type="text" name="name" class="form-control" id="exampleInputText1"  required>
+                      </div>
+                      <div class="form-group">
+                         <label for="exampleInputEmail3">Description</label>
+                         <input type="text" name="description" class="form-control" id="exampleInputEmail3" >
+                      </div>
+                      <div class="form-group">
+                         <label for="exampleInputurl">Address 1</label>
+                         <input type="text" class="form-control" name="address1" id="exampleInputurl" required>
+                      </div>
+                      <div class="form-group">
+                         <label for="exampleInputphone">Address 2</label>
+                         <input type="text" class="form-control" name="address2" id="exampleInputphone">
+                      </div>
+                      <div class="form-group">
+                         <label for="exampleInputNumber1">City</label>
+                         <input type="text" name="city" class="form-control" id="exampleInputNumber1" required>
+                      </div>
+                      <div class="form-group">
+                         <label for="exampleInputPassword3">State/Parish</label>
+                         <input type="text" name="state" class="form-control" id="exampleInputPassword3" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword3">Country</label>
+                        <input type="text" name="country" class="form-control" value="Jamaica" id="exampleInputPassword3" readonly required>
+                     </div>
+                    
+                      <div class="form-group">
+                         <label for="exampleFormControlTextarea1">Notes</label>
+                         <textarea class="form-control" name="notes" id="exampleFormControlTextarea1" rows="5"></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                   </form>
+                </div>
+             </div>
+           
+         </div>
+        
+          
+       </div>
+    </div>
+ </div>
+</div>
+
+
+<%- include('../../partials/footer'); %>
+<script src="/js/appscripts/branch.js"></script>

@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const rbacMiddleware = require('../middleware/rbacMiddleware');
 
  
+//test create admin user
 router.get('/test', async (req, res) => {
     //clear session 
     var uuid = uuidv4();

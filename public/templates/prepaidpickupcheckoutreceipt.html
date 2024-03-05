@@ -309,7 +309,7 @@ body {
     8 Kingston Ave, <br/>St Andrew ,<br> Jamaica
   </div>
   <div id="location">
-    Drop Off Receipt
+    Checkout Receipt
   </div>
   <div id="date">
     {{date}}
@@ -325,47 +325,56 @@ body {
   </div>
   <hr>
 
-  <!-- Items Purchased -->
-  <div class="items">
-    <div class="item">
-      <div class="itemRow">
-        <div class="itemName">Package - {{category}} {{weight}}lbs</div>
-        <div class="itemPrice itemTaxable">${{rate}}</div>
-      </div>
-      <div class="itemRow">
-        <div class="itemColor"></div>
-        <div class="itemData1">{{source}} to {{destination}}</div>
-        <div class="itemData2"></div>
-        <!-- <div class="itemData3 itemQuantity">10</div> -->
-      </div>
-      <div class="itemRow">
-        <div class="itemColor"></div>
-        <div class="itemData1">Tracking: <span id="tracking">{{tracking_number}}</span> </div>
-        <div class="itemData2"></div>
-        <!-- <div class="itemData3">$20.00</div> -->
-      </div>
-    </div>
-    <!-- <div class="item">
-      <div class="itemRow">
-        <div class="itemName">Miraculous Ladybug & Cat Noir</div>
-        <div class="itemPrice itemTaxable">$1.25</div>
-      </div>
-      <div class="itemRow">
-        <div class="itemColor"></div>
-        <div class="itemData1">DNC-P03</div>
-        <div class="itemData2">DaniCojo</div>
-        <div class="itemData3 itemQuantity">10</div>
-      </div>
-      <div class="itemRow">
-        <div class="itemColor"></div>
-        <div class="itemData1">Print</div>
-        <div class="itemData2">Reg(WS) 8.5x11 Borderless</div>
-        <div class="itemData3">$12.25</div>
-      </div>
-    </div> -->
-  </div>
+        
+  {{#packages}}
 
-  <!-- Totals -->
+
+    <!-- Items Purchased -->
+    <div class="items">
+      <div class="item">
+        <div class="itemRow">
+          <div class="itemName">Package - {{category}} {{weight}}lbs</div>
+          <div class="itemPrice ">{{method}}</div>
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">{{source}} to {{destination}}</div>
+          <div class="itemData2"></div>
+          <!-- <div class="itemData3 itemQuantity">10</div> -->
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">Tracking: <span id="tracking">{{tracking_number}}</span> </div>
+          <div class="itemData2"></div>
+          <!-- <div class="itemData3">$20.00</div> -->
+        </div>
+      </div>
+      <!-- <div class="item">
+        <div class="itemRow">
+          <div class="itemName">Miraculous Ladybug & Cat Noir</div>
+          <div class="itemPrice itemTaxable">$1.25</div>
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">DNC-P03</div>
+          <div class="itemData2">DaniCojo</div>
+          <div class="itemData3 itemQuantity">10</div>
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">Print</div>
+          <div class="itemData2">Reg(WS) 8.5x11 Borderless</div>
+          <div class="itemData3">$12.25</div>
+        </div>
+      </div> -->
+    </div>
+  
+    <!-- Totals -->
+  {{/packages}}
+  
+
+
+
   <hr>
   
 <!-- Dosn't work
@@ -374,47 +383,11 @@ body {
 <div class="flex">
     <div id="qrcode"></div>
     <div class="totals">
-      <div class="section">
-        <div class="row">
-          <div class="col1"></div>
-          <div class="col2">Subtotal</div>
-          <div class="col3">${{subtotal}}</div>
-        </div>
-        <div class="row">
-          <div class="col1"></div>
-          <div class="col2">Discount</div>
-          <div class="col3">${{discount}}</div>
-        </div>
-        <div class="row">
-          <div class="col1">15%</div>
-          <div class="col2">Taxes</div>
-          <div class="col3">${{tax}}</div>
-        </div>
-      </div>
-      <div class="section">
-        <div class="row">
-          <div class="col1">Total</div>
-          <div class="col2"></div>
-          <div class="col3">${{total}}</div>
-        </div>
-      </div>
-      <div class="section">
-        <div class="row">
-          <div class="col1">Tendered</div>
-          <div class="col2"></div>
-          <div class="col3">${{tendered}}</div>
-        </div>
-        <div class="row">
-          <div class="col1">Change</div>
-          <div class="col2"></div>
-          <div class="col3">${{change}}</div>
-        </div>
-      </div>
+     
     </div>
   </div>
   
   <div class="footer">
-    <div class="eta">Same Day Delivery</div>
     <div class="printType">customer copy <span id="test"></span> </div>
   </div>
 </div>

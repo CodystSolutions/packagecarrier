@@ -29,6 +29,7 @@ router.get('/view', rbacMiddleware.checkPermission(), async (req, res) => {
     return res.render('pages/user/admin',{user: req.session.user, users:users, moment})
  })
 
+
  router.get('/update/:id', rbacMiddleware.checkPermission(), async (req, res) => {
     var admin = null
     var roles = []
@@ -50,6 +51,27 @@ router.get('/view', rbacMiddleware.checkPermission(), async (req, res) => {
     return res.render('pages/404',{user: req.session.user, admin, roles, branches})
  })
 
+ router.get('/search/:type/:value', rbacMiddleware.checkPermission(), async (req, res) => {
+    var users = []
+    //get users
+    try{
+
+        var type = req.body.type;
+        var value = req.body.value;
+        var usersresponse = await  dataService.searchUsers(type, value);
+        if(usersresponse.status == 200){
+            users = usersresponse.users
+            return  res.send({status: usersresponse.status, users, message: usersresponse.message});
+
+        }
+        
+    
+    }catch(error){
+        console.log(error)
+    }
+    return  res.send({status: 500, users, message: "Error, Could not find any users "});
+
+ })
 
 router.post('/add', rbacMiddleware.checkPermission(), async(req, res)=> {
     try{

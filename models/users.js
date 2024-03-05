@@ -57,9 +57,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: true
     },
+    is_anonymous: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
    
     trn: {
       type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    address: {
+      type: DataTypes.STRING,
       allowNull: true
     },
    

@@ -8,7 +8,7 @@
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
-                           <h4 class="card-title">View Packages</h4>
+                           <h4 class="card-title">View Pickup Requests</h4>
                         </div>
                      </div>
                      <div class="iq-card-body">
@@ -25,7 +25,7 @@
                               </div>
                               <div class="col-sm-12 col-md-6">
                                  <div class="user-list-files d-flex float-right">
-                                    <a href="/package/scan" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add" href="#"><i class="ri-user-add-line"></i> Scan Packages</a>
+                                    <a href="/pickup/checkout" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add" href="#"><i class="ri-user-add-line"></i> Checkout Packages</a>
 
                                    
                                      <!-- <a class="iq-bg-primary" href="javascript:void();">
@@ -38,41 +38,31 @@
                              <thead>
                                  <tr>
                                     <th>Name</th>
-                                    <th>Tracking Number</th>
                                     <th>Code</th>
-                                    <th>Source</th>
+                                    <th>Method</th>
 
-                                    <th>Destination</th>
-                                    <th>Current Location</th>
-                                    <th>Batch</th>
-
-                                    <th>Status</th>
                                     <th>Created</th>
                                     <th>Action </th>
                                    
                                  </tr>
                              </thead>
                              <tbody>
-                              <% for(var i = 0;  i < packages.length ; i++ ) { %>
+                              <% for(var i = 0;  i < pickups.length ; i++ ) { %>
                                  <tr>
-                                     <td><%= packages[i].sender_first_name %> <%= packages[i].sender_last_name %></td>
-                                     <td><%= packages[i].tracking_number %></td>
-                                     <td><%= packages[i].code %></td>
-                                     <td><%= packages[i].destination %></td>
-                                     <td><%= packages[i].source %></td>
+                                     <td><%= pickups[i].collector_first_name %> <%= pickups[i].collector_last_name %></td>
+                                     <td><%= pickups[i].code %></td>
+                                     <td><%= pickups[i].method %></td>
 
-                                     <td><%= packages[i].current_location %></td>
-                                     <td><%= packages[i].batch?.name %></td>
-
-                                     <td><%= packages[i].status %></td>
-                                     <td><%= moment(packages[i].created_on).format('MM/DD/YYYY')%></td>
+                                     <td><%= moment(pickups[i].created_on).format('MM/DD/YYYY')%></td>
 
                                   
                                      
                                      <td>
-                                        <div class="flex align-items-center list-user-action">
-                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/package/update/<%= packages[i].id %>"><i class="ri-pencil-line"></i></a>
+                                              <div class="flex align-items-center list-user-action">
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/pickup/update/<%= pickups[i].id %>"><i class="ri-pencil-line"></i></a>
                                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="#"><i class="ri-delete-bin-line"></i></a>
+                                           <a class="iq-bg-primary" style="width: 80px" data-toggle="tooltip" data-placement="top" title="" data-original-title="receipt" onclick="generatereceipt(`<%= pickups[i].id%>`)">Receipt</a>
+
                                         </div>
                                      </td>
                                   </tr>
@@ -109,6 +99,21 @@
    </div>
 </div>
 
+<!-- Small modal -->
+
+<div id="receiptmodel" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content text-center" >
+      <div>
+         <button class="btn btn-sm btn-prim" onclick="openprintwindow()">print</button>
+      </div>
+      <div id="htmldiv" align="center">
+
+      </div>
+
+    </div>
+  </div>
+</div>
    
    <%- include('../../partials/footer'); %>
-   <script src="/js/appscripts/package.js"></script>
+   <script src="/js/appscripts/pickup.js"></script>

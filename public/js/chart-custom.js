@@ -8489,7 +8489,7 @@ $(".table-add").on("click", "i", () => {
 		var e = $(this).closest(".setup-content"),
 			t = e.attr("id"),
 			a = $('div.setup-panel div a[href="#' + t + '"]').parent().next().children("a"),
-			n = e.find("input[type='text'],input[type='email'],input[type='password'],input[type='url'],textarea"),
+			n = e.find("input[type='text'],input[type='number'],input[type='email'],input[type='password'],input[type='url'],textarea,select,radio"),
 			o = !0;
 		$(".form-group").removeClass("has-error");
 		for (var r = 0; r < n.length; r++) n[r].validity.valid || (o = !1, $(n[r]).closest(".form-group").addClass("has-error"));

@@ -40,7 +40,7 @@
                      <div class="iq-card">
                         <div class="iq-card-header d-flex justify-content-between">
                            <div class="iq-header-title">
-                              <h4 class="card-title">Drop Off form</h4>
+                              <h4 class="card-title">Drop Off Form</h4>
                            </div>
                         </div>
                         <div class="iq-card-body">
@@ -80,32 +80,64 @@
                                  <div class="col-sm-12">
                                     <div class="col-md-12 p-0">
                                        <h5 class="mb-4">Sender Information:</h5>
+                                       <div  class="row">
+                                          <div class="form-group col-6">
+                                             <label class="control-label">Have they used our services before? *</label>
+
+                                             <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="existingcustomeryes" name="existingcustomer" value="true" class="custom-control-input">
+                                                <label class="custom-control-label" for="existingcustomeryes"> Yes</label>
+                                             </div>
+                                             <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="existingcustomerno" name="existingcustomer" value="false" class="custom-control-input">
+                                                <label class="custom-control-label" for="existingcustomerno"> No</label>
+                                             </div>
+                                            
+                                          </div>
+                                       </div>
                                        <div class="row">
                                           <div class="form-group col-md-6">
                                              <label class="control-label">First Name *</label>
-                                             <input  maxlength="100" id="sender_first_name" name="sender_first_name" type="text" class="form-control"  />
+                                             <input  maxlength="100" id="sender_first_name" name="sender_first_name" type="text" class="form-control" required />
                                           </div>
-                                          <div class="form-group col-md-6">
-                                             <label class="control-label">Last Name *</label>
-                                             <input maxlength="100" id="sender_last_name" name="sender_last_name" type="text"  class="form-control"/>
-                                          </div>
-
                                           <div class="col-md-6 form-group">
                                              <label for="emailid" class="control-label">Email *</label>
-                                             <input type="email" id="sender_email"  name="sender_email"  id="email" class="form-control" >
+                                             <input type="email" id="sender_email"  name="sender_email"  id="email" class="form-control" required >
                                           </div>
                                           
+                                          <div class="form-group col-md-6">
+                                             <label class="control-label">Last Name *</label>
+                                             <input maxlength="100" id="sender_last_name" name="sender_last_name" type="text"  class="form-control" required/>
+                                          </div>
+
+                                     
                                           <div class="col-md-6 form-group">
                                              <label for="cno" class="control-label">Contact Number: *</label>
-                                             <input type="text" class="form-control"   name="sender_contact"  id="sender_contact" />
+                                             <input type="text" class="form-control"   name="sender_contact"  id="sender_contact" required/>
                                           </div>
                                           <div class="col-md-12 mb-3 form-group">
                                              <label for="address" class="control-label">Address: </label>
                                              <input  name="sender_address"  class="form-control" id="sender_address" />
                                           </div>
                                           <div class="col-md-12 mb-3 form-group">
-                                             <label for="address" class="control-label">Source Branch: </label>
-                                             <input  name="source"  class="form-control" id="source" />
+                                             <label for="source" class="control-label">Source Branch: </label>
+                                             <select class="form-control" name="source" id="source" required>
+                                                <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                                                   <%if(branches[i].name == user.branch) { %>
+                                                      <option selected><%= branches[i].name %></option>
+                                                   <% } else { %>
+                                                      <option><%= branches[i].name %></option>
+                                                   <% }%>
+                                                   
+         
+                                                <% }%>
+                                             </select>
+                                          </div>
+                                          <div class="col-md-12 mb-3 form-group">
+                                             <div class="custom-control custom-checkbox custom-control-inline">
+                                                <input type="checkbox" class="custom-control-input" name="create_an_account" id="create_an_account">
+                                                <label class="custom-control-label" for="create_an_account">Create an account?</label>
+                                             </div>
                                           </div>
                                        </div>
                                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
@@ -117,6 +149,7 @@
                                     <div class="col-md-12 p-0">
                                        <h5 class="mb-4">Package Details:</h5>
                                        <div class="row">
+                                          
                                           <div class="col-md-6 form-group">
                                              <label for="weight" class="control-label">Weight: *</label>
                                              <input type="number" step="0.01" class="form-control" required="required" id="weight" name="weight" >
@@ -125,20 +158,20 @@
                                              <div class="form-group">
                                                 <label for="category" class="control-label">Category: *</label>
                                                 <select class="form-control" id="category" name="category" required>
-                                                   <option>Select</option>
-                                                   <option>Clothing</option>
-                                                   <option>Electronic Item</option>
-                                                   <option>Document</option>
-                                                   <option>Beauty</option>
-                                                   <option>Car Parts</option>
+                                                   <option></option>
+                                                   <option>clothing</option>
+                                                   <option>electronic item</option>
+                                                   <option>document</option>
+                                                   <option>beauty</option>
+                                                   <option>car parts</option>
                                                 </select>
                                              </div>
                                           </div>
                                          
                                           <div class="col-md-12">
                                              <div class="form-group">
-                                                <label for="description" class="control-label">Description: </label>
-                                                <input name="description"  id="description" class="form-control" />
+                                                <label for="description" class="control-label">Description *: </label>
+                                                <input name="description"  id="description" class="form-control" required />
                                              </div>
                                           </div>
                                           <div class="col-md-12">
@@ -154,16 +187,14 @@
                                              <label class="control-label">First Name *</label>
                                              <input  maxlength="100" name="receiver_first_name"  id="receiver_first_name" type="text" class="form-control"  />
                                           </div>
-                                          <div class="form-group col-md-6">
-                                             <label class="control-label">Last Name *</label>
-                                             <input maxlength="100" name="receiver_last_name"  id="receiver_last_name"  type="text"  class="form-control"/>
-                                          </div>
-
                                           <div class="col-md-6 form-group">
                                              <label for="emailid" class="control-label">Email *</label>
                                              <input type="email"  name="receiver_email"  id="receiver_email" class="form-control" >
                                           </div>
-                                          
+                                          <div class="form-group col-md-6">
+                                             <label class="control-label">Last Name *</label>
+                                             <input maxlength="100" name="receiver_last_name"  id="receiver_last_name"  type="text"  class="form-control"/>
+                                          </div>                
                                           <div class="col-md-6 form-group">
                                              <label for="cno" class="control-label">Contact Number: *</label>
                                              <input type="text" class="form-control"  name="receiver_contact"   id="receiver_contact" />
@@ -174,7 +205,13 @@
                                           </div>
                                           <div class="col-md-12 mb-3 form-group">
                                              <label for="address" class="control-label">Destination Branch: </label>
-                                             <input name="destination"  class="form-control" id="destination" />
+                                             <select class="form-control" name="destination" id="destination" required>
+                                                <option></option>
+
+                                                <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                                                   <option><%= branches[i].name %></option>
+                                                <% }%>
+                                             </select>
                                           </div>
                                        </div>
                                        <button class="btn btn-primary nextBtn btn-lg pull-right" onclick="getrate()" type="button" >Next</button>
@@ -191,36 +228,43 @@
                                              <div class="col-md-12 form-group">
                                                 <label for="panno" class="control-label">Method *</label>
                                                 <div class="custom-control custom-radio custom-control-inline">
-                                                   <input type="radio" checked id="method" value="prepaid" name="method" class="custom-control-input">
+                                                   <input type="radio"  id="method" value="prepaid" name="method" class="custom-control-input" required>
                                                    <label class="custom-control-label" for="method"> Prepaid</label>
                                                 </div>
                                                 <div class="custom-control custom-radio custom-control-inline">
-                                                   <input type="radio" id="method" value="pay on collect" name="method" class="custom-control-input">
-                                                   <label class="custom-control-label" for="method"> Pay on Collect</label>
+                                                   <input type="radio" id="method2" value="pay on collect" name="method" class="custom-control-input" required>
+                                                   <label class="custom-control-label" for="method2"> Pay on Collect</label>
                                                 </div>
                                             </div>
-                                             <div class="col-md-12 form-group">
+                                           
+                                             <div class=" paymentinfo col-md-12 form-group">
                                                 <label for="paymentmethod" class="control-label">Payment Method: *</label>
-                                                <input type="text" class="form-control" required="required" id="paymentmethod" name="paymentmethod" >
+                                                <select class="form-control"  id="paymentmethod" name="paymentmethod" required>
+                                                   <option></option>
+                                                   <option>cash</option>
+                                                   <option>card</option>
+                                                   <option>bank transfer</option>
+                                                </select>
                                              </div>
-                                             <div class="col-md-6 form-group">
+                                             <div class=" paymentinfo col-md-6 form-group ccinfo" style="display: none;">
                                                 <label for="cctype" class="control-label">Credit Card Type: *</label>
                                                 <input type="text" class="form-control" required="required" id="cctype" name="cctype" >
                                              </div>
-                                             <div class="col-md-6 form-group">
+                                             <div class="paymentinfo col-md-6 form-group ccinfo"  style="display: none;">
                                                 <label for="cclast4" class="control-label">Credit Card Last 4 : *</label>
                                                 <input type="text" class="form-control" required="required" id="cclast4" name="cclast4" >
                                              </div>
+                                            
                                              <input hidden id="totalinput" name="total" value="" />
-                                             <div class="col-md-6 form-group">
+                                             <div class=" paymentinfo col-md-6 form-group">
                                                 <label for="tendered" class="control-label">Tendered Amount: *</label>
                                                 <input type="text" class="form-control"  onblur="calculatechange()" required="required" id="tendered" name="tendered">
                                              </div>
-                                             <div class="col-md-6 form-group">
+                                             <div class=" paymentinfo col-md-6 form-group">
                                                 <label for="change" class="control-label">Change: </label>
                                                 <input type="text" class="form-control" required="required" id="change" name="change" readonly>
                                              </div>
-                                             <div class="col-md-12 form-group">
+                                             <div class=" paymentinfo col-md-12 form-group">
                                                 <label for="reference" class="control-label">Reference Number: *</label>
                                                 <input type="text" class="form-control"  id="reference" name="reference">
                                              </div>
@@ -254,17 +298,28 @@
                                     <div class="col-md-12 p-0">
                                        <h5 class="mb-4 text-center" id="submittingtext">Please wait while we save...</h5>
 
-                                       <div class=" text-center justify-content-center" id="successinfo">
+                                       <div class=" text-center justify-content-center" id="successinfo" style="display:none">
                                           <div > <img style="width: 50px;" src="/images/page-img/img-success.png" class="fit-image" alt="img-success"> </div>
                                           <br/>
                                           <p>Tracking Number: <span style="font-weight: 700;" id="trackingnumtext"></span></p>
+                                          
+                                          <p>Dropoff Code: <span style="font-weight: 700;" id="dropofftext"></span></p>
+                                          <p hidden id="dropoffid"></p>
                                           <br/>
-                                          <div><a class="btn btn-primary" id="receiptbtn" target="_blank" href="">Print Receipt</a></div>
+                                          <div><a class="btn btn-primary" id="receiptbtn" style="color:white" >Print Receipt</a></div>
                                           <br/>
-                                          <div><a class="btn btn-primary" id="labelbtn"  target="_blank" href="">Print Label</a></div>
+                                          <div><a class="btn btn-primary" id="labelbtn"  style="color:white">Print Label</a></div>
                                           <br/>
                                           <div><a class="btn btn-primary" id="anotherdropoffbtn"  href="/dropoff/create">Create another drop off request</a></div>
 
+                                       </div>
+
+                                       <div class=" text-center justify-content-center" id="errorinfo" style="display:none">
+                                          <div>
+                                             <p id="errormsg" style="text-align: center;"></p>
+                                             <button class="btn btn-primary nextBtn btn-lg pull-right" type="submit" >Retry Submission</button>
+
+                                          </div>
                                        </div>
                                     </div>
                                  </div>
@@ -506,6 +561,10 @@
       <script src="/js/chart-custom.js"></script>
       <!-- Custom JavaScript -->
       <script src="/js/custom.js"></script>
+      <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+      <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+      <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
       <script src="/js/appscripts/dropoff.js"></script>
       <script>

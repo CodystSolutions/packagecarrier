@@ -309,7 +309,7 @@ body {
     8 Kingston Ave, <br/>St Andrew ,<br> Jamaica
   </div>
   <div id="location">
-    Drop Off Receipt
+    Checkout Receipt
   </div>
   <div id="date">
     {{date}}
@@ -324,6 +324,7 @@ body {
     are allowed for items already shipped except at the discretion of Speedz Express Courier. *Unclaimed items can be claimed without receipt if requested.
   </div>
   <hr>
+  {{#packages}}
 
   <!-- Items Purchased -->
   <div class="items">
@@ -364,6 +365,8 @@ body {
       </div>
     </div> -->
   </div>
+  {{/packages}}
+
 
   <!-- Totals -->
   <hr>
@@ -414,7 +417,6 @@ body {
   </div>
   
   <div class="footer">
-    <div class="eta">Same Day Delivery</div>
     <div class="printType">customer copy <span id="test"></span> </div>
   </div>
 </div>

@@ -1,0 +1,168 @@
+<html>
+
+<meta charset="utf-8"> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Speedz Master Local Courier {{tracking}}</title> 
+
+<style>
+    @page { margin: 8px; size: 4in 6in; }
+    #labelhtml  { margin: 8px; size: 4in 6in; }
+    .invoice-box {
+            /* max-width: 800px; */
+            margin: auto;
+    
+            /* border: 1px solid #eee; */
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, .15); */
+            font-size: 0.15in;
+            /* line-height: 24px; */
+            font-family: 'Poppins', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            /* color: #353a40; */
+            /* margin: 8px; */
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+    
+    table.header {
+    /* table-layout: fixed ; */
+    width: 100% ;
+    }
+    table td.shrink {
+    white-space: nowrap
+    }
+    
+    table td.expand {
+    width: 99%
+    }
+    
+    td {
+    /* width: 50%; */
+    }
+
+</style>
+
+
+    <div id="labelhtml">
+      <table class="header" style="border-bottom: 1px solid black">
+        <tbody>
+            <tr>
+                <td style="border-right: 1px solid black; white-space: nowrap;">
+                    <div style="width: 1in;">
+                    <img src="https://speedzmastershipping.com/main/img/logo.png" style="width:1in; margin: 10px;" alt="">
+                    </div>
+                </td>
+                <td class="">
+            
+                        <h2>Speedz Master Express Courier</h2>
+                        <p>Head Office</p>
+                        <p>8 Kingston Ave </p>
+                        <p>St Andrew , Jamaica</p>
+                        <br>
+            
+            
+                </td>
+               
+            </tr>
+      </tbody>
+    </table>
+   
+    
+    <table style="border-bottom: 1px solid black;">
+    
+        <tbody>
+            <tr>
+            
+                <td class="expand">
+            
+                    <span style="font-size: 0.12in">To:</span>
+            
+                        <div style="font-weight: bold">Delivery Information</div>
+                        <p>Sender: {{sender_first_name}} {{sender_last_name}}</p>
+                        <p>Receiver: {{receiver_last_name}} {{receiver_last_name}}</p>
+                        <p>Source: {{source}} </p>
+                        <p>Destination: {{destination}} </p>
+                        <br>
+            
+                <div style="margin-top: 10px;">
+                <span style="font-size: 0.12in">Fwd:</span>
+            
+                <div style="font-weight: bold; font-size:0.2in; background-color: black; color: white; padding: 2px;"></div>
+                <span id="packagetrackingspan">{{tracking_number}}</span>
+            
+                    </div>
+                </td>
+    
+                <td>
+                    <div><h4>Standard Shipping</h4></div> 
+                    <div>
+                        <div style=" padding: 20px;font-size: 1in; font-weight:bold; text-align: center; border: 1px solid black;">
+                            S
+                        </div>
+                    </div>
+                </td>
+    
+      
+        </tr>
+      </tbody>
+    </table>
+    
+    <table style="border-bottom: 1px solid black; table-layout: fixed; width: 100% ;">
+    
+        <tbody>
+            <tr>
+    
+                <td style="width: 30%; border-right: 1px solid black; ">
+                    <div class="" align="center" id="qrcode"> 
+                
+                    </div>
+                </td>
+                <td class=""  style="width: 50%;" >
+
+                    <br>
+                    <div>
+            <div style="font-weight: bold; font-size: 0.2in;">Reference code: <br/> {{code}} </div><br>
+            
+            
+            <br>
+            Package - {{category}} <br/> {{weight}}lbs
+                    </div>
+            
+                </td>
+               
+           </tr>
+      </tbody>
+    </table>
+    
+    <div style="margin:0 auto; text-align:center;">
+    <br><br>
+    
+    <img id="barcode" src="data:image/png;base64,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UG8HKxORFC3bT8DWKkZIihqTsVaHsebKGBW2UvvqcUzCsOs2dQjr86QCUYwBMUbB+mPjtX7OmJa1nx0nxlYP3MxuTf04df00Zmy18KsPZQFZQBb4D1rA/A26/8Gxa0iygCwgC9RaQMAmx5AFZIGhs4CAbeimVA8kC8gCAjb5gCwgCwydBQRsQzeleiBZQBYQsMkHZAFZYOgsIGAbuinVA8kCsoCATT4gC8gCQ2cBAdvQTWnrgX766Sf/4vdEE03U8wn/+usvd8YZZ7i7777bH7fWWmu5vfbay4011li15w36+Kefftrdf//97uGHH3Z//vmnW2GFFdxBBx3kJptsstrxPPjgg+7GG290L774opt44ondyiuv7Pbff383/vjj93zup556yt13333uueeec59++qlbZZVV3Jlnntl1DuyIY3Gfl156yd16663RseDkN954w5188snu5ZdfdrPNNptbd9113XbbbUe9zDoeeiEd4C0gYGvgCD///LNbf/31Hf5fbDPMMINbeOGF3cYbb+zmmWeeTtfjjz/uF+fff//d82677767XwR33nmnO/roo/2xiy++uDvnnHM65+FVk7333ts9++yz/rMjjzzSgxHaP//840455RR38cUXu/fee89/Nuecc7pdd93VnzPGGGOU7o/jcb+rrrqqA4B4Jnx2ySWX/N+Pv+CCC/xY0WDLzz77zP8966yzeqAAcBXbjjvu6C699FL/0YILLuhee+21zt+wz3jjjddlbwDzscce64466ijft+SSS/rrr7rqql0ABIBdffXVS9d4//333eyzz147j7jnUkst5fsQUIJ/4JnOO++82nNSxtPAVUfsKQK2BlP/yy+/uLXXXts9+uij/uxlllnGffnll+6jjz7qXO3cc891u+22m//3k08+6Q499FD3yiuveGefd9553bjjjlu6M9jAVltt5UHmoYcecgC5AE5gI4suuqg/Hn8vtthiHdDCfcA2wG422GADd9ddd3lQAPCi3XbbbR4g1ltvPXfzzTeXmBhYEc5dbrnl3AMPPOCPxwJ/4oknPGNaaaWVSmMc9PF49hdeeMHtsssu3kY//PCDHzfGU7QnBgVAGHvssf2z3nvvvW6++eZz3333ndtoo438vADg99tvv67ZBZs79dRTfcC47rrrPKuKtU8++cRdccUVboEFFnDXXHONu+WWW1wvYFtiiSXc888/70466SS3zz77eH/YYostPNPDmMA+qy1lPA1cdcSeImDLmHpIPYACGFlYbFdffbWXcgAwyIull166c4ett97aof+rr75yU089denOYCNYxFjcaJCHWBxoYHsnnHCC//vggw92J554ov/79NNP90wMDYwAYAhgAoAFdvPjjz96wMPCuvDCC91OO+3Uue+WW27prr32WvfMM8945oIWWAcWJBZzsQ36+LqpgD222WYbd8ABB3jAKDYwWQD49NNP3/n4+uuvd5tvvrlnzZCoxfbBBx+4OeaYw9v+ww8/dBNOOKF59vfYYw8PrjFg+/XXX90EE0zgr4e/A1sEowSzxBxAxvZrPOaBj9ADBWwZE18FtnApMIg111zTswLkcEKrAturr77qXn/9dc/UZpxxRi97ICPRAF4AMQAVjvviiy98zmzaaad1Cy20kGdYOObAAw90f/zxh5tyyik9mL7zzjturrnmKj3V22+/7RkQ5NG3337rxhlnHN8/zTTTuN9++819//33HSYHJjT55JP7hQkALrZBH183FWBdp512mgcFgANrN910k9tkk018UMB5xbbzzju7iy66qBQo2PVCPwO2zz//3LNH/IecXWghUEDuAkz7NR7ruEfqcQK2jJmPARsuCWn01ltvlaJ3ADZIE4DEcccd52UUHB6sD6AFRoGGHBvyZ2B4AL7HHnvMgw9kL1gMroU80RFHHOHeffddN/fcc3cBafHRgkwKwId8H66H3BSAs9gAnMhXAeTGHHNM3zXo46vTgGfEfwDwFVdc0ecdAyOKTRlAGjlOSHgk8TEHdc+FnBeKFHhGBA4EiEUWWaSnJzBgQ74y2ArzHnKsxxxzjJ8jtKI98e9g5ybjyXDbEXGqgC1jmnsBG1gD2MObb77p2RJaALbiLSGLqswI/YcccoiXn2BTM800kz8XTAvVS+TRAIA45vjjj/f/Rs6vTj6GewUZCYBAseGbb77xkgyg8cgjj5SsgLwb8mlff/21m2qqqXzfoI8vDgByD0WP0K688koP7rHvkMNxKKpsu+22HdDHOcWG/mLxBOx1kkkm6RQoEGx6gRsDtuKcgZ0hfYAcW0gboB/gV/yewJzxZLjtiDhVwJYxzb2ADXkhMA6wIbCiIrAhDzTFFFP4nBfyW0XpEoYTJBhkJvJoyKFhMUJ64toAu3333dcnwlEggEzDwr788strnwiVTiTCb7/9drfOOut4JgkGhNwaxlBsqOxBQqFIErZNDPr46qBRCEDRAAABBhYrBgRQQw4OxwCo77nnnq7iDCR4AGmAJCqwCBQIDGDG2CaCok2sWYANNoKdEdBCQ/BAgEDxB4Wf0HLHk+G2I+JUAVvGNPcCtiD9iuBQzbFBhiKpD2YGxjDppJP6rQdoqKief/75PspjgYeKGqQkCgPTTTedPwYJbcguVO6KhYzqYy2//PL+OpBfOBYN18Fir+Z+UCkEQ8MermIb9PF1UxFkdhUYwrFgYgHUwPIAyHV73lA1DrnFYlGnCDBVqVgcjwXYwvEAMDD1WWaZxc8vpGiVTeeOJ8NtR8SpAraMaY4BWwCaav6qV1UUxQMUHMDi0LbffnvPvsJXJKMCCOkEtgE2g2IB2MFll13WYV84D0lsgF6xofAQKodFoA3gi37k99CwbQXnVwsf6Bv08XVTUaw2AgyKG4dhG1Sgzz77bC9dIamrz168JmyMrS8o2Mw///y+KxRLUHhBjq66DSecnwJsRdBF7hOM84477vDpgn6NJ8NtR8SpAraMaa4DNoAaJCEYGHa2r7baap07pGz32HTTTf12hbrfGcUiBHvabLPN/F4sNGw6Pfzww30uDlsMAgBg4e6www5eFodiQxgQAGHPPff02yjAetCwax5/ow+LudgGeTwADBISUhIyPTSAO0C+rsgR9oChD0WGsIUG+80g4bHto9jC8SjaYF8hGvYYgunWVS2L5zYBtlDZrstj4to548lw2xFxqoCtwTT//vvvXj4CKLCYsPAgaRCZIffQwCSwFw0NsgTAgtwLEspgWtVXnc4666zOBl1sU0DuDOwC10EhAtXQsBBvuOEGDzzYWoA8G/JxAAbkxiA1sVABjGg4FmNCAQNbT4qVRYwZCxpAiVwTGhY8xvbxxx/7bR/FNsjjIQ+XXXZZfzsUN8AOATph4zD22xWBKhRMcDzYWpGpQf7VMc6wJQPnQBriDQLYGs+PHGZ46yE8M+yFbSawLYIU5hfnAXjB/kIwCMdjQzEKH5hjADLOgX1R8KluwcE5qeNp4Koj9hQBW4OpR6Vy5pln7nqlCgsM1UqADSqLoWFxbLjhhvROYFzY5oEcV/EthiLDAAAddthhnWsVmQYWIIAQr0MVGzaIAmTrtksACAEo4fUfADXeiwx5uOqgB3U8mCmeHfv4wqtUuDdAFmNH8Cg2sDK8ZRBr2IgcZH3xGLyatcYaa/iEfmjYL4htGdX3Y5G/rLLWcA7shHHi7YfQsIWneF0wd4wdKYRYSxkPdSAd0LGAgK0PzoDcD0r3YR9THy6ZdQkwSmzKRcN+qljeKNwEchV5JzTIOvYcgz4eOT+MH+ABVlX3zmeOgbAnD0UJgBCYbPUtkKbXxv41gB0q1ghOsS8SqF5/UONp+hzDcJ6AbRhmUc8gC8gCJQsI2OQQsoAsMHQWELAN3ZTqgWQBWUDAJh+QBWSBobOAgG3oplQPJAvIAgI2+YAsIAsMnQUEbEM3pXogWUAWELDJB2QBWWDoLCBgG7op1QPJArLA/wBKE06f15+69wAAAABJRU5ErkJggg==">
+    <br>
+    
+      </div>
+    
+     
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js" integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+      <script src="/templates/qrcode.min.js"></script>
+
+      <script>
+        var package_trackingbarcode = $('#packagetrackingspan').text()
+        console.log("package_trackingbarcode", package_trackingbarcode)
+        $("#barcode").JsBarcode(package_trackingbarcode);
+    
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: "localhost:4000/" + package_trackingbarcode,
+        colorDark: "#000000",
+        colorLight: "#FFFFFF",
+        width: 100,
+        height: 100,
+        correctLevel: QRCode.CorrectLevel.H
+        });
+
+      </script>
+    
+    
+    
+    </div>
+</html>

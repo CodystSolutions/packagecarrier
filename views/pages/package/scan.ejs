@@ -1,0 +1,135 @@
+<%- include('../../partials/head'); %>
+
+      <!-- Page Content  -->
+   <div id="content-page" class="content-page">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-sm-12">
+                <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                       <div class="iq-header-title">
+                          <h4 class="card-title">Scan Packages</h4>
+                       </div>
+                    </div>
+                    <div class="iq-card-body">
+                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vulputate, ex ac venenatis mollis, diam nibh finibus leo</p>
+                       <form id="scanpackageform">
+                          <div class="form-row">
+                             <div class="col-4">
+                                
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Scan/Enter Tracking Number</label>
+                                    <input type="text" name="tracking_number" id="tracking_number" class="form-control" placeholder="Scan Tracking Number">
+                                </div>
+                             </div>
+                             <div class="col-8">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Batch</label>
+                                            <select class="form-control" id="batch_id" name="batch_id">
+                                                <% for(var  i = 0; i < batches.length ; i++ ) { %>
+                                                    <option value="<%= batches[i].id %>"><%= batches[i].name %></option>
+          
+                                                 <% }%>
+                                               
+                                            </select>
+                                         </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Current Location</label>
+                                            <select class="form-control" id="current_location" name="current_location">
+                                                <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                                                    <option><%= branches[i].name %></option>
+          
+                                                 <% }%>
+                                            </select>
+                                         </div>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Status</label>
+                                            <select class="form-control" id="status" name="status" >
+                                               <option>loaded in truck</option>
+                                               <option>in transit</option>
+                                               <option>received at destination</option>
+                                               <option>ready for pickup</option>
+
+                                            </select>
+                                         </div>
+                                    </div>
+
+                                    <div class="col-1">
+                                        <button type="submit" class="btn btn-primary" style="margin-top: 35px;">Scan</button>
+                                    </div>
+
+                                </div>
+                             </div>
+                          </div>
+                       </form>
+
+                       <br/>
+                       <br/>
+                       <div>
+                            <p style="text-align: right;">Count: <span id="count"> </span></p>
+                       </div>
+                       <div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Tracking Number</th>
+                                    <th scope="col">Sender Name</th>
+                                    <th scope="col">Receiver Name</th>
+                                    <th scope="col">Destination</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Batch</th>
+
+                                </tr>
+                                </thead>
+                                <tbody id="scanlist">
+                                
+                                </tbody>
+                            </table>
+
+                       </div>
+
+                    </div>
+                 </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="scanresult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>Successfully scanned the following package:</p>
+            <p>Tracking Number: <span id="trackingresult"></span></p>
+            <p>Sender: <span id="senderresult"></span></p>
+            <p>Receiver: <span id="receiverresult"></span></p>
+            <p>Destination: <span id="destinationresult"></span></p>
+            <p>Batch: <span id="batchresult"></span></p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+   <%- include('../../partials/footer'); %>
+   <script src="/js/appscripts/package.js"></script>

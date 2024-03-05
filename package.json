@@ -23,7 +23,8 @@
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sanitize-html": "^2.11.0",
-    "sequelize": "^6.36.0"
+    "sequelize": "^6.36.0",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.2"

@@ -2,6 +2,14 @@ const express     = require('express');
 const models = require('../models/index');
 const util     = require('../utils');
 const registeredcodes  = require('../registererrorcodes');
+const statuses  = require('../statuses');
+const email = require('../middleware/email');
+const fs = require('fs');
+const mustache = require('mustache');
+var moment = require('moment');
+const { Op } = require("sequelize");
+
+
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -987,7 +995,7 @@ class DataService {
                 last_name: data.sender_last_name,
                 email: data.sender_email?.toLowerCase(),
                 contact: data.sender_contact,
-                address: data.address
+                address: data.sender_address
 
             }
 
@@ -1028,7 +1036,34 @@ class DataService {
                                     id: requestinfo.id ,
                                 }
                             })
-                            return  {success: true, dropoff: requestinfo, package: package_result.packagedetails, transaction: transactionresult.transaction,  status: registeredcodes.SUCCESS, message: "Successfully Added"};
+                            var resulttobesent=  {success: true, dropoff: requestinfo, package: package_result.packagedetails, transaction: transactionresult.transaction,  status: registeredcodes.SUCCESS, message: "Successfully Added"};
+                            var templatedata = {
+                                request_id: resulttobesent.dropoff.id,
+                                date: moment(resulttobesent.dropoff.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                                code: resulttobesent.dropoff.code,
+                                weight: resulttobesent.package.weight,
+                                category: resulttobesent.package.category,
+                                source: resulttobesent.package.source,
+                                destination: resulttobesent.package.destination,
+                                tracking_number: resulttobesent.package.tracking_number,
+                                rate: resulttobesent.transaction.total,
+                                subtotal: resulttobesent.transaction.total,
+                                total: resulttobesent.transaction.total,
+                                discount: 0.00,
+                                tax: 0.00,
+                                tendered: resulttobesent.transaction.tendered,
+                                change: resulttobesent.transaction.change,
+                          
+                              
+              
+                            }
+              
+                            var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+                            console.log("Email Sent ",emailsent)
+            
+
+                          
+                            return resulttobesent;
         
                         } else{
                             //delete package 
@@ -1050,7 +1085,33 @@ class DataService {
                         }
                      }
                      else{
-                        return  {success: true, dropoff: requestinfo, package: package_result.packagedetails,  status: registeredcodes.SUCCESS, message: "Successfully Added"};
+                        var resulttobesent =  {success: true, dropoff: requestinfo, package: package_result.packagedetails,  status: registeredcodes.SUCCESS, message: "Successfully Added"}
+                       
+                        try{
+                            var templatedata = {
+                                request_id: resulttobesent.dropoff.id,
+                                date: moment(resulttobesent.dropoff.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                                code: resulttobesent.dropoff.code,
+                                weight: resulttobesent.package.weight,
+                                category: resulttobesent.package.category,
+                                source: resulttobesent.package.source,
+                                destination: resulttobesent.package.destination,
+                                tracking_number: resulttobesent.package.tracking_number
+                                    
+                              
+              
+                            }
+                            var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+                            console.log("Email Sent ",emailsent)
+                        }catch(emailerror){
+                          console.log(emailerror)
+                          resulttobesent.message = "Email not sent but added successfully"
+                          resulttobesent.status = registeredcodes.EMAIL_SENDING_FAILURE
+                          
+                        }
+                 
+                        
+                        return resulttobesent;
 
                      }
 
@@ -1099,7 +1160,7 @@ class DataService {
         var response = {status: 404}
 
         try{
-            var dropoffresponse = await models.requests.findOne({where: {type: "dropoff", id: id}});
+            var dropoffresponse = await models.requests.findOne({where: {type: "dropoff", id: id, is_deleted: false}});
             if(dropoffresponse){
                 response.status = 200
                 response.dropoff = dropoffresponse
@@ -1116,16 +1177,28 @@ class DataService {
        
         try{
            
-            
-            let requestdata = data
-            delete requestdata.id
-             const result = await models.requests.update(requestdata, {
+           
+            var id = data.id
+            var sender_info = {
+                first_name: data.sender_first_name,
+                last_name: data.sender_last_name,
+                email: data.sender_email?.toLowerCase(),
+                contact: data.sender_contact,
+                address: data.sender_address
+
+            }
+            delete data.id
+            data.sender_info = sender_info
+            console.log("Updating the following: ", data)
+
+             const result = await models.requests.update(data, {
                  where: {
-                     id: data.id ,
+                     id: id ,
+                     is_deleted: false
                  }
              })
 
-             if(result.length > 0){
+             if(result[0] > 0){
                  return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated"};
              } 
           
@@ -1136,58 +1209,88 @@ class DataService {
         {
             console.log(ex)
         }
-        return {status: registeredcodes.FAILED_CREATION, message: "Failed to create dropoff"}
+        return {status: registeredcodes.FAILED_CREATION, message: "Failed to update dropoff"}
 
 
     
     } 
- 
-    async addTransaction(data,packages, sender_id){
-       
+
+    async deleteDropoff(id){
         try{
-        
-            var package_ids = []
-            // if(packages.length < 1) package_ids.push(packages.id.toString());
-            if(packages.length > 0 ) 
-            {
-               for (var i = 0; i< packages.length ; i++){
-                    package_ids.push(packages[i].id.toString());
-               }
+            console.log("deleting id", id)
+            //can only remove if the statuses are in pending transit
+            const result = await models.requests.update({is_deleted: true, status: statuses.dropoffstatuses.cancelled }, {
+                where: {
+                    id: id ,
+                    status: statuses.dropoffstatuses.pending
+                }
+            })
+                  
+            console.log("request delete resulet", result)
+            
+            if(result[0] > 0){
+                const packageresult = await models.packages.update({is_deleted: true, status: statuses.packagesstatuses.cancelled }, {
+                    where: {
+                        request_id: id ,
+                        status: statuses.packagesstatuses.pending
+                    }
+                })
+                if(packageresult[0] > 0 ){
+                    return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Deleted"};
+                } else{
+
+                    //undo deleting if the package did not delete
+                    const result = await models.requests.update({is_deleted: false, status: statuses.dropoffstatuses.pending }, {
+                        where: {
+                            id: id ,
+                            status: statuses.dropoffstatuses.pending
+                        }
+                    })
+                    return  {success: false, status: registeredcodes.FAILED_UPDATE, message: "No pending package found for drop off, cannot cancelled."};
+
+                }
+            }  else{
+                return  {success: false, status: registeredcodes.FAILED_UPDATE, message: "Drop off is not in pending status, cannot cancelled."};
+
             }
-            let requestdata = {
+             
+        } catch(error){
+            console.log("TRY CATCH ERROR,", error)
+        }
+       
+        return  {success: false, status: registeredcodes.FAILED_UPDATE, message: "Could not delete dropoff"};
+
+    }
+ 
+ 
+    async findDropoffDetails(dropoffid){
+        var response = {status: 500}
+        var dropoffresponse = await models.requests.findOne({where: {type: "dropoff", id: dropoffid , is_deleted: false}});
+        if(dropoffresponse){
+            //get dropoff request 
+            response.dropoff = dropoffresponse
+            //get packages 
+            response.packages =[]
+            var packagesresponse = await models.packages.findAll({where: { request_id: dropoffresponse.id}});
+            if(packagesresponse){
+                response.packages = packagesresponse
+
+            }
+
+            var transactionresponse = await models.transactions.findOne({where: { id: dropoffresponse.transaction_id}});
+            if(transactionresponse){
+                response.transaction = transactionresponse
                 
-                user_id: sender_id,
-                paymentmethod: data.paymentmethod,
-                reference: data.reference,
-                cclast4: data.cclast4,
-                cctype: data.cctype,
-                tendered: data.tendered,
-                change:data.change,
-                total: data.total,
-                package_ids: package_ids,
-                status: "approved",
-                details: data.transaction_details,
-                notes:  data.transaction_notes,
-                 is_deleted: false
-            };
-          
-            var transaction = await models.transactions.create(requestdata);
-            if(transaction){
-                return  {success: true, transaction, status: registeredcodes.SUCCESS, message: "Successfully Added"};
-            } 
-            console.log(`transaction Request Creation error: transaction could not be created for ${package_id}`);
+            }
+            response.status = 200
 
+        } else{
+            response.status = registeredcodes.ITEM_NOT_FOUND
+            response.message = "Dropoff not found"
         }
-        catch (ex) 
-        {
-            console.log(ex)
-        }
-        return {status: registeredcodes.FAILED_CREATION, message: "Failed to create transaction"}
-
-
-    
-    }  
-
+        console.log("response", response)
+        return response;
+    }
     async getReceiptInfo(dropoffid){
         var response = {status: 500}
         var dropoffresponse = await models.requests.findOne({where: {type: "dropoff", id: dropoffid}});
@@ -1211,6 +1314,92 @@ class DataService {
 
         }
 
+        return response;
+    }
+    async emailReceiptInfo(dropoffid){
+        var response = {status: 500}
+        var dropoffresponse = await models.requests.findOne({where: {type: "dropoff", id: dropoffid}});
+        if(dropoffresponse){
+            //get dropoff request 
+            response.dropoff = dropoffresponse
+            //get packages 
+            response.packages =[]
+            var packagesresponse = await models.packages.findAll({where: { request_id: dropoffresponse.id}});
+            if(packagesresponse){
+                response.packages = packagesresponse
+
+            }
+
+            var transactionresponse = await models.transactions.findOne({where: { id: dropoffresponse.transaction_id}});
+            if(transactionresponse){
+                response.transaction = transactionresponse
+                
+            }
+         
+
+        }
+
+        try{
+            if(response.dropoff.method =="prepaid"){
+                var templatedata = {
+                  request_id: response.dropoff.id,
+                  date: moment(response.dropoff.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                  code: response.dropoff.code,
+                  weight: response.packages[0].weight,
+                  category: response.packages[0].category,
+                  source: response.packages[0].source,
+                  destination: response.packages[0].destination,
+                  tracking_number: response.packages[0].tracking_number,
+                  rate: response.transaction.total,
+                  subtotal: response.transaction.total,
+                  total: response.transaction.total,
+                  discount: 0.00,
+                  tax: 0.00,
+                  tendered: response.transaction.tendered,
+                  change: response.transaction.change,
+            
+                
+    
+              }
+              const template =  fs.readFileSync('./public/templates/receipt.html', 'utf-8');
+    
+              var html = mustache.render(template, templatedata)
+    
+              var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+              console.log("Email Sent ",emailsent)
+    
+              response.status = 200
+    
+          } else{
+                var templatedata = {
+                  request_id: response.dropoff.id,
+                  date: moment(response.dropoff.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                  code: response.dropoff.code,
+                  weight: response.packages[0].weight,
+                  category: response.packages[0].category,
+                  source: response.packages[0].source,
+                  destination: response.packages[0].destination,
+                  tracking_number: response.packages[0].tracking_number,
+            
+                
+    
+              }
+              const template = fs.readFileSync('./public/templates/postpaidreceipt.html', 'utf-8');
+    
+              var html = mustache.render(template, templatedata)
+              var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+              console.log("Email Sent ",emailsent)
+              response.status = 200;
+          }
+
+        }catch(emailerror){
+            console.log(emailerror)
+            response.status=500
+            response.message ="Internal failure with sending emails"
+        }
+      
+      
+    
         return response;
     }
     async getLabelInfo(dropoffid){
@@ -1315,7 +1504,32 @@ class DataService {
 
     
     }   
-    
+    async findPackage(id) {
+        var response = {status: 404, package: null}
+
+        try{
+            var packageinfo = await models.packages.findOne({
+                where:   {is_deleted: false, id: parseInt(id)}, 
+                include: [
+                    { model: models.batches },
+                    { model: models.requests },
+                    { model: models.collection_requests },
+                    { model: models.transactions }
+
+                ]
+            });
+            if(packageinfo) {
+                response.status = 200
+                response.package = packageinfo;
+            }
+            return response;
+        
+        } catch(error){
+            console.log("findpackage -", error)
+        }
+        return  response;
+      
+    }
     async findAllPackages() {
         var response = {status: 404, branches: []}
 
@@ -1380,6 +1594,60 @@ class DataService {
     
     } 
 
+    async updatePackage(data){
+       
+        try{
+           
+           
+            var id = data.id
+            
+            delete data.id
+
+             const result = await models.packages.update(data, {
+                 where: {
+                     id: id ,
+                     is_deleted: false
+                 }
+             })
+
+             if(result[0] > 0){
+                 return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated"};
+             } 
+          
+            console.log(`Packages Requests Creation error: packages could not be created for ${data.name}`);
+
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_CREATION, message: "Failed to update packages"}
+
+
+    
+    } 
+
+    async deletePackage(id){
+        try{
+           
+                const packageresult = await models.packages.update({is_deleted: true, status: statuses.packagesstatuses.cancelled }, {
+                    where: {
+                        id: id ,
+                        status: statuses.packagesstatuses.pending
+                    }
+                })
+                if(packageresult[0] > 0 ){
+                    return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Deleted"};
+                } 
+           
+             
+        } catch(error){
+            console.log("TRY CATCH ERROR,", error)
+        }
+       
+        return  {success: false, status: registeredcodes.FAILED_UPDATE, message: "Could not delete dropoff"};
+
+    }
 
     async findAllPickupRequests() {
         var response = {status: 404, pickups: []}
@@ -1400,18 +1668,24 @@ class DataService {
       
     }
     async findPickup(id) {
-        var response = {status: 404}
+        var response = {status: 404, collection_request: null}
 
         try{
-            var pickupresponse = await models.requests.findOne({where: {status: "picked up", id: id}});
-            if(pickupresponse){
+            var collection_request = await models.collection_requests.findOne({
+                where:   {is_deleted: false, id: parseInt(id)}, 
+                include: [
+                    { model: models.transactions }
+
+                ]
+            });
+            if(collection_request) {
                 response.status = 200
-                response.pickup = pickupresponse
+                response.collection_request = collection_request;
             }
             return response;
         
         } catch(error){
-            console.log("findAllpickup error-", error)
+            console.log("findpackage -", error)
         }
         return  response;
       
@@ -1422,14 +1696,14 @@ class DataService {
            
             
             let requestdata = data
-            delete requestdata.id
-             const result = await models.requests.update(requestdata, {
+            console.log("pickup ", data)
+             const result = await models.collection_requests.update(requestdata, {
                  where: {
                      id: data.id ,
                  }
              })
 
-             if(result.length > 0){
+             if(result[0] > 0){
                  return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated"};
              } 
           
@@ -1445,6 +1719,26 @@ class DataService {
 
     
     } 
+    async deletePickup(id){
+        try{
+           
+                const requestsresult = await models.collection_requests.update({is_deleted: true, status: statuses.collectionsstatuses.cancelled }, {
+                    where: {
+                        id: id ,
+                    }
+                })
+                if(requestsresult[0] > 0 ){
+                    return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Deleted"};
+                } 
+           
+             
+        } catch(error){
+            console.log("delete pickup try catch ,", error)
+        }
+       
+        return  {success: false, status: registeredcodes.FAILED_UPDATE, message: "Could not delete dropoff"};
+
+    }
   
     
   async addPickupCheckout(data){
@@ -1532,7 +1826,8 @@ class DataService {
         
             //get all the packages that were post paid
             var postpaidpackages =  await models.packages.findAll({where: {tracking_number: data.tracking_nums.split(","), method: "pay on collect"}})
-            
+            var postpaidpackagestrackings =  await models.packages.findAll({where: {tracking_number: data.tracking_nums.split(","), method: "pay on collect"}})
+
             if(postpaidpackages && postpaidpackages.length > 0 && data.total != 0) {
                 var userid =  (userexist) ? userexist.id : null;
                 if(data.total > 0){
@@ -1641,6 +1936,91 @@ class DataService {
 
         return response;
     }
+    async emailPickupReceiptInfo(collection_id){
+        var response = {status: 500}
+        var pickupresponse = await models.collection_requests.findOne({where: { id: collection_id}});
+        if(pickupresponse){
+            //get pickup collection request 
+            response.collection = pickupresponse
+            //get packages 
+            response.packages =[]
+            var packagesresponse = await models.packages.findAll({where: { collection_id: pickupresponse.id}});
+            if(packagesresponse){
+                response.packages = packagesresponse
+
+            }
+
+            var transactionresponse = await models.transactions.findOne({where: { id: pickupresponse.transaction_id}});
+            if(transactionresponse){
+                response.transaction = transactionresponse
+                
+            }
+            response.status = 200
+
+        }
+
+
+        try{
+          
+            if(!response.transaction){
+                var templatedata = {
+                  request_id: response.collection.id,
+                  date: moment(response.collection.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                  code: response.collection.code,
+                  packages: response.packages,
+                  
+                
+            
+                
+
+              }
+              const template =  fs.readFileSync('./public/templates/prepaidpickupcheckoutreceipt.html', 'utf-8');
+
+            
+
+              var html = mustache.render(template, templatedata)
+
+              var emailsent = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', "jtanjels@gmail.com", templatedata )
+              console.log("Email Sent ",emailsent)
+    
+              response.status = 200
+              
+          } else{
+                var templatedata = {
+                  request_id: response.collection.id,
+                  date: moment(response.collection.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                  code: response.collection.code,
+                  packages: response.packages,
+                  rate: response.transaction.total,
+                  subtotal: response.transaction.total,
+                  total: response.transaction.total,
+                  discount: 0.00,
+                  tax: 0.00,
+                  tendered: response.transaction.tendered,
+                  change: response.transaction.change,
+                
+
+              }
+              const template = fs.readFileSync('./public/templates/pickupcheckoutreceipt.html', 'utf-8');
+
+              var html = mustache.render(template, templatedata)
+
+              var emailsent = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', "jtanjels@gmail.com", templatedata )
+              console.log("Email Sent ",emailsent)
+    
+              response.status = 200
+          }
+          
+
+        }catch(emailerror){
+            console.log(emailerror)
+            response.status=500
+            response.message ="Internal failure with sending emails"
+        }
+    
+
+        return response;
+    }
     async scanPickupPackage(data){
        
         try{
@@ -1668,6 +2048,467 @@ class DataService {
 
     
     } 
+    async findAllTransactions() {
+        var response = {status: 404, transactions: []}
+
+        try{
+            var transactions = await models.transactions.findAll({where: {is_deleted: false}});
+            if(transactions) {
+                response.status = 200
+                response.transactions = transactions;
+            }
+            return response;
+        
+        } catch(error){
+            console.log("findAlltransactionsserror-", error)
+        }
+        return  response;
+      
+    }
+    async findTransaction(id) {
+        var response = {status: 404, transaction: null}
+
+        try{
+            var transaction = await models.transactions.findOne({
+                where:   {is_deleted: false, id: parseInt(id)}, 
+              
+            });
+            console.log("transaction",transaction)
+            if(transaction) {
+                response.status = 200
+                response.transaction = transaction;
+            }
+            return response;
+        
+        } catch(error){
+            console.log("find transaction -", error)
+        }
+        return  response;
+      
+    }
+    async addTransaction(data,packages, sender_id){
+       
+        try{
+        
+
+            var package_ids = []
+            var tracking_nums = []
+            // if(packages.length < 1) package_ids.push(packages.id.toString());
+            if(packages.length > 0 ) 
+            {
+               for (var i = 0; i< packages.length ; i++){
+                    package_ids.push(packages[i].id.toString());
+                    tracking_nums.push(packages[i].tracking_number.toString());
+               }
+            }
+
+             //get last package entered 
+            var latesttransactionrecord = await models.transactions.findOne({limit: 1,order: [ [ 'id', 'DESC' ]]});
+            var latesttransactionnumber = 1;
+
+            if(latesttransactionrecord){
+                if(latesttransactionrecord.transaction_number != null)
+                    latesttransactionnumber = parseInt(latesttransactionrecord.transaction_number) + 1
+            }
+            //creating transaction
+            let requestdata = {
+                
+                user_id: sender_id,
+                paymentmethod: data.paymentmethod,
+                reference: data.reference,
+                cclast4: data.cclast4,
+                cctype: data.cctype,
+                tendered: data.tendered,
+                change:data.change,
+                total: data.total,
+                package_ids: package_ids,
+                status: "approved",
+                details: data.transaction_details,
+                notes:  data.transaction_notes,
+                is_deleted: false,
+                order_number: "S-O-"+util.makeid(8),
+                type: "general",
+                is_successful: true,
+                method: data.method, 
+                package_tracking_numbers: tracking_nums,
+                modified_by: data.modified_by,
+                receipt_number: latesttransactionnumber
+
+            };
+          
+            console.log("Creating transaction with this", requestdata)
+            var transaction = await models.transactions.create(requestdata);
+            if(transaction){
+                return  {success: true, transaction, status: registeredcodes.SUCCESS, message: "Successfully Added"};
+            } 
+            console.log(`transaction Request Creation error: transaction could not be created for ${package_id}`);
+
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_CREATION, message: "Failed to create transaction"}
+
+
+    
+    }  
+
+    async updateTransaction(data){
+       
+        try{
+           
+            
+            let requestdata = data
+             const result = await models.transactions.update(requestdata, {
+                 where: {
+                     id: data.id ,
+                 }
+             })
+
+             if(result[0] > 0){
+                 var transactionresponse = await models.transactions.findOne({where: {id: data.id}});
+                 if(transactionresponse && transactionresponse.status == "cancelled"){
+                    //update collection_request to deleted 
+                    var collectionresult = await models.collection_requests.update({is_deleted: true}, {
+                        where: {
+                            id: transactionresponse.collection_id ,
+                        }
+                    })
+                    //update all packages back to ready
+                    var packagesresult = await models.packages.update({status: statuses.packagesstatuses.readyforpickup}, {
+                        where: {
+                            id: transactionresponse.package_ids ,
+                        }
+                    })
+                    
+                    //TODO: update requests after canceling transaction 
+
+
+                    
+                 }
+                 return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated"};
+             } 
+          
+            console.log(`Transaction Requests update error: transaction could not be created for ${data.order_number}`);
+
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_CREATION, message: "Failed to update transaction"}
+
+
+    
+    } 
+    async getBilling(tracking_numbers,) {
+        var response = {status: 404, weights: []}
+        var subtotal = 0;
+        var total = 0;
+        var billinginfo = []
+        try{
+            //get weight of each package
+            tracking_numbers = tracking_numbers.split(',');
+            for (var i = 0; i < tracking_numbers.length; i++){
+                var packagedetails = await models.packages.findOne({where: {tracking_number: tracking_numbers[i], is_deleted: false}})
+                if(packagedetails) {
+
+
+                        var weight = Math.ceil(packagedetails.weight) 
+
+                        var rate = await models.rates.findOne({where: {weight: weight}});
+                        if(rate) {
+                            billinginfo.push({
+                                package_total: rate.rate,
+                                weight: weight
+                            })
+                             subtotal += (rate.rate)
+                             total = subtotal;
+                        } 
+                        if(!rate){
+                            //calculate rate using increment and base rate
+                            var baserate = await models.charges.findOne({where:{ name: "baserate"}});
+                            var incrementrate = await models.charges.findOne({where:{ name: "incrementrate"}})
+                            if(baserate &&incrementrate){
+                                var freightcost = baserate.amount + (weight * incrementrate.amount) 
+                                if(freightcost) {
+                                
+                                    billinginfo.push({
+                                        package_total: freightcost,
+                                        weight: weight
+                                    })
+                                    subtotal += freightcost
+                                    total = subtotal;
+            
+                                }
+                                console.log("rate not found total", response.total)
+            
+                            }
+                        
+                        
+                        }
+                    
+                  
+                }
+            
+            }
+            response.charges = 0
+            response.subtotal = subtotal
+            response.total = total
+            response.status = 200
+            response.billinginfo = billinginfo;
+            return response;
+        
+        } catch(error){
+            console.log("findRate error-", error)
+        }
+        return  response;
+      
+    }
+    async getBillingByID(package_ids) {
+        var response = {status: 404, weights: []}
+        var subtotal = 0;
+        var total = 0;
+        var billinginfo = []
+        try{
+            //get weight of each package
+            for (var i = 0; i < package_ids.length; i++){
+                var packagedetails = await models.packages.findOne({where: {id: package_ids[i], is_deleted: false}})
+                if(packagedetails) {
+
+
+                        var weight = Math.ceil(packagedetails.weight) 
+
+                        var rate = await models.rates.findOne({where: {weight: weight}});
+                        if(rate) {
+                            billinginfo.push({
+                                total: rate.rate,
+                                weight: weight,
+                                 package: packagedetails
+                            })
+                             subtotal += (rate.rate)
+                             total = subtotal;
+                        } 
+                        if(!rate){
+                            //calculate rate using increment and base rate
+                            var baserate = await models.charges.findOne({where:{ name: "baserate"}});
+                            var incrementrate = await models.charges.findOne({where:{ name: "incrementrate"}})
+                            if(baserate &&incrementrate){
+                                var freightcost = baserate.amount + (weight * incrementrate.amount) 
+                                if(freightcost) {
+                                
+                                    billinginfo.push({
+                                        total: freightcost,
+                                        weight: weight, 
+                                         package: packagedetails
+                                    })
+                                    subtotal += freightcost
+                                    total = subtotal;
+            
+                                }
+                                console.log("rate not found total", response.total)
+            
+                            }
+                        
+                        
+                        }
+                    
+                  
+                }
+            
+            }
+            response.charges = 0
+            response.subtotal = subtotal
+            response.total = total
+            response.status = 200
+            response.billinginfo = billinginfo;
+            return response;
+        
+        } catch(error){
+            console.log("package ids billing  error-", error)
+        }
+        return  response;
+      
+    }
+
+
+    async sendemail (templatename, subject, receiver_email,variables){
+        //send activation email
+       /// var template = fs.readFileSync(`../public/templates/${templatename}`, 'utf-8'); 
+       const template =  fs.readFileSync(`./public/templates/${templatename}`, 'utf-8');
+
+        var output = (template != null) ? mustache.render(template, variables) : "Unable to render template";
+    
+        var mail = {
+            html: output,
+            message: {
+                //to: receiver_email,
+                to: "jtanjels@gmail.com",
+                subject: subject, 
+                bcc: process.env.COURIER_EMAIL_CC,
+                html: output
+            },
+        }
+        //send email
+        console.log("SENDING EMAIL")
+        var emailsent = await email(mail)
+        if (!emailsent) return false;
+        return true;
+    }
+ 
+    async getDropOffDataAnalytics(rangetype,  rangenumber = 0 , startofrangetype = 'year', startrangenumber, method='all'){
+        
+        try{
+            
+            var whereclause = {
+                type: "dropoff",
+                created_on: {
+                    [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
+                    [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
+    
+                }
+            }
+
+            if(method == 'prepaid' || method == 'pay on collect' ) whereclause.method = method
+            const transactions_list  = await models.requests.findAll({ 
+                where: whereclause,
+                group: [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on'))],
+    
+                attributes: [
+                   [models.sequelize.literal("COUNT(DISTINCT(id))"), "count"],
+                    [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on')), 'createdOn'],
+                  
+               
+                ],
+             
+                raw: true
+            })
+            return {status: registeredcodes.SUCCESS, message: "Successful", transactions_list}
+
+            
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_DELETE, message: "Failed to retrieving report"}
+
+    }
+    async getPickupDataAnalytics(rangetype,  rangenumber = 0 , startofrangetype = 'year', startrangenumber, method='all'){
+        
+        try{
+            
+            var whereclause = {
+                created_on: {
+                    [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
+                    [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
+    
+                }
+            }
+
+            if(method == 'prepaid' || method == 'pay on collect' ) whereclause.method = method
+            const transactions_list  = await models.collection_requests.findAll({ 
+                where: whereclause,
+                group: [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on'))],
+    
+                attributes: [
+                   [models.sequelize.literal("COUNT(DISTINCT(id))"), "count"],
+                    [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on')), 'createdOn'],
+                  
+               
+                ],
+             
+                raw: true
+            })
+            return {status: registeredcodes.SUCCESS, message: "Successful", transactions_list}
+
+            
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_DELETE, message: "Failed to retrieving report"}
+
+    }
+    
+    async getTransactionDataAnalytics(rangetype,  rangenumber = 0 , startofrangetype = 'year', startrangenumber, method='all'){
+        
+        try{
+            
+            var whereclause = {
+                created_on: {
+                    [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
+                    [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
+    
+                }
+            }
+
+            if(method == 'prepaid' || method == 'pay on collect' ) whereclause.method = method
+            const transactions_list  = await models.transactions.findAll({ 
+                where: whereclause,
+                group: [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on'))],
+    
+                attributes: [
+                   [models.sequelize.literal("COUNT(DISTINCT(id))"), "count"],
+                    [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on')), 'createdOn'],
+                  
+               
+                ],
+             
+                raw: true
+            })
+            return {status: registeredcodes.SUCCESS, message: "Successful", transactions_list}
+
+            
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_DELETE, message: "Failed to retrieving report"}
+
+    }
+    async getPaymentsDataAnalytics(rangetype,  rangenumber = 0 , startofrangetype = 'year', startrangenumber, method='all'){
+        
+        try{
+            
+            var whereclause = {
+                created_on: {
+                    [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
+                    [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
+    
+                }
+            }
+
+            if(method == 'prepaid' || method == 'pay on collect' ) whereclause.method = method
+            const transactions_list  = await models.transactions.findAll({ 
+                where: whereclause,
+                group: [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on'))],
+    
+                attributes: [
+                   [models.sequelize.literal("COUNT(DISTINCT(id))"), "count"],
+                    [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on')), 'createdOn'],
+                    [models.sequelize.fn('sum', models.sequelize.col('total')), 'total'],
+
+               
+                ],
+             
+                raw: true
+            })
+            return {status: registeredcodes.SUCCESS, message: "Successful", transactions_list}
+
+            
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_DELETE, message: "Failed to retrieving report"}
+
+    }
 }
+
 const dataService = new DataService();
 module.exports = dataService ;

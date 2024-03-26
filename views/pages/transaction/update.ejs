@@ -1,0 +1,113 @@
+
+<%- include('../../partials/head'); %>
+<div id="content-page" class="content-page">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
+                  <div class="iq-header-title">
+                     <h4 class="card-title">Transaction Update</h4>
+                  </div>
+                  <div class="user-list-files d-flex float-right">
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="/transaction/details/<%= transaction.id %>"><i class="ri-eye-line"></i></a>
+                   
+                    </div>
+               </div>
+               <div class="iq-card-body">
+                  <form id="updateform" class="pb-5">
+                    <div class="row">
+                        <input hidden name="user_id" value="<%= transaction.user_id%>"  />
+                        <input hidden name="id" id="transactionid" value="<%= transaction.id%>"  />
+        
+                        <div class="form-group col-6">
+                          <label for="exampleInputPassword1">Status</label>
+                          <select name="status" required class="form-control">
+                              <option value=""></option>
+        
+                              <option value="approved"  <%   if(transaction.status =='approved'){ %> selected="selected" <% } %> >Approved</option>
+                              <option value="rejected"  <%   if(transaction.status =='rejected'){ %> selected="selected" <% } %>>Rejected</option>
+                              <option value="declined"  <%   if(transaction.status =='declined'){ %> selected="selected" <% } %> >Declined</option>
+                              <option value="cancelled"  <%   if(transaction.status =='cancelled'){ %> selected="selected" <% } %>>Cancelled</option>
+                              <option value="reversed"  <%   if(transaction.status =='reversed'){ %> selected="selected" <% } %>>Reversed</option>
+                              <option value="refunded"  <%   if(transaction.status =='refunded'){ %> selected="selected" <% } %>>Refunded</option>
+        
+                          </select>
+                        </div>
+                          <div class="form-group col-6">
+                            <label for="exampleInputPassword1">Payment Method</label>
+                            <select name="payment_method" required class="form-control">
+                                <option value=""></option>
+        
+                                <option value="card"  <%   if(transaction.payment_method =='card'){ %> selected="selected" <% } %> >Card</option>
+                                <option value="online"  <%   if(transaction.payment_method =='online'){ %> selected="selected" <% } %>>Online</option>
+                                <option value="cash"  <%   if(transaction.payment_method =='cash'){ %> selected="selected" <% } %> >Cash</option>
+                                <option value="banktransfer"  <%   if(transaction.payment_method =='banktransfer'){ %> selected="selected" <% } %>>Bank Transfer</option>
+                                <option value="directdeposit"  <%   if(transaction.payment_method =='directdeposit'){ %> selected="selected" <% } %>>Direct Deposit</option>
+                                <option value="other"  <%   if(transaction.payment_method =='other'){ %> selected="selected" <% } %>>Other</option>
+        
+                            </select>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="exampleInputEmail1">Total</label>
+                            <input type="number" step="0.01" class="form-control" value="<%= transaction.total%>" id="total" name="total" readonly required>
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="exampleInputEmail1">Tendered (Received)</label>
+                            <input type="number" step="0.01" onblur="calculatechange()" class="form-control" id="tendered" value="<%= transaction.tendered%>" name="tendered" required >
+                          </div>
+                          <div class="form-group col-6">
+                            <label for="exampleInputEmail1">Change</label>
+                            <input type="number" step="0.01" class="form-control" value="<%= transaction.change %>" id="change" value="0" name="change" readonly required>
+                            <!-- <small>Negative numbers mean your customer owes some more on the package</small> -->
+                          </div>
+                          <div class="form-group col-6">
+        
+                            <label for="exampleInputEmail1">Reference ID/ Number</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" value="<%= transaction.reference%>" name="reference" required>
+                          </div>
+                          
+                          <div class="form-group col-6">
+        
+                            <label for="exampleInputEmail1">Method</label>
+                            <select name="method" required class="form-control">
+        
+                                <option value="pay on collect"  <%   if(transaction.method =='pay on collect'){ %> selected="selected" <% } %>>Pay on Collect</option>
+                                 <option value="prepaid"  <%   if(transaction.method =='prepaid'){ %> selected="selected" <% } %>>Prepaid</option>
+        
+                            </select>
+                          </div>
+                          <div class="form-group col-6">
+        
+                            <label for="exampleInputEmail1">CC Last 4</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" name="cclast4" value="<%= transaction.cclast4%>"  >
+                          </div>
+                          <div class="form-group col-6">
+        
+                            <label for="exampleInputEmail1">CC Type</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" name="cctype" value="<%= transaction.cctype%>"  >
+                          </div>
+                         
+                          <div class="form-group col-12">
+                            <label for="exampleInputEmail1">Notes</label>
+                            <textarea class="form-control" name="note"  ><%= transaction.note%></textarea>
+                          </div>
+        
+                        
+        
+                          <input type="checkbox" class="ml-4" id="send_receipt" name="send_receipt" value="yes">
+                          <label for="send_receipt"> Send Updated Receipt</label>
+                          </div>
+                          <button type="submit" class="btn btn-primary float-right mr-1 mb-3">Submit</button>
+        
+                      
+
+                   
+                    </form>
+               </div>
+            </div>
+         </div>  
+      </div>  
+   </div>
+ <%- include('../../partials/footer'); %>
+ <script src="/js/appscripts/transaction.js"></script>

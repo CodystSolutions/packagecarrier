@@ -1,0 +1,219 @@
+
+<%- include('../../partials/head'); %>
+<style>
+   .section-div{
+      border-bottom: solid thin lightgrey;
+      margin-bottom: 10px;
+   }
+   
+</style>
+<div id="content-page" class="content-page">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm-12">
+            
+            <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
+                  <div class="iq-header-title">
+                     <h4 class="card-title">Drop Off  Details</h4>
+                  </div>
+                  <div class="user-list-files d-flex float-right">
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/dropoff/update/<%= dropoff.id %>"><i class="ri-pencil-line"></i></a>
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" onclick="deletedropoff(`<%= dropoff.id %>`)"><i class="ri-delete-bin-line"></i></a>
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Receipt" onclick="generatereceipt(`<%= dropoff.id%>`)"><i class="ri-bill-line"></i></a>
+
+                   
+                    </div>
+               </div>
+               <div class="iq-card-body">
+                  
+                  <div class="px-4">
+                     <div class="row section-div">
+                        
+                           <div  class="col-md-12 p-0">
+                              <h5 class="mb-4"><i style="color: green"  class="fa fa-address-card"></i> General Information:</h5>
+
+                                 <div class="row">
+                                       <div class="col-md-6 field-div ">
+                                          <span><b>Code:</b></span><br/>
+                                          <p style="color: #f58739"><%= dropoff.code %></p>
+                                       </div>
+                                       <div class="col-md-6 field-div">
+                                          <span><b>Status:</b></span> <br/>
+                                          <p><%= dropoff.status  %></p>
+                                       </div>
+                                 </div>
+                              
+                                 <div class="row">
+                                    <div class="col-md-6 field-div">
+                                       <span><b>Request Type:</b></span>  <br/>
+                                       <p><%= dropoff.request_type ?? 'Not Specified' %></p>
+                                    </div>
+                                    <div class="col-md-6 field-div">
+                                       <span><b>Type:</b></span> <br/>
+                                       <p><%= dropoff.type %></p>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-md-6 field-div">
+                                       <span><b>Created On:</b></span> <br/>
+                                       <p><%= dropoff.created_on %></p>
+                                    </div>
+                                    <div class="col-md-6 field-div">
+                                       <span><b>Modified On:</b></span>  <br/>
+                                       <p><%= dropoff.modified_on %></p>
+                                    </div>
+                                 </div>
+                           </div>                        
+                     </div>
+                     <div class="row section-div" >
+                           <div class="col-md-12 p-0">
+                              <h5 class="mb-4"> <i style="color: green" class="fa fa-user-circle" aria-hidden="true"></i> Sender Information:</h5>
+                           
+                              <div class="row">
+                                 <div class=" col-md-6 field-div">
+                                    <span><b>First Name </b></span> <br/>
+                                    <p><%= dropoff.sender_first_name ?? 'Not Specified' %></p>
+                                 </div>
+                                 
+                                 <div class=" col-md-6 field-div">
+                                    <span><b>Last Name </b></span> <br/>
+                                    <p><%= dropoff.sender_last_name ?? 'Not Specified' %></p>
+                                 </div>
+                                 <div class="col-md-6 field-div ">
+                                    <span><b>Email </b></span> <br/>
+                                    <p><%= dropoff.sender_email ?? 'Not Specified'  %></p>
+                                 </div>
+                                 
+                           
+                                 <div class="col-md-6 field-div ">
+                                    <span><b>Contact Number </b></span> <br/>
+                                    <p><%= dropoff.sender_contact ?? 'Not Specified' %></p>
+                                 </div>
+                                 <div class="col-md-12 mb-3 ">
+                                    <span><b>Address </b></span> <br/>
+                                    <p><%= dropoff.sender_address ?? 'Not Specified' %></p>
+                                 </div>
+                                 <div class="col-md-12 mb-3 ">
+                                    <span><b>Source Branch </b></span> <br/>
+                                    <p><%= dropoff.source ?? 'Not Specified' %></p>
+                                 </div> 
+                                 
+                              </div>
+                           </div>
+                     </div>
+                     <div class="row section-div">
+                           <div class="col-md-12 p-0">
+                              <h5 class="mb-4"> <i style="color: green"  class="fa fa-archive"></i> Package Details:</h5>
+                              <div class="row">
+                                 <div class="col-md-6 field-div ">
+                                    <span><b>Tracking Number </b></span> <br/>
+                                    <p><%= packages[0].tracking_number ?? 'Not Specified'%> lbs</p>
+                                 </div>
+                                 <div class="col-md-6 field-div ">
+                                    <div class="">
+                                       <span><b>Code </b></span> <br/>
+                                       <p><%= packages[0].code ?? 'Not Specified'%></p>
+                                    </div>
+                                 </div>
+                                 
+                                 <div class="col-md-6 field-div ">
+                                    <span><b>Weight </b></span> <br/>
+                                    <p><%= packages[0].weight ?? 'Not Specified'%> lbs</p>
+                                 </div>
+                                 <div class="col-md-6 field-div ">
+                                    <div class="">
+                                       <span><b>Description </b></span> <br/>
+                                       <p><%= packages[0].description ?? 'Not Specified'%></p>
+                                    </div>
+                                 </div>
+                                 
+                                 <div class="col-md-6 field-div">
+                                    <div class="">
+                                       <span><b>Status </b></span> <br/>
+                                       <p><%= packages[0].status ?? 'Not Specified'%></p>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-6 field-div">
+                                    <div class="">
+                                       <span><b>Batch </b></span> <br/>
+                                       <p><%= packages[0].batch?.name ?? 'Not Specified'%></p>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-12">
+                                    <div class="">
+                                       <span><b>Package </b></span> <br/>
+                                       <p><a href="/package/details/<%= packages[0].id %>"> View Package Details </a></p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <br/>
+                              <h5 class="mb-4"> <i style="color: green"  class="fa fa-user-circle" aria-hidden="true"></i> Receiver Information:</h5>
+                              <div class="row">
+                                 <div class=" col-md-6 field-div">
+                                    <span><b>First Name </b></span> <br/>
+                                    <p><%= packages[0].receiver_first_name ?? 'Not Specified' %></p>
+                                 </div>
+                                 <div class=" col-md-6 field-div">
+                                    <span><b>Last Name </b></span> <br/>
+                                    <p><%= packages[0].receiver_last_name %></p>
+                                 </div>   
+                                 <div class="col-md-6 field-div ">
+                                    <span><b>Email </b></span> <br/>
+                                    <p><%= packages[0].receiver_email  ?? 'Not Specified'%></p>
+                                 </div>
+                                 <div class="col-md-6 field-div ">
+                                    <span><b>Contact Number </b></span> <br/>
+                                    <p><%= packages[0].receiver_contact ?? 'Not Specified' %></p>
+                                 </div>
+                                           
+                                
+                                 <div class="col-md-12 mb-3 ">
+                                    <span><b>Address </b></span> <br/>
+                                    <p><%= packages[0].receiver_address ?? 'Not Specified' %></p>
+                                 </div>
+                               
+                                 <div class="col-md-12 mb-3 ">
+                                    <span><b>Destination Branch </b></span> <br/>
+                                    <p><%= packages[0].destination ?? 'Not Specified' %></p>
+                                 </div>
+                              </div>
+                           </div>
+                     </div>
+                     <div class="row ">
+                           <div class="col-md-12 p-0">
+                              <h5 class="mb-4"><i style="color: green"  class="fa fa-credit-card-alt"></i> Payment</h5>
+                              <div class="row">
+                              
+                                    <div class="col-md-6 field-div ">
+                                       <span><b>Method </b></span> <br/>
+                                       <p><%= packages[0].method %></p>
+                                      
+                                    </div>
+                                 
+                                    <div class="col-md-6 field-div ">
+                                       <span><b>Total </b></span> <br/>
+                                       <p><%= transaction?.total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })   ?? 0%></p>
+                                      
+                                    </div>
+                                    <div class=" paymentinfo col-md-12 ">
+                                       <span><b>Transaction </b></span> <br/>
+                                       <p><a href="/transaction/details/<%=  transaction?.id %>">View Transaction Details</a></p>
+                                    </div>
+                            
+                              </div>
+                           </div>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
+               
+          
+         </div>
+      </div>
+   </div>
+</div>
+
+ <%- include('../../partials/footer'); %>
+ <script src="/js/appscripts/dropoff.js"></script>

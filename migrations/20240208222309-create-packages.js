@@ -61,7 +61,7 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       transaction_id: {
-        type: Sequelize.STRING
+        type: Sequelize.BIGINT
       },
       created_on: {
         allowNull: false,

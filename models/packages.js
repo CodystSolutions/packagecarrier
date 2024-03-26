@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       packages.belongsTo(models.users, { foreignKey: "receiver_id"});
       packages.belongsTo(models.requests, { foreignKey: "request_id"});
       packages.belongsTo(models.batches, { foreignKey: "batch_id"});
+      packages.belongsTo(models.transactions, { foreignKey: "transaction_id"});
+      packages.belongsTo(models.collection_requests, { foreignKey: "collection_id"});
 
 
     }
@@ -46,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     details: DataTypes.JSONB,
     notes: DataTypes.TEXT,
     is_deleted: DataTypes.BOOLEAN,
-    transaction_id: DataTypes.STRING,
+    transaction_id: DataTypes.INTEGER,
     current_location: DataTypes.STRING,
     category: DataTypes.STRING, 
     actual_weight: DataTypes.DOUBLE,

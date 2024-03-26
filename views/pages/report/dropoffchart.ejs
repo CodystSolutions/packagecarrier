@@ -1,0 +1,78 @@
+<%- include('../../partials/head'); %>
+
+
+
+        <!-- Page Content  -->
+        <div id="content-page" class="content-page">
+        <div class="container-fluid">
+            <div class="row">
+               
+                <div class="col-sm-12 col-lg-12">
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Daily</h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <div id="dropoff-day-chart"></div>
+                        </div>
+                    </div>
+                   
+                   
+                   
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Monthly</h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <div id="dropoff-month-chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg-12">
+                   
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Weekly</h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <div id="dropoff-week-chart"></div>
+                        </div>
+                    </div>
+                   
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Yearly</h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <div id="dropoff-year-chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg-12">
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Drop Off Requests - Prepaid & Pay on collect </h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <div id="prepaidpostpaid-column"></div>
+                        </div>
+                   </div>
+                    
+                </div>
+            </div>
+        </div>
+        </div>
+   
+<%- include('../../partials/footer'); %>
+<script src="/js/reportscripts/chart-dropoff-sales.js"></script>
+

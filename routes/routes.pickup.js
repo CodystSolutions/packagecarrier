@@ -61,8 +61,9 @@ router.post('/checkout/scan', rbacMiddleware.checkPermission(), async(req, res)=
 router.post('/create', rbacMiddleware.checkPermission(), async(req, res)=> {
   try{
 
-      console.log("req.bodu", req.body)
-      var response = await dataService.addPickupCheckout(req.body);
+      var data = req.body
+      data.modified_by = req.session.user.first_name + " " + req.session.user.last_name
+      var response = await dataService.addPickupCheckout(data);
       if(response.status == 200) {
           console.log("dropooff successfully created")
           return res.send({status: 200, message: "Successfully created", details: response});
@@ -80,6 +81,20 @@ router.post('/create', rbacMiddleware.checkPermission(), async(req, res)=> {
   return res.send({status: 500, message: "Could not be created"});
 
 });
+
+
+router.get('/details/:id', rbacMiddleware.checkPermission(), async (req, res) => {
+    
+    var collection_request = null;
+    var pickupsresponse = await dataService.findPickup(req.params.id);
+    if(pickupsresponse.status == 200) {
+
+      
+        collection_request = pickupsresponse.collection_request}
+
+
+    return res.render('pages/pickup/details',{user: req.session.user, collection_request, moment})
+ })
 router.get('/get/package/total', rbacMiddleware.checkPermission(), async (req, res) => {
     var response = null
        
@@ -120,7 +135,12 @@ router.get('/get/package/total', rbacMiddleware.checkPermission(), async (req, r
                 }
                 const template =  fs.readFileSync('./public/templates/prepaidpickupcheckoutreceipt.html', 'utf-8');
   
+                //var emailsent = await dataService.sendemail('prepaidpickupcheckoutreceipt.html', 'Prepaid Receipt', "jtanjels@gmail.com", templatedata )
+               // console.log("Email Sent ",emailsent)
+
                 var html = mustache.render(template, templatedata)
+
+                
                 return res.send({status: 200, message: "successful", html: html, request_id: response.collection.id});
   
             } else{
@@ -161,5 +181,106 @@ router.get('/get/package/total', rbacMiddleware.checkPermission(), async (req, r
   
   });
 
+  router.post('/email/receipt/:id', rbacMiddleware.checkPermission(), async(req, res)=> {
+    try{
+  
+      console.log("generating email receipt")
+      
+        var response = await dataService.emailPickupReceiptInfo(req.params.id);
+        if(response.status == 200) {
+            // console.log("dropooff successfully created")
+             return res.send({status: 200, message: "Successfully created", details: response});
+  
+           
+  
+  
+        }else if(response ){
+            return res.send({status: response.status, message: response.message});
+        }
+        return res.send({status: 505, message: "Could not be created"});
+  
+    } catch(error){
+        console.log("receipt errors", error)
+  
+    }
+    return res.send({status: 500, message: "Could not be created"});
+  
+  });
 
+  router.get('/update/:id', rbacMiddleware.checkPermission(), async (req, res) => {
+    
+    var branches = []
+    try {
+      var branchresponse = await  dataService.findAllBranches();
+      if(branchresponse.status == 200){
+          branches = branchresponse.branches
+      }
+    
+      var pickupresponse = await  dataService.findPickup(req.params.id);
+      if(pickupresponse.status == 200){
+      
+         var collection_request = pickupresponse.collection_request
+
+        return res.render('pages/pickup/update',{user: req.session.user, branches,collection_request})
+
+      } else if(pickupresponse.status == 404){
+        return res.render('pages/404',{user: req.session.user, branches})
+
+      }
+      console.log("pickupresponse ", pickupresponse)
+
+
+    } catch(err){
+      console.log("error", err)
+    }
+    return res.render('pages/500',{user: req.session.user})
+
+  })
+
+
+  router.post('/update/:id', rbacMiddleware.checkPermission(), async(req, res)=> {
+    try{
+  
+        var data = req.body
+        var response = await dataService.updatePickup(data);
+        if(response.status == 200) {
+            console.log("package successfully updated")
+            return res.send({status: 200, message: "Successfully updated", details: response});
+  
+  
+        }else if(response ){
+          console.log("package not successfully updated")
+            return res.send({status: response.status, message: response.message});
+        }
+        return res.send({status: 505, message: "Could not be updated"});
+  
+    } catch(error){
+        console.log("login errors", error)
+  
+    }
+    return res.send({status: 500, message: "Could not be updated"});
+  
+  });
+  router.post('/delete/:id', rbacMiddleware.checkPermission(), async(req, res)=> {
+    try{
+        console.log("pickup delete, id ",req.params['id'] )
+        var response = await dataService.deletePickup(req.params['id']);
+        if(response.status == 200) {
+            console.log("pickup successfully deleted")
+            return res.send({status: 200, message: "Successfully deleted", details: response});
+  
+  
+        }else if(response ){
+          console.log("pickup not successfully deleted")
+            return res.send({status: response.status, message: response.message});
+        }
+        return res.send({status: 505, message: "Could not be deleted"});
+  
+    } catch(error){
+        console.log("login errors", error)
+  
+    }
+    return res.send({status: 500, message: "Could not be updated"});
+  
+  });
 module.exports = router ;

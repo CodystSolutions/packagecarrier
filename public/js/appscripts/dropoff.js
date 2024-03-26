@@ -114,6 +114,9 @@ $("#dropoffform").submit(function(e){
               // toastr.success('Successfully added')
               // setTimeout(function(){  window.location.reload();
               // }, 3000);
+              if(e.success==false){
+                toastr.error(e.message)
+              }
             } else{
               $('#submittingtext').text("Error Saving!")
               $('#successinfo').hide()
@@ -153,7 +156,11 @@ $( "#labelbtn" ).on( "click", function() {
   id=parseInt(id.trim())
   generatelabel(id)
 } );
-
+$( "#emailbtn" ).on( "click", function() {
+  var id = document.getElementById('dropoffid').innerText;
+  id=parseInt(id.trim())
+  emailreceipt(id)
+} );
 function generatereceipt(id){
   $.ajax({
       url: `/dropoff/view/receipt/${id}`,
@@ -401,3 +408,121 @@ $('input[name="method"]').on('change', function() {
   }
 });
 
+
+
+$("#updateform").submit(function(e){
+  e.preventDefault()
+  var dropoffid = document.getElementById("dropoffid").value;
+
+  $.ajax({
+      url: `/dropoff/update/${dropoffid}`,
+      data: $("#updateform").serialize(), 
+      type: "POST", 
+      dataType: 'json',
+      success: function (e) {
+          if(e.status == 200){
+            
+            console.log(JSON.stringify(e));
+            toastr.success('Successfully updated')
+            setTimeout(function(){  window.location.reload();
+            }, 3000);
+          } else{
+            
+            if(e.message != null && e.message != ""){
+
+              toastr.error(e.message)
+            }else{
+              toastr.error('Error, did not update')
+            }
+
+          }
+        
+
+      },
+      error:function(e){
+          alert("error")
+
+          console.log(JSON.stringify(e));
+
+
+      }
+  }); 
+  return false;
+});
+
+function deletedropoff(id){
+  var confirmed = confirm("Are you sure you want to delete this drop off request. By removing dropoff requests you are removing the packages belonging to this request!");
+  if(confirmed){
+    $.ajax({
+      url: `/dropoff/delete/${id}`,
+      type: "post", 
+      dataType: 'json',
+      success: function (e) {
+          if(e.status == 200){
+           
+               console.log(JSON.stringify(e));
+                toastr.success('Successfully deleted')
+                setTimeout(function(){  window.location = '/dropoff/view'
+                }, 3000);
+            
+          } else{
+            if(e.message != null && e.message != ""){
+              toastr.error(e.message)
+            }else{
+              toastr.error('Error, did not add')
+            }
+
+          }
+        
+
+      },
+      error:function(e){
+          alert("error")
+
+          console.log(JSON.stringify(e));
+
+
+      }
+  }); 
+  }
+
+}
+
+
+
+function emailreceipt(id){
+  if(id){
+    $.ajax({
+      url: `/dropoff/email/receipt/${id}`,
+      type: "post", 
+      dataType: 'json',
+      success: function (e) {
+          if(e.status == 200){
+           
+               console.log(JSON.stringify(e));
+                toastr.success('Successfully emailed')
+                setTimeout(function(){  window.location.reload()
+                }, 3000);
+            
+          } else{
+            if(e.message != null && e.message != ""){
+              toastr.error(e.message)
+            }else{
+              toastr.error('Error, did not add')
+            }
+
+          }
+        
+
+      },
+      error:function(e){
+          alert("error")
+
+          console.log(JSON.stringify(e));
+
+
+      }
+  }); 
+  }
+
+}

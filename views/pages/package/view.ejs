@@ -14,16 +14,8 @@
                      <div class="iq-card-body">
                         <div class="table-responsive">
                            <div class="row justify-content-between">
-                              <div class="col-sm-12 col-md-6">
-                                 <div id="user_list_datatable_info" class="dataTables_filter">
-                                    <form class="mr-3 position-relative">
-                                       <div class="form-group mb-0">
-                                          <input type="search" class="form-control" id="exampleInputSearch" placeholder="Search" aria-controls="user-list-table">
-                                       </div>
-                                    </form>
-                                 </div>
-                              </div>
-                              <div class="col-sm-12 col-md-6">
+                           
+                              <div class="col-sm-12 ">
                                  <div class="user-list-files d-flex float-right">
                                     <a href="/package/scan" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add" href="#"><i class="ri-user-add-line"></i> Scan Packages</a>
 
@@ -43,7 +35,6 @@
                                     <th>Source</th>
 
                                     <th>Destination</th>
-                                    <th>Current Location</th>
                                     <th>Batch</th>
 
                                     <th>Status</th>
@@ -61,18 +52,21 @@
                                      <td><%= packages[i].destination %></td>
                                      <td><%= packages[i].source %></td>
 
-                                     <td><%= packages[i].current_location %></td>
                                      <td><%= packages[i].batch?.name %></td>
 
                                      <td><%= packages[i].status %></td>
-                                     <td><%= moment(packages[i].created_on).format('MM/DD/YYYY')%></td>
+                                     <td><%= moment(packages[i].created_on).format('YYYY/MM/DD')%></td>
 
                                   
                                      
                                      <td>
                                         <div class="flex align-items-center list-user-action">
+                                          <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/package/details/<%= packages[i].id %>"><i class="ri-eye-line"></i></a>
+
                                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/package/update/<%= packages[i].id %>"><i class="ri-pencil-line"></i></a>
-                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="#"><i class="ri-delete-bin-line"></i></a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"  onclick="deletepackage(`<%= packages[i].id %>`)"><i class="ri-delete-bin-line"></i></a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Label" onclick="generatelabel(`<%= packages[i].request_id%>`)"><i class="ri-price-tag-3-line"></i></a>
+
                                         </div>
                                      </td>
                                   </tr>
@@ -112,3 +106,22 @@
    
    <%- include('../../partials/footer'); %>
    <script src="/js/appscripts/package.js"></script>
+   <script>
+      $('table').DataTable({
+       buttons: {
+           dom: {
+               button: {
+                   className: 'btn btn-outline-primary mr-2' //Primary class for all buttons
+               }
+           },
+          
+       },
+       rowReorder: {
+             selector: 'td:nth-child(2)'
+         },
+         order: [[7, 'desc']],
+         responsive: true,
+         "pagingType": "simple"
+ 
+     });
+    </script>

@@ -15,13 +15,7 @@
                         <div class="table-responsive">
                            <div class="row justify-content-between">
                               <div class="col-sm-12 col-md-6">
-                                 <div id="user_list_datatable_info" class="dataTables_filter">
-                                    <form class="mr-3 position-relative">
-                                       <div class="form-group mb-0">
-                                          <input type="search" class="form-control" id="exampleInputSearch" placeholder="Search" aria-controls="user-list-table">
-                                       </div>
-                                    </form>
-                                 </div>
+                                
                               </div>
                               <div class="col-sm-12 col-md-6">
                                  <div class="user-list-files d-flex float-right">
@@ -39,8 +33,10 @@
                                  <tr>
                                     <th>Name</th>
                                     <th>Code</th>
-                                    <th>Method</th>
+                                    <th>Packages</th>
 
+                                    <th>Method</th>
+                                    <th>Status</th>
                                     <th>Created</th>
                                     <th>Action </th>
                                    
@@ -51,17 +47,23 @@
                                  <tr>
                                      <td><%= pickups[i].collector_first_name %> <%= pickups[i].collector_last_name %></td>
                                      <td><%= pickups[i].code %></td>
+                                     <td><%= pickups[i].packages?.length %></td>
                                      <td><%= pickups[i].method %></td>
+                                     <td><%= pickups[i].status %></td>
 
-                                     <td><%= moment(pickups[i].created_on).format('MM/DD/YYYY')%></td>
+                                     <td><%= moment(pickups[i].created_on).format('YYYY/MM/DD')%></td>
 
                                   
                                      
                                      <td>
-                                              <div class="flex align-items-center list-user-action">
+
+                                       <div class="flex align-items-center list-user-action">
+                                          <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="/pickup/details/<%= pickups[i].id %>"><i class="ri-eye-line"></i></a>
+
                                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/pickup/update/<%= pickups[i].id %>"><i class="ri-pencil-line"></i></a>
-                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="#"><i class="ri-delete-bin-line"></i></a>
-                                           <a class="iq-bg-primary" style="width: 80px" data-toggle="tooltip" data-placement="top" title="" data-original-title="receipt" onclick="generatereceipt(`<%= pickups[i].id%>`)">Receipt</a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"  onclick="deletepickup(`<%= pickups[i].id %>`)"><i class="ri-delete-bin-line"></i></a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Receipt" onclick="generatereceipt(`<%= pickups[i].id%>`)"><i class="ri-price-tag-3-line"></i> </a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Email Receipt" onclick="emailreceipt( `<%= pickups[i].id%>`)"><i class="ri-mail-line"></i></a>
 
                                         </div>
                                      </td>
@@ -116,4 +118,24 @@
 </div>
    
    <%- include('../../partials/footer'); %>
+
    <script src="/js/appscripts/pickup.js"></script>
+   <script>
+      $('table').DataTable({
+       buttons: {
+           dom: {
+               button: {
+                   className: 'btn btn-outline-primary mr-2' //Primary class for all buttons
+               }
+           },
+          
+       },
+       rowReorder: {
+             selector: 'td:nth-child(2)'
+         },
+         order: [[5, 'desc']],
+         responsive: true,
+         "pagingType": "simple"
+ 
+     });
+    </script>

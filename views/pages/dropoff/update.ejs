@@ -1,0 +1,83 @@
+
+<%- include('../../partials/head'); %>
+<div id="content-page" class="content-page">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
+                  <div class="iq-header-title">
+                     <h4 class="card-title">Drop Off Update</h4>
+                  </div>
+                  <div class="user-list-files d-flex float-right">
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="/dropoff/details/<%= dropoff.id %>"><i class="ri-eye-line"></i></a>
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" onclick="deletedropoff(`<%= dropoffs[i].id %>`)"><i class="ri-delete-bin-line"></i></a>
+                   
+                    </div>
+               </div>
+               <div class="iq-card-body">
+                  <form id="updateform" class="p-4">
+                     
+                     <div class="row">
+                           <div class="col-md-12 p-0">
+                              <h5 class="mb-4">Sender Information:</h5>
+                             
+                              <div class="row">
+                                 <div class="form-group col-md-6">
+                                    <label class="control-label">First Name *</label>
+                                    <input  maxlength="100" id="sender_first_name"  value="<%= dropoff.sender_first_name %>" name="sender_first_name" type="text" class="form-control" required />
+                                 </div>
+                                 <div class="form-group col-md-6">
+                                    <label class="control-label">Last Name *</label>
+                                    <input maxlength="100" id="sender_last_name" name="sender_last_name" value="<%= dropoff.sender_last_name %>"  type="text"  class="form-control"  required/>
+                                 </div>
+                                 <div class="col-md-6 form-group">
+                                    <label for="emailid" class="control-label">Email *</label>
+                                    <input type="email" id="sender_email"  name="sender_email"  value="<%= dropoff.sender_info['email'] %>" id="email" class="form-control" required />
+                                 </div>
+                                 
+                                 
+
+                           
+                                 <div class="col-md-6 form-group">
+                                    <label for="cno" class="control-label">Contact Number: *</label>
+                                    <input type="text" class="form-control"   name="sender_contact" value="<%= dropoff.sender_info['contact'] %>"  id="sender_contact"  required/>
+                                 </div>
+                                 <div class="col-md-12 mb-3 form-group">
+                                    <label for="address" class="control-label">Address: </label>
+                                    <input  name="sender_address"  class="form-control" id="sender_address" value="<%= dropoff.sender_info['address'] %>"  />
+                                 </div>
+                                 <div class="col-md-12 mb-3 form-group">
+                                    <label for="source" class="control-label">Source Branch: </label>
+                                    <select class="form-control" name="source" id="source" required>
+                                       <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                                          <%if(branches[i].name == dropoff.source) { %>
+                                             <option selected><%= branches[i].name %></option>
+                                          <% } else { %>
+                                             <option><%= branches[i].name %></option>
+                                          <% }%>
+                                          
+
+                                       <% }%>
+                                    </select>
+                                 </div>
+                                 
+                              </div>
+                           </div>
+                     </div>
+                     <input hidden name="id" id="dropoffid" value="<%= dropoff.id %>">
+                   
+                     <div class="row mb-2">
+                        <div class="col-12">
+                           <button type="submit" class="btn btn-primary float-right " > Save Changes </button>
+
+                        </div>
+                     </div>
+                     </form>
+               </div>
+            </div>
+         </div>  
+      </div>  
+   </div>
+ <%- include('../../partials/footer'); %>
+ <script src="/js/appscripts/dropoff.js"></script>

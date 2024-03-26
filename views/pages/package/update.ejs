@@ -1,0 +1,136 @@
+
+<%- include('../../partials/head'); %>
+<div id="content-page" class="content-page">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
+                  <div class="iq-header-title">
+                     <h4 class="card-title">Package Update</h4>
+                  </div>
+                  <div class="user-list-files d-flex float-right">
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="/package/details/<%= package.id %>"><i class="ri-eye-line"></i></a>
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" onclick="deletepackage(`<%= package.id %>`)"><i class="ri-delete-bin-line"></i></a>
+                   
+                    </div>
+               </div>
+               <div class="iq-card-body">
+                  <form id="updateform" class="p-4">
+                     
+                     <div class="row">
+                           <div class="col-md-12 p-0">
+                            
+                            <h5 class="mb-4">Package Information:</h5>
+
+                            <div class="row">
+                              
+                                 <div class="col-md-6 form-group">
+                                    <label for="cno" class="control-label">Description: *</label>
+                                    <input type="text" class="form-control"   name="description" value="<%= package.description %>"  id="description"  required/>
+                                 </div>
+                                 <div class="col-md-6 form-group">
+                                    <div class="form-group">
+                                       <label for="category" class="control-label">Category: *</label>
+                                       <select class="form-control" id="category" name="category" required>
+                                        <%if(package.category == package.category) { %>
+                                                <option selected> <%= package.category %></option>
+                                        <% } %>
+                                          <option></option>
+                                          <option>clothing</option>
+                                          <option>electronic item</option>
+                                          <option>document</option>
+                                          <option>beauty</option>
+                                          <option>car parts</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-12 mb-3 form-group">
+                                    <label for="source" class="control-label">Source Branch: </label>
+                                    <select class="form-control" name="source" id="source" required>
+                                       <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                                          <%if(branches[i].name == package.source) { %>
+                                             <option selected><%= branches[i].name %></option>
+                                          <% } else { %>
+                                             <option><%= branches[i].name %></option>
+                                          <% }%>
+                                          
+
+                                       <% }%>
+                                    </select>
+                                 </div>
+
+                                 <div class="col-md-12 mb-3 form-group">
+                                    <label for="destination" class="control-label">Destination Branch: </label>
+                                    <select class="form-control" name="destination" id="destination" required>
+                                       <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                                          <%if(branches[i].name == package.destination) { %>
+                                             <option selected><%= branches[i].name %></option>
+                                          <% } else { %>
+                                             <option><%= branches[i].name %></option>
+                                          <% }%>
+                                          
+
+                                       <% }%>
+                                    </select>
+                                 </div>
+                                 <div class="col-md-12 mb-3 form-group">
+                                    <label for="current_location" class="control-label">Current Location Branch: </label>
+                                    <select class="form-control" name="current_location" id="current_location" required>
+                                       <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                                          <%if(branches[i].name == package.current_location) { %>
+                                             <option selected><%= branches[i].name %></option>
+                                          <% } else { %>
+                                             <option><%= branches[i].name %></option>
+                                          <% }%>
+                                          
+
+                                       <% }%>
+                                    </select>
+                                 </div>
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                       <label for="notes" class="control-label">Notes: </label>
+                                       <textarea name="notes" id="notes" class="form-control" rows="2"><%= package.notes%></textarea>
+                                    </div>
+                                 </div>
+                             </div>
+                             <h5 class="mb-4">Receiver Information:</h5>
+                             
+                             <div class="row">
+                                <div class="form-group col-md-6">
+                                   <label class="control-label">First Name *</label>
+                                   <input  maxlength="100" id="receiver_first_name"  value="<%= package.receiver_first_name %>" name="receiver_first_name" type="text" class="form-control" required />
+                                </div>
+                                <div class="form-group col-md-6">
+                                   <label class="control-label">Last Name *</label>
+                                   <input maxlength="100" id="receiver_last_name" name="receiver_last_name" value="<%= package.receiver_last_name %>"  type="text"  class="form-control"  required/>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                   <label for="emailid" class="control-label">Email *</label>
+                                   <input type="email" id="receiver_email"  name="receiver_email"  value="<%= package.receiver_email %>" id="email" class="form-control" required />
+                                </div>
+                                <div class="col-md-6 form-group">
+                                   <label for="cno" class="control-label">Contact Number: *</label>
+                                   <input type="text" class="form-control"   name="receiver_contact" value="<%= package.receiver_contact %>"  id="receiver_contact"  required/>
+                                </div>
+                              
+                               </div>  
+                           </div>
+                     </div>
+                     <input hidden name="id" id="packageid" value="<%= package.id %>">
+                   
+                     <div class="row mb-2">
+                        <div class="col-12">
+                           <button type="submit" class="btn btn-primary float-right " > Save Changes </button>
+
+                        </div>
+                     </div>
+                     </form>
+               </div>
+            </div>
+         </div>  
+      </div>  
+   </div>
+ <%- include('../../partials/footer'); %>
+ <script src="/js/appscripts/package.js"></script>

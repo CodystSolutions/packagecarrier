@@ -28,7 +28,15 @@ module.exports = (sequelize, DataTypes) => {
     package_ids: DataTypes.ARRAY(DataTypes.STRING),
     details: DataTypes.JSONB,
     notes: DataTypes.TEXT,
-    is_deleted: DataTypes.BOOLEAN
+    is_deleted: DataTypes.BOOLEAN,
+    created_on: DataTypes.DATE,
+    modified_on: DataTypes.DATE,
+    type: DataTypes.STRING,
+    is_successful: DataTypes.BOOLEAN,
+    method: DataTypes.STRING, 
+    package_tracking_numbers: DataTypes.ARRAY(DataTypes.STRING),
+    modified_by: DataTypes.STRING,
+    receipt_number: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'transactions',

@@ -37,8 +37,14 @@ app.use('/package', packageRoutes);
 var pickupRoutes = require('./routes/routes.pickup');
 app.use('/pickup', pickupRoutes); 
 
+var reportRoutes = require('./routes/routes.report');
+app.use('/report', reportRoutes); 
+
 var roleRoutes = require('./routes/routes.role');
 app.use('/role', roleRoutes); 
+
+var transactionRoutes = require('./routes/routes.transaction');
+app.use('/transaction', transactionRoutes); 
 
 
 var userRoutes = require('./routes/routes.user');

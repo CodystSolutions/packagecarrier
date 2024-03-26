@@ -337,3 +337,177 @@ $( "#receiptbtn" ).on( "click", function() {
   id=parseInt(id.trim())
   generatereceipt(id)
 } );
+
+$('#receiver_email').keyup(async function(e) {
+     var value = $('#receiver_email').val();
+     
+     receiver_suggestions = await  getUsers("email", value);
+
+    $( "#receiver_email" ).autocomplete({
+      source: receiver_suggestions,
+      select: function (event, ui) {
+        var last_name = ui.item.last_name;
+        var first_name = ui.item.first_name;
+        var contact = ui.item.contact;
+
+        document.getElementById("receiver_last_name").value = last_name;
+        document.getElementById("receiver_first_name").value = first_name;
+        document.getElementById("receiver_contact").value = contact;
+
+      }
+    });
+
+});
+
+
+async function getUsers(type, value){
+  var list = []
+  $.ajax({
+    url: `/user/search/${type}/${value}`,
+    type: 'GET',
+    dataType: 'json', // added data type,
+    async: false,
+    success: function(res) {
+        if(res.status == 200){
+          for(var i = 0; i < res.users.length;i++ ){
+              var anonymousmsg ="";
+              if(res.users[i].is_anonymous) anonymousmsg = "*Anonymous user*"
+              
+              var listinfo = {label:  res.users[i].first_name + " " + res.users[i].last_name  + " " + res.users[i].email + " " + anonymousmsg,last_name: res.users[i].last_name,first_name: res.users[i].first_name, email:  res.users[i].email ,contact:  res.users[i].contact , value: res.users[i].first_name }
+              if(type=="name") listinfo.value = res.users[i].first_name
+              if(type=="email") listinfo.value = res.users[i].email
+
+              list.push(listinfo)
+          }
+        }
+    }
+
+});
+return list;
+
+}
+
+
+
+$("#updateform").submit(function(e){
+  e.preventDefault()
+  var pickupid = document.getElementById("collectionid").value;
+
+  $.ajax({
+      url: `/pickup/update/${pickupid}`,
+      data: $("#updateform").serialize(), 
+      type: "POST", 
+      dataType: 'json',
+      success: function (e) {
+          if(e.status == 200){
+            
+            console.log(JSON.stringify(e));
+            toastr.success('Successfully updated')
+            setTimeout(function(){  window.location.reload();
+            }, 3000);
+          } else{
+            
+            if(e.message != null && e.message != ""){
+
+              toastr.error(e.message)
+            }else{
+              toastr.error('Error, did not update')
+            }
+
+          }
+        
+
+      },
+      error:function(e){
+          alert("error")
+
+          console.log(JSON.stringify(e));
+
+
+      }
+  }); 
+  return false;
+});
+
+function deletepickup(id){
+  var confirmed = confirm("Are you sure you want to delete this pickup request. ");
+  if(confirmed){
+    $.ajax({
+      url: `/pickup/delete/${id}`,
+      type: "post", 
+      dataType: 'json',
+      success: function (e) {
+          if(e.status == 200){
+           
+               console.log(JSON.stringify(e));
+                toastr.success('Successfully deleted')
+                setTimeout(function(){  window.location = '/pickup/view'
+                }, 3000);
+            
+          } else{
+            if(e.message != null && e.message != ""){
+              toastr.error(e.message)
+            }else{
+              toastr.error('Error, did not add')
+            }
+
+          }
+        
+
+      },
+      error:function(e){
+          alert("error")
+
+          console.log(JSON.stringify(e));
+
+
+      }
+  }); 
+  }
+
+}
+
+$( "#emailbtn" ).on( "click", function() {
+  var id = document.getElementById('collectionid').innerText;
+  id=parseInt(id.trim())
+  emailreceipt(id)
+} );
+
+
+
+function emailreceipt(id){
+  if(id){
+    $.ajax({
+      url: `/pickup/email/receipt/${id}`,
+      type: "post", 
+      dataType: 'json',
+      success: function (e) {
+          if(e.status == 200){
+           
+               console.log(JSON.stringify(e));
+                toastr.success('Successfully emailed')
+                setTimeout(function(){  window.location.reload()
+                }, 3000);
+            
+          } else{
+            if(e.message != null && e.message != ""){
+              toastr.error(e.message)
+            }else{
+              toastr.error('Error, did not add')
+            }
+
+          }
+        
+
+      },
+      error:function(e){
+          alert("error")
+
+          console.log(JSON.stringify(e));
+
+
+      }
+  }); 
+  }
+
+}

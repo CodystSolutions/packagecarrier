@@ -13,17 +13,9 @@
                      </div>
                      <div class="iq-card-body">
                         <div class="table-responsive">
-                           <div class="row justify-content-between">
-                              <div class="col-sm-12 col-md-6">
-                                 <div id="user_list_datatable_info" class="dataTables_filter">
-                                    <form class="mr-3 position-relative">
-                                       <div class="form-group mb-0">
-                                          <input type="search" class="form-control" id="exampleInputSearch" placeholder="Search" aria-controls="user-list-table">
-                                       </div>
-                                    </form>
-                                 </div>
-                              </div>
-                              <div class="col-sm-12 col-md-6">
+                           <div class="row justify-content-between mb-2">
+                              
+                              <div class="col-sm-12 col-md-12">
                                  <div class="user-list-files d-flex float-right">
                                     <a href="/dropoff/create" class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add" href="#"><i class="ri-user-add-line"></i> Create Dropoff Request</a>
 
@@ -39,6 +31,9 @@
                                  <tr>
                                     <th>Name</th>
                                     <th>Code</th>
+                                    <th>Description</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
                                     <th>Created</th>
                                     <th>Action </th>
                                    
@@ -49,16 +44,21 @@
                                  <tr>
                                      <td><%= dropoffs[i].sender_info?.first_name %> <%= dropoffs[i].sender_info?.last_name %></td>
                                      <td><%= dropoffs[i].code %></td>
-                                     <td><%= moment(dropoffs[i].created_on).format('MM/DD/YYYY')%></td>
+                                     <td><%= dropoffs[i].description %></td>
+                                     <td><%= dropoffs[i].method %></td>
+                                     <td><%= dropoffs[i].status %></td>
+                                     <td><%= moment(dropoffs[i].created_on).tz('America/Jamaica').format('YYYY/MM/DD HH:mm')%></td>
 
                                   
                                      
                                      <td>
                                               <div class="flex align-items-center list-user-action">
+                                                <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="/dropoff/details/<%= dropoffs[i].id %>"><i class="ri-eye-line"></i></a>
+
                                            <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/dropoff/update/<%= dropoffs[i].id %>"><i class="ri-pencil-line"></i></a>
-                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="#"><i class="ri-delete-bin-line"></i></a>
-                                           <a class="iq-bg-primary" style="width: 80px" data-toggle="tooltip" data-placement="top" title="" data-original-title="receipt" onclick="generatereceipt(`<%= dropoffs[i].id%>`)">Receipt</a>
-                                           <a class="iq-bg-primary" style="width: 60px" data-toggle="tooltip" data-placement="top" title="" data-original-title="receipt" onclick="generatelabel(`<%= dropoffs[i].id%>`)">Label</a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"  onclick="deletedropoff(`<%= dropoffs[i].id %>`)"><i class="ri-delete-bin-line"></i></a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Receipt" onclick="generatereceipt(`<%= dropoffs[i].id%>`)"><i class="ri-bill-line"></i></a>
+                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Email Receipt" onclick="emailreceipt( `<%= dropoffs[i].id%>`)"><i class="ri-mail-line"></i></a>
 
                                         </div>
                                      </td>
@@ -113,4 +113,24 @@
 </div>
    
    <%- include('../../partials/footer'); %>
+
    <script src="/js/appscripts/dropoff.js"></script>
+   <script>
+     $('table').DataTable({
+      buttons: {
+          dom: {
+              button: {
+                  className: 'btn btn-outline-primary mr-2' //Primary class for all buttons
+              }
+          },
+         
+      },
+      rowReorder: {
+            selector: 'td:nth-child(2)'
+        },
+        order: [[5, 'desc']],
+        responsive: true,
+        "pagingType": "simple"
+
+    });
+   </script>

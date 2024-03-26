@@ -1,0 +1,125 @@
+<%- include('../../partials/head'); %>
+
+      <!-- Page Content  -->
+   <div id="content-page" class="content-page">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-sm-12">
+                <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                       <div class="iq-header-title">
+                          <h4 class="card-title">Package Details</h4>
+                       </div>
+                       <div class="user-list-files d-flex float-right">
+                        <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/package/update/<%= package.id %>"><i class="ri-pencil-line"></i></a>
+                        <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" onclick="deletepackage(`<%= package.id %>`)"><i class="ri-delete-bin-line"></i></a>
+                        <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Label" onclick="generatelabel(`<%= package.id%>`)"><i class="ri-bill-line"></i></a>
+   
+                      
+                       </div>
+                    </div>
+                    <div class="iq-card-body">
+                       <p>View package details below.</p>
+                       <dl class="row">
+                          <dt class="col-sm-3">Tracking Number</dt>
+                          <dd class="col-sm-9"><%= package.tracking_number %></dd>
+                          <dt class="col-sm-3">Code </dt>
+                          <dd class="col-sm-9">
+                             <p><%= package.code %></p>
+                          </dd>
+
+                          <dt class="col-sm-3">Description</dt>
+                          <dd class="col-sm-9"><%= package.description %></dd>
+                          <dt class="col-sm-3">Actual Weight</dt>
+                          <dd class="col-sm-9"><%= package.actual_weight %> lbs</dd>
+                          <dt class="col-sm-3">Weight</dt>
+                          <dd class="col-sm-9"><%= package.weight %> lbs</dd>
+                        
+                          <dt class="col-sm-3">Status</dt>
+                          <dd class="col-sm-9"><%= package.status %></dd>
+                          <dt class="col-sm-3">Source</dt>
+                          <dd class="col-sm-9"><%= package.source %></dd>
+                          <dt class="col-sm-3">Current Location</dt>
+                          <dd class="col-sm-9"><%= package.current_location %></dd>
+                          <dt class="col-sm-3">Destination</dt>
+                          <dd class="col-sm-9"><%= package.destination %></dd>
+                          <dt class="col-sm-3 text-truncate">Method</dt>
+                          <dd class="col-sm-9"><%=package.method  %></dd>
+                          <dt class="col-sm-3 text-truncate">Type</dt>
+                          <dd class="col-sm-9"><%=package.type ?? "Not Specified" %></dd>
+                          <dt class="col-sm-3">Category</dt>
+                          <dd class="col-sm-9">
+                             <dl class="row">
+                                <dd class="col-sm-8"><%= package.category %></dd>
+                             </dl>
+                          </dd>
+                          <dt class="col-sm-3">Batch</dt>
+                          <dd class="col-sm-9"><%= package.batch?.name ?? 'Not Specified' %></dd>
+                          <dt class="col-sm-3">Drop Off Code</dt>
+                          <% if(package.request) { %>
+                           <dd class="col-sm-9"><%= package.request?.code %>  -- <a href="/dropoff/details/<%= package.request?.id  %>">View</a></dd>
+
+                          <%} else {%>
+                           <dd class="col-sm-9">Not Specified</dd>
+
+                          <%} %>
+                          <dt class="col-sm-3">Collection Request Code</dt>
+                          <% if(package.collection_request) { %>
+                           <dd class="col-sm-9"><%= package.collection_request?.code %>  -- <a href="/dropoff/details/<%= package.collection_request?.id  %>">View</a></dd>
+
+                          <%} else {%>
+                           <dd class="col-sm-9">Not Specified</dd>
+
+                          <%} %>
+                        
+                        
+                          <dt class="col-sm-3">Transaction Order Number</dt>
+                          <% if(package.transaction) { %>
+                           <dd class="col-sm-9"><%= package.transaction?.order_number %>  -- <a href="/dropoff/details/<%= package.transaction?.order_number  %>">View</a></dd>
+
+                          <%} else {%>
+                           <dd class="col-sm-9">Not Specified</dd>
+
+                          <%} %>
+                        
+                        
+                          <dt class="col-sm-3 text-truncate">Notes</dt>
+                          <dd class="col-sm-9"><%=package.notes  ?? 'Not Specified' %></dd>
+                          
+
+
+                       </dl>
+                    </div>
+                    <hr/>
+                    
+                 </div>
+                 <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                       <div class="iq-header-title">
+                          <h4 class="card-title">Sender and Collector Details</h4>
+                       </div>
+                    </div>
+                    <div class="iq-card-body">
+                       <p>View sender and collector details below.</p>
+                       <dl class="row">
+                          <dt class="col-sm-3">Sender </dt>
+                          <dd class="col-sm-9"><%= package.sender_first_name %> <%= package.sender_last_name %> -- <%= package.sender_email %> <%= package.sender_contact %></dd>
+                          <dt class="col-sm-3">Receiver </dt>
+                          <dd class="col-sm-9"><%= package.receiver_first_name %> <%= package.receiver_last_name %> -- <%= package.receiver_email %> <%= package.receiver_contact %></dd>
+                          <dt class="col-sm-3">Collector </dt>
+                          <dd class="col-sm-9"><%= package.collector_first_name %> <%= package.collector_last_name %> -- <%= package.collector_email %> <%= package.collector_contact %></dd>
+                    
+                       </dl>
+                    </div>
+                    <hr/>
+                    
+                 </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+   
+   <%- include('../../partials/footer'); %>
+   <script src="/js/appscripts/package.js"></script>

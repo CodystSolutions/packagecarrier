@@ -2363,6 +2363,7 @@ class DataService {
             
             var whereclause = {
                 type: "dropoff",
+                is_deleted: false,
                 created_on: {
                     [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
                     [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
@@ -2400,6 +2401,7 @@ class DataService {
         try{
             
             var whereclause = {
+                is_deleted: false,
                 created_on: {
                     [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
                     [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
@@ -2438,6 +2440,7 @@ class DataService {
         try{
             
             var whereclause = {
+                is_deleted: false,
                 created_on: {
                     [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
                     [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
@@ -2475,6 +2478,7 @@ class DataService {
         try{
             
             var whereclause = {
+                is_deleted: false,
                 created_on: {
                     [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
                     [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()

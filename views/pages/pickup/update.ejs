@@ -1,0 +1,95 @@
+
+<%- include('../../partials/head'); %>
+<div id="content-page" class="content-page">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between">
+                  <div class="iq-header-title">
+                     <h4 class="card-title">Pickup Update</h4>
+                  </div>
+                  <div class="user-list-files d-flex float-right">
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="/pickup/details/<%= collection_request.id %>"><i class="ri-eye-line"></i></a>
+                     <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" onclick="deletepickup(`<%= collection_request.id %>`)"><i class="ri-delete-bin-line"></i></a>
+                   
+                    </div>
+               </div>
+               <div class="iq-card-body">
+                  <form id="updateform" class="p-4">
+                     
+
+                    <div class="row">
+                        <div class="col-md-12 p-0">
+                            <h5 class="mb-4">Collection Information:</h5>
+
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="cno" class="control-label">Description: *</label>
+                                    <input type="text" class="form-control"   name="description" value="<%= collection_request.description %>"  id="description"  required/>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="exampleFormControlSelect1">Status</label>
+                                    <select class="form-control" id="status" name="status" >
+                                      
+                                       <option>picked up</option>
+
+                                    </select>
+                                 </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                    <label for="notes" class="control-label">Notes: </label>
+                                    <textarea name="notes" id="notes" class="form-control" rows="2"><%= collection_request.notes%></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>  
+                     </div>
+                     <div class="row">
+                           <div class="col-md-12 p-0">
+                              <h5 class="mb-4">Collector Information:</h5>
+                             
+                              <div class="row">
+                                 <div class="form-group col-md-6">
+                                    <label class="control-label">First Name *</label>
+                                    <input  maxlength="100" id="collector_first_name"  value="<%= collection_request.collector_first_name %>" name="collector_first_name" type="text" class="form-control" required />
+                                 </div>
+                                 <div class="form-group col-md-6">
+                                    <label class="control-label">Last Name *</label>
+                                    <input maxlength="100" id="collector_last_name" name="collector_last_name" value="<%= collection_request.collector_last_name %>"  type="text"  class="form-control"  required/>
+                                 </div>
+                                 <div class="col-md-6 form-group">
+                                    <label for="emailid" class="control-label">Email *</label>
+                                    <input type="email" id="collector_email"  name="collector_email"  value="<%= collection_request.collector_email %>" id="email" class="form-control" required />
+                                 </div>
+                                 
+                                 
+
+                           
+                                 <div class="col-md-6 form-group">
+                                    <label for="cno" class="control-label">Contact Number: *</label>
+                                    <input type="text" class="form-control"   name="collector_contact" value="<%= collection_request.collector_contact %>"  id="collector_contact"  required/>
+                                 </div>
+                                
+                                
+                              </div>
+                           </div>
+                     </div>
+                     <input hidden name="id" id="collectionid" value="<%= collection_request.id %>">
+                   
+                     <div class="row mb-2">
+                        <div class="col-12">
+                           <button type="submit" class="btn btn-primary float-right " > Save Changes </button>
+
+                        </div>
+                     </div>
+                     </form>
+               </div>
+            </div>
+         </div>  
+      </div>  
+   </div>
+ <%- include('../../partials/footer'); %>
+ <script src="/js/appscripts/pickup.js"></script>

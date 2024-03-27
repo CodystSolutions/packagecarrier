@@ -1,0 +1,420 @@
+<html>
+<style>
+  /* TODO: optimize */
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+.receipt {
+    padding: 3mm;
+    width: 80mm;
+    border: 1px solid black;
+}
+.orderNo {
+  width: 100%;
+  text-align: right;
+  padding-bottom: 1mm;
+  font-size: 8pt;
+  font-weight: bold;
+}
+
+.orderNo:empty {
+  display: none;
+}
+
+.headerSubTitle {
+  text-align: center;
+  font-size: 12pt;
+  margin-top: 10px;
+
+}
+
+.headerTitle {
+  text-align: center;
+  font-size: 19pt;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#location {
+  margin-top: 5pt;
+  text-align: center;
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+#date {
+  margin: 5pt 0px;
+  text-align: center;
+  font-size: 8pt;
+}
+
+#barcode {
+  display: block;
+  margin: 0px auto;
+}
+
+#barcode:empty {
+  display: none;
+}
+
+.watermark {
+   position: absolute;
+   left: 7mm;
+   top: 60mm;
+   width: 75mm;
+   opacity: 0.1;
+}
+
+.keepIt {
+  text-align: center;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.keepItBody {
+  margin-top: 10px;
+  text-align: justify;
+  font-size: 8pt;
+}
+
+.item {
+  margin-bottom: 1mm;
+}
+
+.itemRow {
+  display: flex;
+  font-size: 8pt;
+  align-items: baseline;
+}
+
+.itemRow > div {
+  align-items: baseline;
+}
+
+.itemName {
+  font-weight: bold;
+}
+
+.itemPrice {
+  text-align: right;
+  flex-grow: 1;
+}
+
+.itemColor {
+  width: 10px;
+  height: 100%;
+  /* background: yellow; */
+  margin: 0px 2px;
+  padding: 0px;
+}
+
+.itemColor:before {
+  content: "\00a0";
+}
+
+
+.itemData2 {
+  text-align: right;
+  flex-grow: 1;
+}
+
+.itemData3 {
+  width: 15mm;
+  text-align: right;
+}
+
+.itemQuantity:before {
+  content: "x";
+}
+
+.itemTaxable:after {
+  content: " T";
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+#qrcode {
+  align-self: center;
+  flex: 0 0 100px
+}
+
+.qrlogo {
+  position: absolute;
+  opacity: 1;
+  z-index: -1;
+}
+
+.totals {
+  flex-grow: 1;
+  align-self: center;
+  font-size: 8pt;
+}
+
+.totals .row {
+  display: flex;
+  text-align: right;
+}
+
+.totals .section {
+  padding-top: 2mm;
+}
+
+.totalRow > div, .total > div {
+  text-align: right;
+  align-items: baseline;
+  font-size: 8pt;
+}
+
+.totals .col1 {
+  text-align: right;
+  flex-grow: 1;
+}
+
+.totals .col2 {
+   width: 22mm; 
+}
+
+.totals .col2:empty {
+  display: none;
+}
+
+.totals .col3 {
+  width: 15mm;  
+}
+
+.footer {
+  overflow: hidden;
+  margin-top: 5mm;
+  border-radius: 7px;
+  width: 100%;
+  background: black;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.footer:empty {
+    display: none;
+}
+
+.eta {
+  padding: 1mm 0px;
+}
+
+.eta:empty {
+    display: none;
+}
+
+.eta:before {
+    content: "Estimated time for delivery of package: ";
+  font-size: 8pt;
+  display: block;
+}
+
+.etaLabel {
+  font-size: 8pt;
+}
+
+.printType {
+  padding: 1mm 0px;
+  width: 100%;
+  background: grey;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.about {
+  font-size: 12pt;
+  overflow: hidden;
+  background: #FCEC52;
+  color: #3A5743;
+  border-radius: 7px;
+  padding: 0px;
+  position: absolute;
+  width: 500px;
+  text-align: center;
+  left: 50%;
+  margin-top: 50px;
+  margin-left: -250px;
+}
+
+.arrow_box h3, ul {
+  margin: 5px;
+}
+
+.about li {
+  text-align: left;
+}
+
+.arrow_box {
+  position: absolute;
+  background: #88b7d5;
+  padding: 5px;
+  margin-top: 20px;
+  left: 95mm;
+  top: 2;
+  width: 500px;
+  border: 4px solid #c2e1f5;
+}
+.arrow_box:after, .arrow_box:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow_box:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-right-color: #88b7d5;
+  border-width: 30px;
+  margin-top: -30px;
+}
+.arrow_box:before {
+  border-color: rgba(194, 225, 245, 0);
+  border-right-color: #c2e1f5;
+  border-width: 36px;
+  margin-top: -36px;
+}
+
+
+</style>
+<!-- START RECEIPT -->
+<div class="receipt">
+  <div class="orderNo">
+    Request # <span id="Order #">{{request_id}}</span>
+    <!-- <span id="Order Name">Jet Set</span> -->
+  </div>
+  <div class="headerSubTitle">
+    <!-- Thank you for supporting the -->
+  </div>
+  <div class="headerTitle">
+    Speedz Express Courier
+  </div>
+  <div class="headerSubTitle">
+    8 Kingston Ave, <br/>St Andrew ,<br> Jamaica
+  </div>
+  <div id="location">
+    Checkout Receipt
+  </div>
+  <div id="date">
+    {{date}}
+  </div>
+  <svg id="barcode"></svg>
+  
+  <div class="keepIt">
+    <span id="codetext">{{code}}</span>
+  </div>
+  <div class="keepItBody">
+    This original receipt is required to pick up any onclaimed items* or for Returns. Undamaged merchandise can be returned for a refund within 24 hours. No returns
+    are allowed for items already shipped except at the discretion of Speedz Express Courier. *Unclaimed items can be claimed without receipt if requested.
+  </div>
+  <hr>
+
+        
+  {{#packages}}
+
+
+    <!-- Items Purchased -->
+    <div class="items">
+      <div class="item">
+        <div class="itemRow">
+          <div class="itemName">Package - {{category}} {{weight}}lbs</div>
+          <div class="itemPrice ">{{method}}</div>
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">{{source}} to {{destination}}</div>
+          <div class="itemData2"></div>
+          <!-- <div class="itemData3 itemQuantity">10</div> -->
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">Tracking: <span id="tracking">{{tracking_number}}</span> </div>
+          <div class="itemData2"></div>
+          <!-- <div class="itemData3">$20.00</div> -->
+        </div>
+      </div>
+      <!-- <div class="item">
+        <div class="itemRow">
+          <div class="itemName">Miraculous Ladybug & Cat Noir</div>
+          <div class="itemPrice itemTaxable">$1.25</div>
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">DNC-P03</div>
+          <div class="itemData2">DaniCojo</div>
+          <div class="itemData3 itemQuantity">10</div>
+        </div>
+        <div class="itemRow">
+          <div class="itemColor"></div>
+          <div class="itemData1">Print</div>
+          <div class="itemData2">Reg(WS) 8.5x11 Borderless</div>
+          <div class="itemData3">$12.25</div>
+        </div>
+      </div> -->
+    </div>
+  
+    <!-- Totals -->
+  {{/packages}}
+  
+
+
+
+  <hr>
+  
+<!-- Dosn't work
+<img class="qrlogo" src="https://www.dropbox.com/s/mmf6y9rpibwy9tk/bronyhouse-logo-sm.svg?raw=1" width="100px" height="100px">
+-->
+<div class="flex">
+    <div id="qrcode"></div>
+    <div class="totals">
+     
+    </div>
+  </div>
+  
+  <div class="footer">
+    <div class="printType">customer copy <span id="test"></span> </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.4/dist/JsBarcode.all.min.js"></script>
+<script src="/templates/qrcode.min.js"></script>
+<script>
+
+
+var receiptID = document.getElementById('codetext').innerText;
+JsBarcode("#barcode", receiptID, {
+  format: "code128",
+  width: 1.3,
+  height: 30,
+  marginLeft: 0,
+  displayValue: false
+});
+var receiptQRID = document.getElementById('codetext').innerText;
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+  text: "http://localhost:4000/" + receiptID,
+  colorDark: "#000000",
+  colorLight: "#FFFFFF",
+  width: 100,
+  height: 100,
+  correctLevel: QRCode.CorrectLevel.H
+});
+
+
+</script>
+
+</html>

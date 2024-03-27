@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       packages.belongsTo(models.users, { foreignKey: "sender_id"});
       packages.belongsTo(models.users, { foreignKey: "receiver_id"});
       packages.belongsTo(models.requests, { foreignKey: "request_id"});
+      packages.belongsTo(models.batches, { foreignKey: "batch_id"});
+      packages.belongsTo(models.transactions, { foreignKey: "transaction_id"});
+      packages.belongsTo(models.collection_requests, { foreignKey: "collection_id"});
 
 
     }
@@ -32,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     sender_info: DataTypes.JSONB,
     receiver_info: DataTypes.JSONB,
     request_id: DataTypes.BIGINT,
+    batch_id: DataTypes.BIGINT,
     destination: DataTypes.STRING,
     source: DataTypes.STRING,
     tracking_number: DataTypes.STRING,
@@ -44,10 +48,19 @@ module.exports = (sequelize, DataTypes) => {
     details: DataTypes.JSONB,
     notes: DataTypes.TEXT,
     is_deleted: DataTypes.BOOLEAN,
-    transaction_id: DataTypes.STRING,
+    transaction_id: DataTypes.INTEGER,
     current_location: DataTypes.STRING,
     category: DataTypes.STRING, 
-    actual_weight: DataTypes.DOUBLE
+    actual_weight: DataTypes.DOUBLE,
+    collector_first_name:  DataTypes.STRING,
+    collector_last_name: DataTypes.STRING,
+    collector_email:  DataTypes.STRING,
+    collector_contact:  DataTypes.STRING ,
+    collector_id: DataTypes.BIGINT ,
+    collected_on:  DataTypes.DATE,
+    collection_id: DataTypes.BIGINT
+
+
   }, {
     sequelize,
     modelName: 'packages',

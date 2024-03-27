@@ -1,0 +1,107 @@
+<%- include('../../partials/head'); %>
+
+         
+         <!-- Page Content  -->
+         <div id="content-page" class="content-page">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-sm-12">
+
+                     <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                           <div class="iq-header-title">
+                              <h4 class="card-title">View Transactions</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <div id="table" >
+                              <span class="float-right mb-3 mr-2">
+                              <a href="/transaction/create" class="btn btn-sm btn-primary"><i
+                                ><span class="pl-1">Add New</span></i>
+                              </a>
+                              </span>
+                           <div class="table-responsive">
+                              <table id="datatable" class="table table-striped table-bordered">
+                                 <thead>
+                                    <tr>
+                                       <th>Order Number</th>
+                                       <th>Method</th>
+                                       <th>Payment Method</th>
+                                    
+                                       <th>Total</th>
+                                       <th>Status</th>
+                                       <th>Date</th>
+                                       <th>Action</th>
+                                  
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <% for(var x = 0; x < transactions.length ;x ++) {%>
+
+                                    <tr>
+                                       <td><%= transactions[x].order_number %></td>
+                                       <td><%= transactions[x].method %></td>
+                                       <td><%= transactions[x].paymentmethod %></td>
+                                      
+                                       <td><%= transactions[x].total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })  %></td>
+                                       <td><%= transactions[x].status %></td>
+                                       <td><%= moment(transactions[x].created_on).tz("America/New_York").format('YYYY/MM/DD') %></td>
+
+                                       <td>
+                                          <div class="flex align-items-center list-user-action">
+                                             <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="/transaction/details/<%= transactions[x].id %>"><i class="ri-eye-line"></i></a>
+   
+                                              <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/transaction/update/<%= transactions[x].id %>"><i class="ri-pencil-line"></i></a>
+                                              <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"  onclick="deletetransaction(`<%= transactions[x].id %>`)"><i class="ri-delete-bin-line"></i></a>
+   
+                                           </div>
+                                       </td>
+                                      
+<!--                                    
+                                       <td>
+                                          <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/transaction/details/<%= transactions[x].id %>"><i class="ri-eye-line"></i></a>
+
+                                        <a class="btn btn-sm btn-outline-primary" title="Edit"  href="/transaction/update/<%=transactions[x].id%>"> <i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-sm btn-outline-danger" title="Remove"  onclick="confirmdelete(`<%= transactions[x].name%>`, `<%= transactions[x].id%>`)"    data-rateid="<%= transactions[x].id %>"       data-toggle="modal" data-target="#exampleModal"><i class="fa fa-trash " style="color: red"></i></a>
+        
+                                       </td> -->
+                                     
+                                    </tr>
+                                    <% } %>
+
+                                 </tbody>
+                               
+                              </table>
+                           </div>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+    
+
+<%- include('../../partials/footer'); %>
+<script src="/js/appscripts/transaction.js"></script>
+<script>
+   $('table').DataTable({
+    buttons: {
+        dom: {
+            button: {
+                className: 'btn btn-outline-primary mr-2' //Primary class for all buttons
+            }
+        },
+       
+    },
+    rowReorder: {
+          selector: 'td:nth-child(2)'
+      },
+      order: [[5, 'desc']],
+      responsive: true,
+      "pagingType": "simple"
+
+  });
+ </script>

@@ -294,7 +294,6 @@ body {
 
 </style>
 <!-- START RECEIPT -->
-  
 <div class="receipt">
   <div class="orderNo">
     Request # <span id="Order #">{{request_id}}</span>
@@ -422,9 +421,9 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.4/dist/JsBarcode.all.min.js"></script>
 <script src="/templates/qrcode.min.js"></script>
 <script>
-  var receiptID = "20180613T130518.512Z";
-var receiptQRID = "4#4s1Fs";
-receiptID = document.getElementById('codetext').innerText;
+
+
+var receiptID = document.getElementById('codetext').innerText;
 JsBarcode("#barcode", receiptID, {
   format: "code128",
   width: 1.3,
@@ -432,9 +431,9 @@ JsBarcode("#barcode", receiptID, {
   marginLeft: 0,
   displayValue: false
 });
-
+var receiptQRID = document.getElementById('codetext').innerText;
 var qrcode = new QRCode(document.getElementById("qrcode"), {
-  text: "https://gg.bronyhouse.com/r/" + receiptID,
+  text: "http://localhost:4000/" + receiptID,
   colorDark: "#000000",
   colorLight: "#FFFFFF",
   width: 100,

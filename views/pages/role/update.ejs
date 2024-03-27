@@ -113,80 +113,179 @@
                                            <i class="input-helper"></i></label>
                                          </div>
                                  </div>
-                                
-                                 <p><b>Transaction</b></p>
+                                     
+                                 <p><b>Batch</b></p>
                                  <div  class=" form-inline">
                                      <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                           <input name="permissions" value="transaction_view"  id="transaction_view"  <% if(role.permissions.includes('transaction_view')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input" >
+                                           <input name="permissions" value="batch_view" type="checkbox"  id="batch_view"  <% if(role.permissions.includes('batch_view')){ %> checked="checked" <% } %>  class="form-check-input" >
                                           View
                                          <i class="input-helper"></i></label>
                                        </div>
-                                        <div class="form-check mx-sm-2">
-                                           <label class="form-check-label">
-                                             <input name="permissions" value="transaction_record"  id="transaction_record"  <% if(role.permissions.includes('transaction_record')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input" >
-                                            Record 
-                                           <i class="input-helper"></i></label>
-                                         </div>
                                        <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
-                                             <input name="permissions" value="transaction_recordpayment"  id="transaction_recordpayment"  <% if(role.permissions.includes('transaction_recordpayment')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input" >
-                                            Record Payment
+                                             <input name="permissions" value="batch_create" type="checkbox"  id="batch_create" <% if(role.permissions.includes('batch_create')){ %> checked="checked" <% } %>   class="form-check-input" >
+                                            Create
                                            <i class="input-helper"></i></label>
                                          </div>
                                          <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
-                                             <input name="permissions" value="transaction_update"  id="transaction_update"  <% if(role.permissions.includes('transaction_update')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input" >
-                                            Update  
+                                             <input name="permissions" value="batch_update"  id="batch_update" type="checkbox" <% if(role.permissions.includes('batch_update')){ %> checked="checked" <% } %>  class="form-check-input" >
+                                            Update 
                                            <i class="input-helper"></i></label>
                                          </div>
                                          <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
-                                             <input name="permissions" value="transaction_delete"  id="transaction_delete"  <% if(role.permissions.includes('transaction_delete')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input">
+                                             <input name="permissions" value="batch_delete"  id="batch_delete" <% if(role.permissions.includes('batch_delete')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input">
                                             Delete
                                            <i class="input-helper"></i></label>
                                          </div>
                                  </div>
-                                 
-                               
+                                
                                  <p><b>Drop Off Request</b></p>
                                  <div  class=" form-inline">
                                     <div class="form-check mx-sm-2">
                                        <label class="form-check-label">
-                                         <input name="permissions" value="dropoff_create"  id="dropoff_create"  <% if(role.permissions.includes('dropoff_create')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input" >
+                                         <input name="permissions" value="dropoff_create"  id="dropoff_create" <% if(role.permissions.includes('dropoff_create')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
                                         Create
                                        <i class="input-helper"></i></label>
                                    </div>
                                      <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                           <input name="permissions" value="dropoff_view"  id="dropoff_view" type="checkbox"  <% if(role.permissions.includes('dropoff_view')){ %> checked="checked" <% } %> class="form-check-input" >
+                                           <input name="permissions" value="dropoff_view"  id="dropoff_view"  <% if(role.permissions.includes('dropoff_view')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
                                           View
                                          <i class="input-helper"></i></label>
                                      </div>
                                      <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                         <input name="permissions" value="dropoff_update"  id="dropoff_update" type="checkbox"  <% if(role.permissions.includes('dropoff_update')){ %> checked="checked" <% } %> class="form-check-input" >
+                                         <input name="permissions" value="dropoff_update"  id="dropoff_update" <% if(role.permissions.includes('dropoff_update')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
                                          Update 
                                          <i class="input-helper"></i></label>
                                      </div>
                                      <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="dropoff_delete"  id="dropoff_delete" <% if(role.permissions.includes('dropoff_delete')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                          Delete
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="dropoff_details"  id="dropoff_details" <% if(role.permissions.includes('dropoff_details')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                          Details
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                    
+                                   
+                                        
+                                 </div>
+
+                                 <p><b>Pickup Request</b></p>
+                                 <div  class=" form-inline">
+                                    <div class="form-check mx-sm-2">
+                                       <label class="form-check-label">
+                                         <input name="permissions" value="pickup_checkout" <% if(role.permissions.includes('pickup_checkout')){ %> checked="checked" <% } %>   id="pickup_checkout" type="checkbox" class="form-check-input" >
+                                        Checkout
+                                       <i class="input-helper"></i></label>
+                                   </div>
+                                     <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                             <input name="permissions" value="dropoff_delete"  id="dropoff_delete" type="checkbox"  <% if(role.permissions.includes('dropoff_delete')){ %> checked="checked" <% } %> class="form-check-input" >
-                                             Delete 
+                                           <input name="permissions" value="pickup_view"  <% if(role.permissions.includes('pickup_view')){ %> checked="checked" <% } %> id="pickup_view" type="checkbox" class="form-check-input" >
+                                          View
                                          <i class="input-helper"></i></label>
                                      </div>
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                         <input name="permissions" value="pickup_update" <% if(role.permissions.includes('pickup_update')){ %> checked="checked" <% } %>  id="pickup_update" type="checkbox" class="form-check-input" >
+                                         Update 
+                                         <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="pickup_delete"  id="pickup_delete" <% if(role.permissions.includes('pickup_delete')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                          Delete
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                   
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="pickup_details"  id="pickup_details" <% if(role.permissions.includes('pickup_details')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                          Details
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                    
                                         
+                                 </div>
+
+
+                                 <p><b>Packages</b></p>
+                                 <div  class=" form-inline">
+                                    <div class="form-check mx-sm-2">
+                                       <label class="form-check-label">
+                                         <input name="permissions" value="package_scan"  id="package_scan" <% if(role.permissions.includes('package_scan')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                        Scan
+                                       <i class="input-helper"></i></label>
+                                   </div>
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                           <input name="permissions" value="package_view"  id="package_view" <% if(role.permissions.includes('package_view')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                          View
+                                         <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                         <input name="permissions" value="package_update"  id="package_update" <% if(role.permissions.includes('package_update')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                         Update 
+                                         <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="package_details" <% if(role.permissions.includes('package_details')){ %> checked="checked" <% } %>   id="package_details" type="checkbox" class="form-check-input" >
+                                          Details
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                    
+                                   
+                                        
+                                 </div>
+                               
+                                 <p><b>Transaction</b></p>
+                                 <div  class=" form-inline">
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                           <input name="permissions" value="transaction_view"  id="transaction_view" <% if(role.permissions.includes('transaction_view')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                          View
+                                         <i class="input-helper"></i></label>
+                                       </div>
+                                        <div class="form-check mx-sm-2">
+                                           <label class="form-check-label">
+                                             <input name="permissions" value="transaction_update"  id="transaction_update" <% if(role.permissions.includes('transaction_update')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                            Update 
+                                           <i class="input-helper"></i></label>
+                                         </div>
+                                       <div class="form-check mx-sm-2">
+                                           <label class="form-check-label">
+                                             <input name="permissions" value="transaction_details"  id="transaction_details" <% if(role.permissions.includes('transaction_details')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                            Details
+                                           <i class="input-helper"></i></label>
+                                         </div>
+                                         <div class="form-check mx-sm-2">
+                                           <label class="form-check-label">
+                                             <input name="permissions" value="transaction_delete"  id="transaction_delete" <% if(role.permissions.includes('transaction_delete')){ %> checked="checked" <% } %>  type="checkbox" class="form-check-input" >
+                                            Delete
+                                           <i class="input-helper"></i></label>
+                                         </div>
+                                       
                                  </div>
                                
                                  <p><b>Report</b></p>
                                  <div  class=" form-inline">
                                      <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                           <input name="permissions" value="report_view"  id="report_view"  <% if(role.permissions.includes('report_update')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input" >
+                                           <input name="permissions" value="report_view"  id="report_view"  <% if(role.permissions.includes('report_view')){ %> checked="checked" <% } %> type="checkbox" class="form-check-input" >
                                           View
                                          <i class="input-helper"></i></label>
                                        </div>
-                                        <div class="form-check mx-sm-2">
+                                        <!-- <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
                                              <input name="permissions" value="report_genecharge"  id="report_genecharge" type="checkbox"  <% if(role.permissions.includes('report_genecharge')){ %> checked="checked" <% } %> class="form-check-input" >
                                             Generate charge 
@@ -209,7 +308,7 @@
                                              <input name="permissions" value="report_delete"  id="report_delete" type="checkbox"  <% if(role.permissions.includes('report_delete')){ %> checked="checked" <% } %> class="form-check-input">
                                             Delete
                                            <i class="input-helper"></i></label>
-                                         </div>
+                                         </div> -->
                                  </div>
                                  <p><b>Settings</b></p>
                                  <div  class=" form-inline">

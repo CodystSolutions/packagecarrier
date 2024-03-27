@@ -1,0 +1,122 @@
+<%- include('../../partials/head'); %>
+
+      <!-- Page Content  -->
+   <div id="content-page" class="content-page">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-sm-12">
+                <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                       <div class="iq-header-title">
+                          <h4 class="card-title">Transaction Details</h4>
+                       </div>
+                       <div class="user-list-files d-flex float-right">
+                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/transaction/update/<%= transaction.id %>"><i class="ri-pencil-line"></i></a>
+                        </div>
+                    </div>
+                    <div class="iq-card-body">
+                    
+                       <dl class="row">
+
+                        <dt class="col-sm-3">Receipt Number</dt>
+                        <dd class="col-sm-9"><%= transaction.receipt_number %></dd>
+                        <dt class="col-sm-3">Order Number </dt>
+                        <dd class="col-sm-9">
+                           <p><%= transaction.order_number %></p>
+                        </dd>
+                        <dt class="col-sm-3">Packages </dt>
+
+                        <dd class="col-sm-9"><%= transaction.package_tracking_numbers %></dd>
+                   
+                      
+                          <dt class="col-sm-3">Payment Method</dt>
+                          <dd class="col-sm-9"><%= transaction.paymentmethod %></dd>
+                          <dt class="col-sm-3">Reference</dt>
+                          <dd class="col-sm-9"><%= transaction.reference %></dd>
+                          <dt class="col-sm-3">Type</dt>
+                          <dd class="col-sm-9"><%= transaction.type ?? 'general' %></dd>
+                         
+
+                          <dt class="col-sm-3">Status</dt>
+                          <dd class="col-sm-9"><%= transaction.status %></dd>
+                          <dt class="col-sm-3">Successful</dt>
+                          <dd class="col-sm-9"><%= transaction.is_successful ?? false%></dd>
+                          <dt class="col-sm-3">Total</dt>
+                          <dd class="col-sm-9"><%= transaction.total.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></dd>
+                          <dt class="col-sm-3">Tendered</dt>
+                          <dd class="col-sm-9"><%= transaction.tendered.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></dd>
+                          <dt class="col-sm-3">Change</dt>
+                          <dd class="col-sm-9"><%= transaction.change.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></dd>
+                          <dt class="col-sm-3 text-truncate">CC Last 4</dt>
+                          <dd class="col-sm-9"><%=transaction.cclast4  %></dd>
+                          <dt class="col-sm-3 text-truncate">CC Type</dt>
+                          <dd class="col-sm-9"><%=transaction.cctype  %></dd>
+                          <dt class="col-sm-3 text-truncate">Created On</dt>
+                          <dd class="col-sm-9"><%= moment(transaction.created_on).tz("America/New_York").format('MMM DD, YYYY HH:mm') %></dd>
+                          <dt class="col-sm-3 text-truncate">Modified On</dt>
+                          <dd class="col-sm-9"><%= moment(transaction.modified_on).tz("America/New_York").format('MMM DD, YYYY HH:mm') %></dd>
+
+                          <dt class="col-sm-3 text-truncate">Modified By</dt>
+                          <dd class="col-sm-9"><%=transaction.modified_by  %></dd>
+
+
+                       </dl>
+                    </div>
+                    <hr/>
+                    
+                 </div>
+            
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-12">
+                <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                       <div class="iq-header-title">
+                          <h4 class="card-title">Package Summary</h4>
+                       </div>
+                    </div>
+                    <div class="iq-card-body">
+                     <table class="table table-head-fixed text-nowrap">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Weight</th>
+                                <th scope="col">Total</th>
+                               
+        
+                            </tr>
+                        </thead>
+                        <tbody id="myTable">
+                            <% for(var x = 0; x < billinginfo.length ;x ++) {%>
+                                <tr>
+                                    <td>Package <a href="/package/details/<%=billinginfo[x].package.id%>"> <%=billinginfo[x].package.tracking_number%></a> </td>
+                                    <td><%=billinginfo[x].package.description%></td>
+                                    <td><%=billinginfo[x].package.weight%></td>
+        
+                                
+                                    <td><%=billinginfo[x].total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })%></td>
+        
+                                  
+                                </tr>
+                            <% } %>
+                           
+                           
+                        </tbody>
+                        </table>
+                    </div>
+                    <hr/>
+                    
+                 </div>
+            
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+   
+   <%- include('../../partials/footer'); %>
+   <script src="/js/appscripts/package.js"></script>

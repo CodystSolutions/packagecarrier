@@ -9,7 +9,6 @@ $("#addadmin").submit(function(e){
           //alert("success")
           if(e.status == 200){
             console.log(JSON.stringify(e));
-            $('#exampleModal').modal('hide');
             toastr.success('Successfully added')
             setTimeout(function(){  window.location.reload();
             }, 3000);

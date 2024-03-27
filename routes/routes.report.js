@@ -30,7 +30,7 @@ router.get('/view/dropoff/chart', rbacMiddleware.checkPermission(), async (req, 
                  var count = 0
                  
                  for(var x = 0; x < dayvolumeresponse.length ; x++){
-                     if(moment(dayvolumeresponse[x].createdOn).utc().date() == i + 1){
+                     if(moment(dayvolumeresponse[x].createdOn).utc().tz('America/Jamaica').date() == i + 1){
                          count = dayvolumeresponse[x].count
                      }
                  };
@@ -146,7 +146,7 @@ router.get('/view/dropoff/chart', rbacMiddleware.checkPermission(), async (req, 
                  var count = 0
                  
                  for(var x = 0; x < dayvolumeresponse.length ; x++){
-                     if(moment(dayvolumeresponse[x].createdOn).utc().date() == i + 1){
+                     if(moment(dayvolumeresponse[x].createdOn).utc().tz('America/Jamaica').date() == i + 1){
                          count = dayvolumeresponse[x].count
                      }
                  };
@@ -260,7 +260,7 @@ router.get('/view/dropoff/chart', rbacMiddleware.checkPermission(), async (req, 
                  var total = 0
                  
                  for(var x = 0; x < dayvolumeresponse.length ; x++){
-                     if(moment(dayvolumeresponse[x].createdOn).utc().date() == i + 1){
+                     if(moment(dayvolumeresponse[x].createdOn).utc().tz('America/Jamaica').date() == i + 1){
                         total = dayvolumeresponse[x].total
                      }
                  };

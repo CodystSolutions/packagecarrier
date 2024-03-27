@@ -112,40 +112,34 @@
                                          </div>
                                  </div>
                                 
-                                 <p><b>Transaction</b></p>
+                                 <p><b>Batch</b></p>
                                  <div  class=" form-inline">
                                      <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                           <input name="permissions" value="transaction_view"  id="transaction_view" type="checkbox" class="form-check-input" >
+                                           <input name="permissions" value="batch_view" type="checkbox"  id="batch_view"  class="form-check-input" >
                                           View
                                          <i class="input-helper"></i></label>
                                        </div>
-                                        <div class="form-check mx-sm-2">
-                                           <label class="form-check-label">
-                                             <input name="permissions" value="transaction_record"  id="transaction_record" type="checkbox" class="form-check-input" >
-                                            Record 
-                                           <i class="input-helper"></i></label>
-                                         </div>
                                        <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
-                                             <input name="permissions" value="transaction_recordpayment"  id="transaction_recordpayment" type="checkbox" class="form-check-input" >
-                                            Record Payment
+                                             <input name="permissions" value="batch_create" type="checkbox"  id="batch_create"  class="form-check-input" >
+                                            Create
                                            <i class="input-helper"></i></label>
                                          </div>
                                          <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
-                                             <input name="permissions" value="transaction_update"  id="transaction_update" type="checkbox" class="form-check-input" >
-                                            Update  
+                                             <input name="permissions" value="batch_update"  id="batch_update" type="checkbox" class="form-check-input" >
+                                            Update 
                                            <i class="input-helper"></i></label>
                                          </div>
                                          <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
-                                             <input name="permissions" value="transaction_delete"  id="transaction_delete" type="checkbox" class="form-check-input">
+                                             <input name="permissions" value="batch_delete"  id="batch_delete" type="checkbox" class="form-check-input">
                                             Delete
                                            <i class="input-helper"></i></label>
                                          </div>
                                  </div>
-                                 
+                                
                                
                                  <p><b>Drop Off Request</b></p>
                                  <div  class=" form-inline">
@@ -157,25 +151,138 @@
                                    </div>
                                      <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                           <input name="permissions" value="view"  id="dropoff_view" type="checkbox" class="form-check-input" >
+                                           <input name="permissions" value="dropoff_view"  id="dropoff_view" type="checkbox" class="form-check-input" >
                                           View
                                          <i class="input-helper"></i></label>
                                      </div>
                                      <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                         <input name="permissions" value="update"  id="dropoff_update" type="checkbox" class="form-check-input" >
+                                         <input name="permissions" value="dropoff_update"  id="dropoff_update" type="checkbox" class="form-check-input" >
                                          Update 
                                          <i class="input-helper"></i></label>
                                      </div>
                                      <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="dropoff_delete"  id="dropoff_delete" type="checkbox" class="form-check-input" >
+                                          Delete
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="dropoff_details"  id="dropoff_details" type="checkbox" class="form-check-input" >
+                                          Details
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                    
+                                   
+                                        
+                                 </div>
+
+                                 <p><b>Pickup Request</b></p>
+                                 <div  class=" form-inline">
+                                    <div class="form-check mx-sm-2">
+                                       <label class="form-check-label">
+                                         <input name="permissions" value="pickup_checkout"  id="pickup_checkout" type="checkbox" class="form-check-input" >
+                                        Checkout
+                                       <i class="input-helper"></i></label>
+                                   </div>
+                                     <div class="form-check mx-sm-2">
                                          <label class="form-check-label">
-                                             <input name="permissions" value="delete"  id="dropoff_delete" type="checkbox" class="form-check-input" >
-                                             Delete 
+                                           <input name="permissions" value="pickup_view"  id="pickup_view" type="checkbox" class="form-check-input" >
+                                          View
                                          <i class="input-helper"></i></label>
                                      </div>
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                         <input name="permissions" value="pickup_update"  id="pickup_update" type="checkbox" class="form-check-input" >
+                                         Update 
+                                         <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="pickup_delete"  id="pickup_delete" type="checkbox" class="form-check-input" >
+                                          Delete
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                   
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="pickup_details"  id="pickup_details" type="checkbox" class="form-check-input" >
+                                          Details
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                    
+                                        
+                                 </div>
+
+
+                                 <p><b>Packages</b></p>
+                                 <div  class=" form-inline">
+                                    <div class="form-check mx-sm-2">
+                                       <label class="form-check-label">
+                                         <input name="permissions" value="package_scan"  id="package_scan" type="checkbox" class="form-check-input" >
+                                        Scan
+                                       <i class="input-helper"></i></label>
+                                   </div>
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                           <input name="permissions" value="package_view"  id="package_view" type="checkbox" class="form-check-input" >
+                                          View
+                                         <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                         <input name="permissions" value="package_update"  id="package_update" type="checkbox" class="form-check-input" >
+                                         Update 
+                                         <i class="input-helper"></i></label>
+                                     </div>
+                                     <div class="form-check mx-sm-2">
+                                      <label class="form-check-label">
+                                          <input name="permissions" value="package_details"  id="package_details" type="checkbox" class="form-check-input" >
+                                          Details
+                                      <i class="input-helper"></i></label>
+                                     </div>
+                                    
+                                   
                                         
                                  </div>
                                
+                                 <p><b>Transaction</b></p>
+                                 <div  class=" form-inline">
+                                     <div class="form-check mx-sm-2">
+                                         <label class="form-check-label">
+                                           <input name="permissions" value="transaction_view"  id="transaction_view" type="checkbox" class="form-check-input" >
+                                          View
+                                         <i class="input-helper"></i></label>
+                                       </div>
+                                        <div class="form-check mx-sm-2">
+                                           <label class="form-check-label">
+                                             <input name="permissions" value="transaction_update"  id="transaction_update" type="checkbox" class="form-check-input" >
+                                            Update 
+                                           <i class="input-helper"></i></label>
+                                         </div>
+                                       <div class="form-check mx-sm-2">
+                                           <label class="form-check-label">
+                                             <input name="permissions" value="transaction_details"  id="transaction_details" type="checkbox" class="form-check-input" >
+                                            Details
+                                           <i class="input-helper"></i></label>
+                                         </div>
+                                         <div class="form-check mx-sm-2">
+                                           <label class="form-check-label">
+                                             <input name="permissions" value="transaction_delete"  id="transaction_delete" type="checkbox" class="form-check-input" >
+                                            Delete
+                                           <i class="input-helper"></i></label>
+                                         </div>
+                                         <div class="form-check mx-sm-2">
+                                           <label class="form-check-label">
+                                             <input name="permissions" value="transaction_delete"  id="transaction_delete" type="checkbox" class="form-check-input">
+                                            Delete
+                                           <i class="input-helper"></i></label>
+                                         </div>
+                                 </div>
+                                 
+
+
                                  <p><b>Report</b></p>
                                  <div  class=" form-inline">
                                      <div class="form-check mx-sm-2">
@@ -184,7 +291,7 @@
                                           View
                                          <i class="input-helper"></i></label>
                                        </div>
-                                        <div class="form-check mx-sm-2">
+                                        <!-- <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
                                              <input name="permissions" value="report_genecharge"  id="report_genecharge" type="checkbox" class="form-check-input" >
                                             Genecharge 
@@ -201,13 +308,13 @@
                                              <input name="permissions" value="report_update"  id="report_update" type="checkbox" class="form-check-input" >
                                             Update  
                                            <i class="input-helper"></i></label>
-                                         </div>
-                                         <div class="form-check mx-sm-2">
+                                         </div> -->
+                                         <!-- <div class="form-check mx-sm-2">
                                            <label class="form-check-label">
                                              <input name="permissions" value="report_delete"  id="report_delete" type="checkbox" class="form-check-input">
                                             Delete
                                            <i class="input-helper"></i></label>
-                                         </div>
+                                         </div> -->
                                  </div>
                                  <p><b>Settings</b></p>
                                  <div  class=" form-inline">

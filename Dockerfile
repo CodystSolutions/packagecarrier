@@ -15,3 +15,5 @@ COPY --chown=node:node . .
 EXPOSE 4000
 
 CMD [ "node", "index.js" ]
+
+RUN npx sequelize-cli db:migrate    

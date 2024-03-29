@@ -15,7 +15,7 @@
   },
   "production": {
     "username": "doadmin",
-    "password": "AVNS_XXRmlnHNdkl4l4kSd4i hide",
+    "password": "AVNS_XXRmlnHNdkl4l4kSd4i",
     "database": "defaultdb",
     "host": "speedz-db-do-user-16158511-0.c.db.ondigitalocean.com",
     "dialect": "postgres", 

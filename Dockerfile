@@ -8,6 +8,8 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npx sequelize-cli db:migrate    
+
 USER node
 
 COPY --chown=node:node . .
@@ -16,4 +18,3 @@ EXPOSE 4000
 
 CMD [ "node", "index.js" ]
 
-RUN npx sequelize-cli db:migrate    

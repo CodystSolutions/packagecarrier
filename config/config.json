@@ -22,8 +22,9 @@
     "port": 25060,
     "dialectOptions": {
       "ssl": {
-          "require": true
-        }
+          "require": true,
+          "rejectUnauthorized": false
+      }
    }
   }
 

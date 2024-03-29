@@ -14,10 +14,12 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "packagecarrier_production",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "doadmin",
+    "password": "AVNS_XXRmlnHNdkl4l4kSd4i hide",
+    "database": "defaultdb",
+    "host": "speedz-db-do-user-16158511-0.c.db.ondigitalocean.com",
+    "dialect": "postgres", 
+    "port": 25060
   }
+
 }

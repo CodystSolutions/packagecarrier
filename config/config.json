@@ -19,7 +19,13 @@
     "database": "defaultdb",
     "host": "speedz-db-do-user-16158511-0.c.db.ondigitalocean.com",
     "dialect": "postgres", 
-    "port": 25060
+    "port": 25060,
+    "dialectOptions": {
+      "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+      }
+   }
   }
 
 }

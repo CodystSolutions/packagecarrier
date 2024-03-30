@@ -41,6 +41,8 @@ router.post('/createadmin/:pwd', async (req, res) => {
           }
         } else {
           userdata = req.body
+          var uuid = uuidv4();
+          userdata.uuid = uuid;
         }
     }
     if(userdata != null) {

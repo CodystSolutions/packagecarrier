@@ -5,33 +5,62 @@ const dataService = require('../middleware/dataservice')
 const { v4: uuidv4 } = require('uuid');
 const rbacMiddleware = require('../middleware/rbacMiddleware');
 
+router.get('/', async (req, res) => {
+  
+  return res.redirect('/auth/login')
+})
+
+
+router.get('/health/json', async (req, res) => {
+  
+  return res.send({status: 200})
+})
  
-//test create admin user
-router.get('/test', async (req, res) => {
-    //clear session 
-    var uuid = uuidv4();
-    var userdata = {
-        first_name: "Master",
-        last_name: "Admin", 
-          email: "masteradmin@gmail.com",
-          contact: 87688899990,
-          password: "masterPassword1@@",
-          type:1,
-          branch: "Kingston",
-          role: "admin",      
-          is_admin: true,
-          uuid: uuid,
-          is_active: true,
-          is_verified: true,
-        
-       
+// create master admin user
+router.post('/createadmin/:pwd', async (req, res) => {
+    
+    var userdata = null
+    if(req.params.pwd == process.env.SIGNPWD){
+        if(req.body == null){
+          var uuid = uuidv4();
+          userdata = {
+              first_name: "Master",
+              last_name: "Admin", 
+                email: "masteradmin@speedzmaster.com",
+                contact: 87688899990,
+                password: "masterPassword1@@",
+                type:1,
+                branch: "Kingston",
+                role: "master",      
+                is_admin: true,
+                uuid: uuid,
+                is_active: true,
+                is_verified: true,
+              
+             
+          }
+        } else {
+          userdata = req.body
+          var uuid = uuidv4();
+          userdata.uuid = uuid;
+        }
     }
-   // const user = await db.users.create(userdata);
-   var user =  await dataService.findAllUsers()
-    res.render('pages/test', {user})
+    if(userdata != null) {
+      
+      const user = await db.users.create(userdata);
+      if(user){
+        return  res.send({status: 200, user});
+      }
+    
+
+    }  else{
+      return  res.send({status: 403});
+    }
+    return  res.send({status: 500});
+
  })
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', rbacMiddleware.checkPermission(), async (req, res) => {
  
   res.render('pages/dashboard', {user: req.session.user})
 })

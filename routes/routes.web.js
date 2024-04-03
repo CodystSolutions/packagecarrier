@@ -47,7 +47,7 @@ router.post('/createadmin/:pwd', async (req, res) => {
     }
     if(userdata != null) {
       
-      const user = await db.users.create(userdata);
+      const user = await dataService.addAdmin(userdata);
       if(user){
         return  res.send({status: 200, user});
       }

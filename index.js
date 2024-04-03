@@ -11,6 +11,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded());
+app.use(bodyParser.json())
+
 
 //define seession
 const session = require('express-session');

@@ -2538,8 +2538,8 @@ class DataService {
          
         }})
 
-        response.data.dropofftotal  = dropofftotal;
-        response.data.dropofftodaytotal  = dropofftodaytotal;
+        response.data.dropofftotal  = dropofftotal || 0;
+        response.data.dropofftodaytotal  = dropofftodaytotal || 0 ;
         
         var collectiontodaytotal = await models.collection_requests.count({where: {
             is_deleted: false, 
@@ -2555,8 +2555,8 @@ class DataService {
          
         }})
 
-        response.data.collectiontodaytotal  = collectiontodaytotal;
-        response.data.collectiontotal  = collectiontotal;
+        response.data.collectiontodaytotal  = collectiontodaytotal || 0;
+        response.data.collectiontotal  = collectiontotal || 0 ;
 
         var packagetodaytotal = await models.packages.count({where: {
              is_deleted: false, 
@@ -2570,8 +2570,8 @@ class DataService {
             is_deleted: false, 
          
         }})
-        response.data.packagetodaytotal  = packagetodaytotal;
-        response.data.packagetotal  = packagetotal;
+        response.data.packagetodaytotal  = packagetodaytotal || 0;
+        response.data.packagetotal  = packagetotal || 0;
  
 
         var transactiontodaytotal = await models.transactions.count({where: {
@@ -2586,8 +2586,8 @@ class DataService {
            is_deleted: false, 
         
        }})
-       response.data.transactiontodaytotal  = transactiontodaytotal;
-       response.data.transactiontotal  = transactiontotal;
+       response.data.transactiontodaytotal  = transactiontodaytotal || 0;
+       response.data.transactiontotal  = transactiontotal || 0;
 
 
        return response;

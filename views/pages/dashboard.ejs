@@ -12,7 +12,7 @@
                 </div>
                 <p class="text-secondary">Today Drop Off Requests</p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.dropofftodaytotal || 0 %></b></h4>
+                    <h4><b><%= data.dropofftodaytotal ?? 0 %></b></h4>
                     <div id="iq-chart-box1"></div>
                     <!-- <span class="text-primary"><b> +0% <i class="ri-arrow-up-fill"></i></b></span> -->
                 </div>
@@ -27,7 +27,7 @@
                 </div>
                 <p class="text-secondary">Today Packages</p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.packagetodaytotal || 0 %></b></h4>
+                    <h4><b><%= data.packagetodaytotal ?? 0 %></b></h4>
                     <div id="iq-chart-box2"></div>
                     <!-- <span class="text-danger"><b> -0% <i class="ri-arrow-down-fill"></i></b></span> -->
                 </div>
@@ -42,7 +42,7 @@
                 </div>
                 <p class="text-secondary">Today Pickup </p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.collectiontodaytotal || 0 %></b></h4>
+                    <h4><b><%= data.collectiontodaytotal ?? 0 %></b></h4>
                     <div id="iq-chart-box4"></div>
                     <!-- <span class="text-warning"><b> +0% <i class="ri-arrow-up-fill"></i></b></span> -->
                 </div>
@@ -57,7 +57,7 @@
                 </div>
                 <p class="text-secondary">Today Transactions</p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.transactiontodaytotal || 0 %></b></h4>
+                    <h4><b><%= data.transactiontodaytotal ?? 0 %></b></h4>
                     <div id="iq-chart-box3"></div>
                     <!-- <span class="text-success"><b> +0% <i class="ri-arrow-up-fill"></i></b></span> -->
                 </div>
@@ -73,7 +73,7 @@
                 </div>
                 <p class="text-secondary">Total Drop Off Requests</p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.dropofftotal || 0 %></b></h4>
+                    <h4><b><%= data.dropofftotal ?? 0 %></b></h4>
                     <div id="iq-chart-box1"></div>
                     <!-- <span class="text-primary"><b> +0% <i class="ri-arrow-up-fill"></i></b></span> -->
                 </div>
@@ -88,7 +88,7 @@
                 </div>
                 <p class="text-secondary">Total Packages</p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.packagetotal || 0 %></b></h4>
+                    <h4><b><%= data.packagetotal ?? 0 %></b></h4>
                     <div id="iq-chart-box2"></div>
                     <!-- <span class="text-danger"><b> -0% <i class="ri-arrow-down-fill"></i></b></span> -->
                 </div>
@@ -103,7 +103,7 @@
                 </div>
                 <p class="text-secondary">Total Pickup Requests </p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.collectiontotal || 0 %></b></h4>
+                    <h4><b><%= data.collectiontotal ?? 0 %></b></h4>
                     <div id="iq-chart-box4"></div>
                     <!-- <span class="text-warning"><b> +0% <i class="ri-arrow-up-fill"></i></b></span> -->
                 </div>
@@ -118,7 +118,7 @@
                 </div>
                 <p class="text-secondary">Total Transactions</p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <h4><b><%= data.transactiontotal || 0 %></b></h4>
+                    <h4><b><%= data.transactiontotal ?? 0 %></b></h4>
                     <div id="iq-chart-box3"></div>
                     <!-- <span class="text-success"><b> +0% <i class="ri-arrow-up-fill"></i></b></span> -->
                 </div>

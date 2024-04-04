@@ -31,7 +31,7 @@ router.post('/createadmin/:pwd', async (req, res) => {
                 password: "masterPassword1@@",
                 type:1,
                 branch: "Kingston",
-                role: "master",      
+                role: "masteradmin",      
                 is_admin: true,
                 uuid: uuid,
                 is_active: true,
@@ -61,8 +61,20 @@ router.post('/createadmin/:pwd', async (req, res) => {
  })
 
 router.get('/dashboard', rbacMiddleware.checkPermission(), async (req, res) => {
+
+  try{
+    var result = await dataService.getDashboardAnalytics();
+    if(result.status == 200){
+      return res.render('pages/dashboard', {user: req.session.user, data: result.data})
+  
+    }
+   
+
+  } catch(err){
+    console.log("dashboard err", err)
+  }
  
-  res.render('pages/dashboard', {user: req.session.user})
+  return res.render('pages/dashboard', {user: req.session.user, data: {}})
 })
 
 router.get('/profile',  async (req, res) => {

@@ -14,7 +14,7 @@ async function email (mail){
       
        transport: {
             host: process.env.MAIL_HOST, 
-            port: 587,
+            port: 2525,
             secure: false,
             auth: {
                 user:  process.env.MAIL_USER, // generated ethereal user
@@ -42,8 +42,8 @@ async function email (mail){
            }
           )
         .catch((error) => {
-          console.log(error);
-          logger.error(`${registeredcodes.EMAIL_SENDING_FAILURE} Email error: Email failed to be sent  for ${process.env.COURIER_EMAIL}`, error);
+          //console.log(error);
+          console.log(`${registeredcodes.EMAIL_SENDING_FAILURE} Email error: Email failed to be sent  for ${process.env.COURIER_EMAIL}`, error);
           return false;
         });
       return true;

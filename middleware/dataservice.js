@@ -980,7 +980,7 @@ class DataService {
         try{
             //create user or get id
             var userexist = null;
-            //data.create_an_account = true;
+            data.create_an_account = true;
             if(!util.isNullOrEmpty(data.sender_email)){
                
                userexist =  await models.users.findOne({where: {email: util.sanitize(data.sender_email.toLowerCase())}})

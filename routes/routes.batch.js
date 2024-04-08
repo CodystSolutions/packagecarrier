@@ -21,7 +21,13 @@ router.get('/view', rbacMiddleware.checkPermission(), async (req, res) => {
 
 router.get('/create', rbacMiddleware.checkPermission(), async (req, res) => {
     
-    return res.render('pages/batch/create',{user: req.session.user})
+    var branches = []
+     
+    var branchesresponse = await  dataService.findAllBranches();
+    if(branchesresponse.status == 200){
+        branches = branchesresponse.branches
+    }
+    return res.render('pages/batch/create',{user: req.session.user, branches})
   })
 
 router.post('/create', rbacMiddleware.checkPermission(), async(req, res)=> {
@@ -48,14 +54,19 @@ router.post('/create', rbacMiddleware.checkPermission(), async(req, res)=> {
 
 router.get('/update/:id', rbacMiddleware.checkPermission(), async (req, res) => {
     var batch = null
-       
+    var branches = []
+     
+    var branchesresponse = await  dataService.findAllBranches();
+    if(branchesresponse.status == 200){
+        branches = branchesresponse.branches
+    }
     var batchresponse = await  dataService.findBatch(req.params.id);
     if(batchresponse.status == 200){
         batch = batchresponse.batch
-        return res.render('pages/batch/update',{user: req.session.user, batch})
+        return res.render('pages/batch/update',{user: req.session.user, batch, branches})
 
     }
-    return res.render('pages/batch/create',{user: req.session.user, batch})
+    return res.render('pages/batch/create',{user: req.session.user, batch, branches})
   })
 
   router.post('/update', rbacMiddleware.checkPermission(), async(req, res)=> {

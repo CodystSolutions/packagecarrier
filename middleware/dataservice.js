@@ -876,7 +876,7 @@ class DataService {
         var response = {status: 404, batches: []}
 
         try{
-            var batches = await models.batches.findAll({where: {is_deleted: false}});
+            var batches = await models.batches.findAll({where: {is_deleted: false}, order: [[ 'id', 'DESC' ]]});
             if(batches) {
                 response.status = 200
                 response.batches = batches;
@@ -1059,7 +1059,7 @@ class DataService {
               
                             }
               
-                            var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+                            var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt', data.sender_email, templatedata )
                             console.log("Email Sent ",emailsent)
             
 
@@ -1102,7 +1102,7 @@ class DataService {
                               
               
                             }
-                            var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+                            var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', data.sender_email, templatedata )
                             console.log("Email Sent ",emailsent)
                         }catch(emailerror){
                           console.log(emailerror)
@@ -1366,7 +1366,7 @@ class DataService {
     
               var html = mustache.render(template, templatedata)
     
-              var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+              var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt',dropoffresponse.sender_email, templatedata )
               console.log("Email Sent ",emailsent)
     
               response.status = 200
@@ -1388,7 +1388,7 @@ class DataService {
               const template = fs.readFileSync('./public/templates/postpaidreceipt.html', 'utf-8');
     
               var html = mustache.render(template, templatedata)
-              var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', "jtanjels@gmail.com", templatedata )
+              var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', dropoffresponse.sender_email, templatedata )
               console.log("Email Sent ",emailsent)
               response.status = 200;
           }
@@ -1460,12 +1460,12 @@ class DataService {
             // var rateresponse = await findRatebyWeight(Math.ceil(data.weight));
             // var rate = (rateresponse && rateresponse.status == 200) ? rateresponse.rate : ""
             let requestdata = {
-                sender_first_name: data.sender_first_name,
-                sender_last_name: data.sender_last_name,
+                sender_first_name: data.sender_first_name.toLowerCase(),
+                sender_last_name: data.sender_last_name.toLowerCase(),
                 sender_email: data.sender_email,
                 sender_contact: data.sender_contact,
-                receiver_first_name: data.receiver_first_name,
-                receiver_last_name: data.receiver_last_name,
+                receiver_first_name: data.receiver_first_name.toLowerCase(),
+                receiver_last_name: data.receiver_last_name.toLowerCase(),
                 receiver_email: data.receiver_email,
                 receiver_contact: data.receiver_contact,
                 sender_info: sender_info,
@@ -1484,6 +1484,9 @@ class DataService {
                 method: data.method,
                 notes: data.text,
                 is_deleted: false,
+                created_on: Date.now(),
+                modified_on: Date.now(),
+                modified_by: data.modified_by
             };
             if(senderexist) requestdata.sender_id = senderexist.id
             if(receiverexist) requestdata.receiver_id = receiverexist.id
@@ -1561,7 +1564,6 @@ class DataService {
            
             
             let requestdata = data
-            console.log("batch", data)
             delete requestdata.id;
              const result = await models.packages.update({batch_id: parseInt(data.batch_id), status: data.status, current_location: data.current_location, modified_by: data.modified_by, modified_on: Date.now()}, {
                  where: {
@@ -1571,7 +1573,12 @@ class DataService {
                
              })
 
+
+
              if(result.length > 0){
+                
+
+
                  var packagedetails = await models.packages.findOne({where:
                      {tracking_number: data.tracking_number},
                      include: [
@@ -1579,7 +1586,16 @@ class DataService {
                     ]
     
                     })
-                 return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated", package: packagedetails};
+
+                  //send email to receiver
+                  var templatedata = {
+                    date: moment(packagedetails.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                    package: packagedetails
+                  }
+                    var emailsentreceiver = await this.sendemail('statusupdateemail.html', 'Status Update', packagedetails.receiver_email, templatedata )
+                    var emailsentsender = await this.sendemail('statusupdateemail.html', 'Status Update', packagedetails.sender_email, templatedata )
+
+                    return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated", package: packagedetails};
              } 
           
             console.log(`Dropoff Requests Creation error: dropoff could not be created for ${data.name}`);
@@ -1806,6 +1822,21 @@ class DataService {
                             id: packageinfo.id
                         }
                     })
+
+                    try{
+                        packageinfo.status = 'picked up'
+                        var templatedata = {
+                            date: moment(packageinfo.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                            package: packageinfo
+                          }
+                            var emailsentreceiver = await this.sendemail('statusupdateemail.html', 'Status Update', packageinfo.receiver_email, templatedata )
+                            var emailsentsender = await this.sendemail('statusupdateemail.html', 'Status Update', packageinfo.sender_email, templatedata )
+                            var emailsentcollector= await this.sendemail('statusupdateemail.html', 'Status Update', data.collector_email, templatedata )
+
+
+                    }catch(err){
+                        console.log("error sending email addpickupcheckout")
+                    }
     
                     //update dropoffreq to completed if all packages are collected
 
@@ -1981,7 +2012,10 @@ class DataService {
 
               var html = mustache.render(template, templatedata)
 
-              var emailsent = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', "jtanjels@gmail.com", templatedata )
+              var emailsentreceiver = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].receiver_email , templatedata )
+              var emailsentsender = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].sender_email , templatedata )
+              var emailsentcollector = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', pickupresponse.collector_email , templatedata )
+
               console.log("Email Sent ",emailsent)
     
               response.status = 200
@@ -2004,11 +2038,14 @@ class DataService {
               }
               const template = fs.readFileSync('./public/templates/pickupcheckoutreceipt.html', 'utf-8');
 
-              var html = mustache.render(template, templatedata)
+              var emailsentreceiver = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].receiver_email , templatedata )
+              var emailsentsender = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].sender_email , templatedata )
+              var emailsentcollector = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', pickupresponse.collector_email , templatedata )
 
-              var emailsent = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', "jtanjels@gmail.com", templatedata )
-              console.log("Email Sent ",emailsent)
-    
+              console.log("Email Sent ", response.packages[0].receiver_email ,emailsentreceiver)
+              console.log("Email Sent ", response.packages[0].sender_email ,emailsentsender)
+              console.log("Email Sent ",pickupresponse.collector_email ,emailsentcollector)
+
               response.status = 200
           }
           
@@ -2037,6 +2074,33 @@ class DataService {
 
                })
             return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Found", package: packagedetails};
+   
+          
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_CREATION, message: "Failed to find packages"}
+
+
+    
+    } 
+    async scanPickupPackageByName(data){
+       
+        try{
+           
+            
+            var packages = await models.packages.findAll({where:
+                {receiver_first_name: data.receiver_first_name.toLowerCase(), receiver_last_name: data.receiver_last_name.toLowerCase(), status: 'ready for pickup'},
+                include: [
+                   { model: models.batches },
+                   { model: models.requests },
+
+               ]
+
+               })
+            return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Found", packages: packages};
    
           
         }
@@ -2335,6 +2399,8 @@ class DataService {
 
 
     async sendemail (templatename, subject, receiver_email,variables){
+
+        if(receiver_email == null) return false;
         //send activation email
        /// var template = fs.readFileSync(`../public/templates/${templatename}`, 'utf-8'); 
        const template =  fs.readFileSync(`./public/templates/${templatename}`, 'utf-8');
@@ -2344,15 +2410,15 @@ class DataService {
         var mail = {
             html: output,
             message: {
-                //to: receiver_email,
-                to: "jtanjels@gmail.com",
+                to: receiver_email,
+                //to: "jtanjels@gmail.com",
                 subject: subject, 
                 bcc: process.env.COURIER_EMAIL_CC,
                 html: output
             },
         }
         //send email
-        console.log("SENDING EMAIL")
+        console.log("SENDING EMAIL to ", receiver_email )
         var emailsent = await email(mail)
         if (!emailsent) return false;
         return true;

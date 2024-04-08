@@ -113,7 +113,7 @@ if (jQuery("#chartdiv").length && jQuery(document).ready(function() {}),
 			curve: "straight"
 		},
 		title: {
-			text: "Number of transactions",
+			text: "Sales per month",
 			align: "left"
 		},
 		grid: {
@@ -149,7 +149,7 @@ if (jQuery("#transaction-day-chart").length) {
 			curve: "straight"
 		},
 		title: {
-			text: "Number of transactions per day",
+			text: "Sales per day",
 			align: "left"
 		},
 		grid: {
@@ -186,7 +186,7 @@ if (jQuery("#transaction-week-chart").length) {
 			curve: "straight"
 		},
 		title: {
-			text: "Number of transactions per week",
+			text: "Sales per week",
 			align: "left"
 		},
 		grid: {
@@ -223,7 +223,7 @@ if (jQuery("#transaction-year-chart").length) {
 			curve: "straight"
 		},
 		title: {
-			text: "Number of transactions per year",
+			text: "Sales per year",
 			align: "left"
 		},
 		grid: {
@@ -274,7 +274,7 @@ if (jQuery("#prepaidpostpaid-column").length) {
 		},
 		yaxis: {
 			title: {
-				text: "Number of transactions by method"
+				text: "Sales by method"
 			}
 		},
 		fill: {

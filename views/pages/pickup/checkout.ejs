@@ -85,10 +85,10 @@
 
                                              
                                                 <div class="row">
-                                                   <div class="col-10">
+                                                   <div class="col-8">
                                                       <div class="form-group">
                                                          <label for="exampleFormControlSelect1">Scan/Enter Tracking Number</label>
-                                                         <input type="text" required name="tracking_number" id="tracking_number" class="form-control" placeholder="Scan Tracking Number">
+                                                         <input type="text"  name="tracking_number" id="tracking_number" class="form-control" placeholder="Scan Tracking Number">
       
                                                       </div>
                                       
@@ -97,6 +97,29 @@
                                                       <button  type="button" class="btn btn-primary btn-lg  pt-1" onclick="scanpackages()" >Submit</button>
                                                    </div>
                                                 </div>
+
+                                                <div class="row">
+                                                   <div class="col-4">
+                                                      <div class="form-group">
+                                                         <label for="exampleFormControlSelect1">Enter first name</label>
+                                                         <input type="text"  name="receiver_first_name" id="receiver_first_name" class="form-control" placeholder="Enter first name">
+      
+                                                      </div>
+                                      
+                                                   </div>
+                                                   <div class="col-4">
+                                                      <div class="form-group">
+                                                         <label for="exampleFormControlSelect1">Enter last name</label>
+                                                         <input type="text"  name="receiver_last_name" id="receiver_last_name" class="form-control" placeholder="Enter last name">
+      
+                                                      </div>
+                                      
+                                                   </div>
+                                                   <div class="col-2 pt-4">
+                                                      <button  type="button" class="btn btn-primary btn-lg  pt-1" onclick="scanpackagesbyname()" >Submit</button>
+                                                   </div>
+                                                </div>
+
 
                                                 <p>Count: <span id="count">0</span></p>
 
@@ -128,7 +151,7 @@
                                     
                                     </tbody>
                                 </table>
-                                <button class="btn btn-primary nextBtn btn-lg pull-right" onclick="gettotal()" type="button" >Next</button>
+                                <button class="btn btn-primary nextBtn btn-lg pull-right" onclick="if(checkcount()){ gettotal()} else{return false}" type="button" >Next</button>
 
                               </div>
                              
@@ -169,7 +192,7 @@
                                           <h5 class="mb-4">Payment</h5>
                                           <div class="row">
                                           
-                                             <div class="row col-md-9">
+                                             <div class="row col-md-8">
                                                 <div class="col-md-12 form-group">
                                                    <label for="panno" class="control-label">Package Payment Method *</label>
                                                    <div class="custom-control custom-radio custom-control-inline">

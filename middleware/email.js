@@ -32,7 +32,7 @@ async function email (mail){
             }
           }
       });
-      // mail.message.to = "jodimarietaylor18@gmail.com"
+       //mail.message.to = "jtanjels@gmail.com"
       mail.message.from = `"${process.env.COMPANY_NAME}" <${process.env.COURIER_EMAIL}>`
       email
         .send(mail)

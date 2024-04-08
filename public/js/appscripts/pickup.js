@@ -562,8 +562,7 @@ function emailreceipt(id){
            
                console.log(JSON.stringify(e));
                 toastr.success('Successfully emailed')
-                setTimeout(function(){  window.location.reload()
-                }, 3000);
+              
             
           } else{
             if(e.message != null && e.message != ""){

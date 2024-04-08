@@ -2016,7 +2016,7 @@ class DataService {
               var emailsentsender = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].sender_email , templatedata )
               var emailsentcollector = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', pickupresponse.collector_email , templatedata )
 
-              console.log("Email Sent ",emailsent)
+              console.log("Email Sent emailsentreceiver ",response.packages[0].receiver_email ,emailsentreceiver)
     
               response.status = 200
               

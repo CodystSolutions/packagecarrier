@@ -25,23 +25,50 @@
                       </div>
                       <div class="form-group">
                         <label for="exampleInputurl">Status</label>
-                        <input type="text" class="form-control" value="<%= batch.status %>"  name="status" id="exampleInputurl" required>
+                        <select class="form-control" id="status" name="status" >
+                            <option <% if(batch.status == 'at source') { selected='selected' } %> >at source</option>
+                           <option <% if(batch.status == 'loaded in truck') { selected='selected' } %> >loaded in truck</option>
+                           <option  <% if(batch.status == 'in transit') { selected='selected' } %>>in transit</option>
+                           <option  <% if(batch.status == 'enroute') { selected='selected' } %>>enroute</option>
+                           <option  <% if(batch.status == 'at destination') { selected='selected' } %>> at destination</option>                           <option  <% if(batch.status == 'delivered') { selected='selected' } %>>delivered</option>
+                        </select>
+                     
                      </div>
                      <div class="form-group">
                        <label for="exampleInputphone">Type</label>
                        <input type="text" class="form-control" value="<%= batch.type %>"  name="type" id="exampleInputphone">
                     </div>
                      <div class="form-group">
-                        <label for="exampleInputphone">Code</label>
+                        <label for="exampleInputphone">Code/Reference</label>
                         <input type="text" class="form-control" value="<%= batch.code %>"  name="code" id="exampleInputphone">
                      </div>
                      <div class="form-group">
                         <label for="exampleInputNumber1">Souce branch</label>
-                        <input type="text" name="source" value="<%= batch.source %>"  class="form-control" id="exampleInputNumber1" required>
+                        <select class="form-control" name="source" id="source" required>
+                           <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                              <%if(branches[i].name == batch.source) { %>
+                                 <option selected><%= branches[i].name %></option>
+                              <% } else { %>
+                                 <option><%= branches[i].name %></option>
+                              <% }%>
+                              
+
+                           <% }%>
+                        </select>
                      </div>
                      <div class="form-group">
                         <label for="exampleInputPassword3">Destination branch</label>
-                        <input type="text" name="destination" value="<%= batch.destination %>"  class="form-control" id="exampleInputPassword3" required>
+                        <select class="form-control" name="destination" id="destination" required>
+                           <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                              <%if(branches[i].name == batch.destination) { %>
+                                 <option selected><%= branches[i].name %></option>
+                              <% } else { %>
+                                 <option><%= branches[i].name %></option>
+                              <% }%>
+                              
+
+                           <% }%>
+                        </select>
                      </div>
                      
                       <div class="form-group">

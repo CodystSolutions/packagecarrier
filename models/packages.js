@@ -58,8 +58,9 @@ module.exports = (sequelize, DataTypes) => {
     collector_contact:  DataTypes.STRING ,
     collector_id: DataTypes.BIGINT ,
     collected_on:  DataTypes.DATE,
-    collection_id: DataTypes.BIGINT
-
+    collection_id: DataTypes.BIGINT,
+    created_on: DataTypes.DATE,
+    modified_on: DataTypes.DATE,
 
   }, {
     sequelize,

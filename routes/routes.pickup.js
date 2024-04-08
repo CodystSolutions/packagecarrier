@@ -58,6 +58,41 @@ router.post('/checkout/scan', rbacMiddleware.checkPermission(), async(req, res)=
 });
   
 
+router.post('/checkout/scan/byname', rbacMiddleware.checkPermission(), async(req, res)=> {
+  try{
+
+      var data = req.body;
+      data.modified_by = req.session.user.first_name + " " + req.session.user.last_name
+      var response = await dataService.scanPickupPackageByName(data);
+      console.log("respons", response.packages)
+      if(response.status == 200) {
+
+          if(response.status == 200 &&  response.packages != null) {
+              console.log("successfully found package")
+
+              return res.send({status: 200, message: "Successfully found package ", packages: response.packages});
+          }
+          else{
+              console.log("no package found ")
+              return res.send(response);
+
+          }
+
+
+      }else if(response ){
+          return res.send({status: response.status, message: response.message});
+      }
+      return res.send({status: 505, message: "Could not be created"});
+
+  } catch(error){
+      console.log("package scan errors", error)
+
+  }
+  return res.send({status: 500, message: "Could not be scanned"});
+
+});
+  
+
 router.post('/create', rbacMiddleware.checkPermission(), async(req, res)=> {
   try{
 

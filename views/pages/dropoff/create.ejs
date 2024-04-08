@@ -80,7 +80,7 @@
                                  <div class="col-sm-12">
                                     <div class="col-md-12 p-0">
                                        <h5 class="mb-4">Sender Information:</h5>
-                                       <div  class="row">
+                                       <!-- <div  class="row">
                                           <div class="form-group col-6">
                                              <label class="control-label">Have they used our services before? *</label>
 
@@ -94,7 +94,7 @@
                                              </div>
                                             
                                           </div>
-                                       </div>
+                                       </div> -->
                                        <div class="row">
                                           <div class="form-group col-md-6">
                                              <label class="control-label">First Name *</label>
@@ -186,16 +186,17 @@
                                        <div class="row">
                                           <div class="form-group col-md-6">
                                              <label class="control-label">First Name *</label>
-                                             <input  maxlength="100" name="receiver_first_name"  id="receiver_first_name" type="text" class="form-control"  />
+                                             <input  maxlength="100" name="receiver_first_name"  id="receiver_first_name" type="text" class="form-control"  required />
                                           </div>
-                                          <div class="col-md-6 form-group">
-                                             <label for="emailid" class="control-label">Email *</label>
-                                             <input type="email"  name="receiver_email"  id="receiver_email" class="form-control" >
-                                          </div>
+                                         
                                           <div class="form-group col-md-6">
                                              <label class="control-label">Last Name *</label>
-                                             <input maxlength="100" name="receiver_last_name"  id="receiver_last_name"  type="text"  class="form-control"/>
-                                          </div>                
+                                             <input maxlength="100" name="receiver_last_name"  id="receiver_last_name"  type="text"  class="form-control" required/>
+                                          </div>   
+                                          <div class="col-md-6 form-group">
+                                             <label for="emailid" class="control-label">Email *</label>
+                                             <input type="email"  name="receiver_email"  id="receiver_email" class="form-control" required  >
+                                          </div>             
                                           <div class="col-md-6 form-group">
                                              <label for="cno" class="control-label">Contact Number: *</label>
                                              <input type="text" class="form-control"  name="receiver_contact"   id="receiver_contact" />
@@ -225,7 +226,7 @@
                                     <div class="col-md-12 p-0">
                                        <h5 class="mb-4">Payment</h5>
                                        <div class="row">
-                                          <div class="row col-md-9">
+                                          <div class="row col-md-8">
                                              <div class="col-md-12 form-group">
                                                 <label for="panno" class="control-label">Method *</label>
                                                 <div class="custom-control custom-radio custom-control-inline">

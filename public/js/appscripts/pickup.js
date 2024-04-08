@@ -119,6 +119,82 @@ async function scanpackages(){
     return false;
   };
 
+  async function checkcount(){
+     var count=$('input[name="tracking_nums"]:checked').length;
+     console.log("count", count)
+    if (parseInt(count) == 0) {
+      alert("No items selected")
+      setTimeout(function(){  window.location.reload();
+      }, 1);
+    }
+  }
+
+  async function scanpackagesbyname(){
+    let scanlistdiv = document.getElementById("scanlist");
+    scanlistdiv.innerHTML = ''
+    var receiver_first_name = document.getElementById("receiver_first_name").value;
+    var receiver_last_name = document.getElementById("receiver_last_name").value;
+
+    console.log("package is scanning",receiver_first_name, receiver_last_name)
+        $.ajax({
+        url: `/pickup/checkout/scan/byname`,
+        data: {receiver_first_name: receiver_first_name,  receiver_last_name: receiver_last_name}, 
+        type: "POST", 
+        dataType: 'json',
+        success: function (e) {
+            if(e.status == 200){
+              if(e.packages.length == 0 ){
+                alert("No package found")
+              }
+                //add package to the page
+                    document.getElementById("count").innerText = e.packages.length;
+                    for(var i = 0 ; i < e.packages.length; i++ ){
+                      
+                      var package = e.packages[i]
+                      console.log("package", package.tracking)
+                      let scanlist = document.getElementById("scanlist");
+                      // scanlist.innerHTML =''
+                      let trname = document.createElement('tr');
+                      //spanname.innerHTML =  ' <th scope="row">1</th>  </br><b>"+   (uncheckedpackages[i].user?.first_name || "No user") + " " +  (uncheckedpackages[i].user?.last_name || "") + " #" +  uncheckedpackages[i].user?.mailbox_number  + "</b> -   <span style='color:red'>" + uncheckedpackages.filter(x => x.user?.mailbox_number == uncheckedpackages[i].user?.mailbox_number).length + " packages </span>" + `<a style="text-decoration: underline; color: #007bff"  onclick="verifyall('<%= manifest.id%>','${ uncheckedpackages[i].user?.id}')">Verify All </a>` + '</br> ' ;
+                      trname.innerHTML = `<th scope="row">${package.tracking_number} - ${package.weight}lbs , ${package.description}</th>
+                      <td>${package.sender_first_name} ${package.sender_last_name}</td> 
+                      <td>${package.receiver_first_name} ${package.receiver_last_name} </td>
+                      <td>${package.destination}</td>
+                      <td>${package.method}</td>
+                      <td>${package.status}</td>
+                      <td>${package.batch?.name}</td>
+                      <td>  <input type="checkbox" id="tracking_nums" name="tracking_nums" value="${package.tracking_number}" /></td>
+      
+                      `
+                      scanlist.prepend(trname);
+                    
+                    }
+                    
+               
+            }
+               
+            else{
+              if(e.message != null && e.message != ""){
+                alert(e.message)
+              }else{
+                alert('Error, did not add')
+              }
+  
+            }
+          
+  
+        },
+        error:function(e){
+            alert("error")
+  
+            console.log(JSON.stringify(e));
+  
+  
+        }
+    }); 
+    return false;
+  };
+
 
   function gettotal(){
     var tracking_nums = []

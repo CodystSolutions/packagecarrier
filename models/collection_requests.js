@@ -30,7 +30,9 @@ module.exports = (sequelize, DataTypes) => {
     collector_first_name: DataTypes.STRING,
     collector_last_name: DataTypes.STRING,
     collector_email: DataTypes.STRING,
-    collector_contact: DataTypes.STRING
+    collector_contact: DataTypes.STRING,
+    created_on: DataTypes.DATE,
+    modified_on: DataTypes.DATE
 
   }, {
     sequelize,

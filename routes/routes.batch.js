@@ -13,7 +13,6 @@ router.get('/view', rbacMiddleware.checkPermission(), async (req, res) => {
     if(batchesresponse.status == 200){
         batches = batchesresponse.batches
     }
-    console.log("batches", batches)
     
     return res.render('pages/batch/view',{user: req.session.user, batches:batches})
  })

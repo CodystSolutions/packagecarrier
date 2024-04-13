@@ -135,6 +135,7 @@ router.get('/view', rbacMiddleware.checkPermission(), async (req, res) => {
   
   
         }else if(response ){
+            console.log("Response from fjunction", response)
             return res.send({status: response.status, message: response.message});
         }
         return res.send({status: 505, message: "Could not be created"});

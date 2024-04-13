@@ -55,7 +55,7 @@
                                      <td><%= packages[i].batch?.name %></td>
 
                                      <td><%= packages[i].status %></td>
-                                     <td><%= moment(packages[i].created_on).format('YYYY/MM/DD')%></td>
+                                     <td><%= moment(packages[i].created_on).tz('America/Jamaica').format('YYYY/MM/DD HH:mm')%></td>
 
                                   
                                      

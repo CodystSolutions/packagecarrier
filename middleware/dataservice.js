@@ -1144,7 +1144,10 @@ class DataService {
         var response = {status: 404, branches: []}
 
         try{
-            var dropoffs = await models.requests.findAll({where: {type: "dropoff", is_deleted: false}});
+            var dropoffs = await models.requests.findAll({where:
+                 {type: "dropoff", is_deleted: false}
+                 , order: [[ 'id', 'DESC' ]]
+                });
             if(dropoffs) {
                 response.status = 200
                 response.dropoffs = dropoffs;
@@ -1539,12 +1542,14 @@ class DataService {
 
         try{
             var packages = await models.packages.findAll({
-                where:   {is_deleted: false}, 
+                where:   {is_deleted: false},  
                 include: [
                     { model: models.batches },
                     { model: models.requests }
 
                 ]
+                , order: [[ 'id', 'DESC' ]]
+
             });
             if(packages) {
                 response.status = 200
@@ -1564,23 +1569,26 @@ class DataService {
            
             
             let requestdata = data
+            if(data.batch_id == null || data.current_location == null ) return {status: registeredcodes.FAILED_CREATION, message: "No batch or current location assigned"}
+
             delete requestdata.id;
              const result = await models.packages.update({batch_id: parseInt(data.batch_id), status: data.status, current_location: data.current_location, modified_by: data.modified_by, modified_on: Date.now()}, {
                  where: {
                     tracking_number: data.tracking_number,
+                    is_deleted: false
 
                  }
                
              })
 
 
-
-             if(result.length > 0){
+             console.log("RESULT OF SCAN - ", data.tracking_number + " ", result )
+             if(result[0] > 0){
                 
 
 
                  var packagedetails = await models.packages.findOne({where:
-                     {tracking_number: data.tracking_number},
+                     {tracking_number: data.tracking_number, is_deleted: false},
                      include: [
                         { model: models.batches }
                     ]
@@ -1592,20 +1600,30 @@ class DataService {
                     date: moment(packagedetails.created_on).format('dddd, MMMM Do YYYY, h:mm:ss a'),
                     package: packagedetails
                   }
+                  try{
+
                     var emailsentreceiver = await this.sendemail('statusupdateemail.html', 'Status Update', packagedetails.receiver_email, templatedata )
                     var emailsentsender = await this.sendemail('statusupdateemail.html', 'Status Update', packagedetails.sender_email, templatedata )
 
-                    return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated", package: packagedetails};
+                  } catch(error){
+
+                    console.log("ERROR: SENDING EMAIL FOR SCANNING",emailsentreceiver, emailsentsender , error)
+                  }
+                   
+                     return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Updated", package: packagedetails};
              } 
-          
-            console.log(`Dropoff Requests Creation error: dropoff could not be created for ${data.name}`);
+            else{
+                return {status: registeredcodes.FAILED_CREATION, message: "No package found to update"}
+
+            }
+            console.log(`scanning Requests Creation error: scanning could not be done for ${data.name}`);
 
         }
         catch (ex) 
         {
             console.log(ex)
         }
-        return {status: registeredcodes.FAILED_CREATION, message: "Failed to create dropoff"}
+        return {status: registeredcodes.FAILED_CREATION, message: "Failed to scan package"}
 
 
     

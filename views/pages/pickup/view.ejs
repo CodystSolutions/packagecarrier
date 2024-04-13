@@ -51,7 +51,7 @@
                                      <td><%= pickups[i].method %></td>
                                      <td><%= pickups[i].status %></td>
 
-                                     <td><%= moment(pickups[i].created_on).format('YYYY/MM/DD')%></td>
+                                     <td><%= moment(pickups[i].created_on).tz('America/Jamaica').format('YYYY/MM/DD HH:mm')%></td>
 
                                   
                                      

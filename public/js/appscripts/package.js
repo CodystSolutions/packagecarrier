@@ -35,12 +35,13 @@ $("#scanpackageform").submit(function(e){
 
                 document.getElementById('destinationresult').innerText = e.package.destination;
 
-                 $('#scanresult').modal('show');
+                toastr.success(e.package.tracking_number + " Successfully scanned")
+
             } else{
               if(e.message != null && e.message != ""){
-                toastr.error(e.message)
+                toastr.error(e.message )
               }else{
-                toastr.error('Error, did not add')
+                toastr.error('Error, did not add' )
               }
   
             }

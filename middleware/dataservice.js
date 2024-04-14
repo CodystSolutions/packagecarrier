@@ -2471,7 +2471,12 @@ class DataService {
         //     console.log("generating pdf error", error)
         // }
        
-        return await pdf.create(output).toBuffer(async function (err, buffer) {
+        return await pdf.create(output, {
+            childProcessOptions: {
+              env: {
+                OPENSSL_CONF: '/dev/null',
+              },
+            }}).toBuffer(async function (err, buffer) {
             if (err) {
                 console.log(err);
               return false

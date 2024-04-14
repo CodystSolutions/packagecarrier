@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>DROP OFF RECEIPT</title>
+    <title>PICKUP RECEIPT</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -251,9 +251,9 @@
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <h1>Dropoff Receipt</h1>
+                        <h1>Pickup Receipt</h1>
                         <p>Good Day, Please see receipt attached for the following request. <br/> </p>
-                       
+                        {{#packages}}
                         <p>
 
 
@@ -265,6 +265,7 @@
                             Weight: {{weight}} LBs <br/>
                             
                          </p>
+                         {{/packages}}
                          <p>
                           Regards,<br/>
                           SPEEDZ EXPRESS COURIER

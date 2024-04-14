@@ -11,6 +11,8 @@ const { Op } = require("sequelize");
 
 
 const { v4: uuidv4 } = require('uuid');
+const pdf = require('html-pdf');
+
 
 
 class DataService {
@@ -1059,9 +1061,10 @@ class DataService {
               
                             }
               
-                            var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt', data.sender_email, templatedata )
-                            console.log("Email Sent ",emailsent)
+                            // var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt', data.sender_email, templatedata )
+                            // console.log("Email Sent ",emailsent)
             
+                            var emailsent = await this.sendemailwithpdf('dropoffreceiptemail.html','dropoffreceiptpdf.html', 'Drop Off Receipt',requestinfo.sender_info.email, templatedata )
 
                           
                             return resulttobesent;
@@ -1102,8 +1105,10 @@ class DataService {
                               
               
                             }
-                            var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', data.sender_email, templatedata )
-                            console.log("Email Sent ",emailsent)
+                            // var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', data.sender_email, templatedata )
+                            // console.log("Email Sent ",emailsent)
+                            var emailsent = await this.sendemailwithpdf('dropoffreceiptemail.html','postpaidreceipt.html', 'Drop Off Receipt',requestinfo.sender_info.email, templatedata )
+ 
                         }catch(emailerror){
                           console.log(emailerror)
                           resulttobesent.message = "Email not sent but added successfully"
@@ -1365,14 +1370,15 @@ class DataService {
                 
     
               }
-              const template =  fs.readFileSync('./public/templates/receipt.html', 'utf-8');
+               const template =  fs.readFileSync('./public/templates/receipt.html', 'utf-8');
     
-              var html = mustache.render(template, templatedata)
+               var html = mustache.render(template, templatedata)
     
-              var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt',dropoffresponse.sender_email, templatedata )
-              console.log("Email Sent ",emailsent)
-    
-              response.status = 200
+              var emailsent = await this.sendemailwithpdf('dropoffreceiptemail.html','dropoffreceiptpdf.html', 'Drop Off Receipt',dropoffresponse.sender_info.email, templatedata )
+
+            //   var emailsent = await this.sendemail('receipt.html', 'Drop Off Receipt',dropoffresponse.sender_email, templatedata )
+            response.status = 200
+            
     
           } else{
                 var templatedata = {
@@ -1391,9 +1397,11 @@ class DataService {
               const template = fs.readFileSync('./public/templates/postpaidreceipt.html', 'utf-8');
     
               var html = mustache.render(template, templatedata)
-              var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', dropoffresponse.sender_email, templatedata )
-              console.log("Email Sent ",emailsent)
-              response.status = 200;
+              //var emailsent = await this.sendemail('postpaidreceipt.html', 'Drop Off Receipt', dropoffresponse.sender_email, templatedata )
+              var emailsent = await this.sendemailwithpdf('dropoffreceiptemail.html','postpaidreceipt.html', 'Drop Off Receipt',dropoffresponse.sender_info.email, templatedata )
+              response.status = 200
+            
+             
           }
 
         }catch(emailerror){
@@ -1953,7 +1961,7 @@ class DataService {
     {
         console.log(ex)
     }
-    return {status: registeredcodes.FAILED_CREATION, message: "Failed to create dropoff"}
+    return {status: registeredcodes.FAILED_CREATION, message: "Failed to create pickup"}
 
 
 
@@ -2030,9 +2038,9 @@ class DataService {
 
               var html = mustache.render(template, templatedata)
 
-              var emailsentreceiver = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].receiver_email , templatedata )
-              var emailsentsender = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].sender_email , templatedata )
-              var emailsentcollector = await this.sendemail('prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', pickupresponse.collector_email , templatedata )
+              var emailsentreceiver = await this.sendemailwithpdf('pickupreceiptemail.html','prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].receiver_email , templatedata )
+              var emailsentsender = await this.sendemailwithpdf('pickupreceiptemail.html','prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].sender_email , templatedata )
+              var emailsentcollector = await this.sendemailwithpdf('pickupreceiptemail.html','prepaidpickupcheckoutreceipt.html', 'Pickup Receipt', pickupresponse.collector_email , templatedata )
 
               console.log("Email Sent emailsentreceiver ",response.packages[0].receiver_email ,emailsentreceiver)
     
@@ -2056,9 +2064,9 @@ class DataService {
               }
               const template = fs.readFileSync('./public/templates/pickupcheckoutreceipt.html', 'utf-8');
 
-              var emailsentreceiver = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].receiver_email , templatedata )
-              var emailsentsender = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].sender_email , templatedata )
-              var emailsentcollector = await this.sendemail('pickupcheckoutreceipt.html', 'Pickup Receipt', pickupresponse.collector_email , templatedata )
+              var emailsentreceiver = await this.sendemailwithpdf('pickupreceiptemail.html','pickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].receiver_email , templatedata )
+              var emailsentsender = await this.sendemailwithpdf('pickupreceiptemail.html','pickupcheckoutreceipt.html', 'Pickup Receipt', response.packages[0].sender_email , templatedata )
+              var emailsentcollector = await this.sendemailwithpdf('pickupreceiptemail.html','pickupcheckoutreceipt.html', 'Pickup Receipt', pickupresponse.collector_email , templatedata )
 
               console.log("Email Sent ", response.packages[0].receiver_email ,emailsentreceiver)
               console.log("Email Sent ", response.packages[0].sender_email ,emailsentsender)
@@ -2438,8 +2446,68 @@ class DataService {
         //send email
         console.log("SENDING EMAIL to ", receiver_email )
         var emailsent = await email(mail)
-        if (!emailsent) return false;
+       //if (!emailsent) return false;
         return true;
+    }
+ 
+    async sendemailwithpdf (htmltemplatename, pdftemplatename, subject, receiver_email,variables){
+        if(receiver_email == null) return false;
+        //send activation email
+       /// var template = fs.readFileSync(`../public/templates/${templatename}`, 'utf-8'); 
+        const template =  fs.readFileSync(`./public/templates/${pdftemplatename}`, 'utf-8');
+        var output = (template != null) ? mustache.render(template, variables) : "Unable to render template";
+       
+        const htmltemplate =  fs.readFileSync(`./public/templates/${htmltemplatename}`, 'utf-8');
+        var htmloutput = (htmltemplate != null) ? mustache.render(htmltemplate, variables) : "Unable to render template";
+       
+       
+        // try{
+        //     var htmlContent = '<h1>Hello World</h1><p>This is custom HTML content.</p>';
+        //     htmlContent = output
+        //     await this.generatePDFfromHTML(htmlContent, 'custom.pdf');
+            
+
+        // } catch(error){
+        //     console.log("generating pdf error", error)
+        // }
+       
+        return await pdf.create(output).toBuffer(async function (err, buffer) {
+            if (err) {
+                console.log(err);
+              return false
+                
+            } 
+            console.log('PDF generated successfully:');
+
+            var mail = {
+                html: htmloutput,
+                message: {
+                    to: receiver_email,
+                    //to: "jtanjels@gmail.com",
+                    subject: subject, 
+                    bcc: process.env.COURIER_EMAIL_CC,
+                    html: htmloutput,
+                    attachments: [
+                        {
+                            filename: "receipt.pdf",
+                            content: buffer
+                        }
+                    ],
+                },
+                attachments: [
+                    {
+                        filename: "receipt.pdf",
+                        content: buffer
+                    }
+                ],
+            }
+            //send email
+            console.log("SENDING EMAIL to ", receiver_email )
+            var emailsent = await email(mail)
+            if (!emailsent) return false;
+            return true;
+          });
+        
     }
  
     async getDropOffDataAnalytics(rangetype,  rangenumber = 0 , startofrangetype = 'year', startrangenumber, method='all'){
@@ -2677,6 +2745,18 @@ class DataService {
        return response;
 
     }
+
+    async generatePDFfromHTML(htmlContent, outputPath) {
+        return await pdf.create(htmlContent).toFile(outputPath, (err, res) => {
+            if (err) return console.log(err);
+            console.log('PDF generated successfully:', res);
+          });
+      }
+      
+
+
+
+
 }
 
 const dataService = new DataService();

@@ -106,8 +106,8 @@ body {
 }
 
 .itemColor {
-  width: 10px;
-  height: 100%;
+  /* width: 10px;
+  height: 100%; */
   /* background: yellow; */
   margin: 0px 2px;
   padding: 0px;
@@ -139,6 +139,8 @@ body {
 .flex {
   display: flex;
   justify-content: center;
+  display: -webkit-box;
+  -webkit-box-pack: justify;
 }
 
 #qrcode {
@@ -161,6 +163,8 @@ body {
 .totals .row {
   display: flex;
   text-align: right;
+  display: -webkit-box;
+  margin-bottom: 5px;
 }
 
 .totals .section {
@@ -389,30 +393,27 @@ body {
           <div class="col3">${{discount}}</div>
         </div>
         <div class="row">
-          <div class="col1">15%</div>
-          <div class="col2">Taxes</div>
+          <div class="col1"></div>
+          <div class="col2">15% Taxes</div>
           <div class="col3">${{tax}}</div>
         </div>
-      </div>
-      <div class="section">
-        <div class="row">
-          <div class="col1">Total</div>
-          <div class="col2"></div>
-          <div class="col3">${{total}}</div>
+        <div class="row" style="margin-top: 15px;"> 
+          <div class="col1"></div>
+          <div class="col2">Total</div>
+          <div class="col3"><b>${{total}}</b></div>
         </div>
-      </div>
-      <div class="section">
-        <div class="row">
-          <div class="col1">Tendered</div>
-          <div class="col2"></div>
+        <div class="row" style="margin-top: 15px;">
+          <div class="col1"></div>
+          <div class="col2">Tendered</div>
           <div class="col3">${{tendered}}</div>
         </div>
         <div class="row">
-          <div class="col1">Change</div>
-          <div class="col2"></div>
+          <div class="col1"></div>
+          <div class="col2">Change</div>
           <div class="col3">${{change}}</div>
         </div>
       </div>
+    
     </div>
   </div>
   
@@ -421,7 +422,7 @@ body {
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.4/dist/JsBarcode.all.min.js"></script>
-<script src="/templates/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
 
@@ -435,7 +436,7 @@ JsBarcode("#barcode", receiptID, {
 });
 var receiptQRID = document.getElementById('codetext').innerText;
 var qrcode = new QRCode(document.getElementById("qrcode"), {
-  text: "http://localhost:4000/" + receiptID,
+  text: "https://www.speedzexpresscourier.com/pickup/details/bycode/" + receiptID,
   colorDark: "#000000",
   colorLight: "#FFFFFF",
   width: 100,

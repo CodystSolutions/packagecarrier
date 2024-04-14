@@ -506,7 +506,7 @@ function emailreceipt(id){
             if(e.message != null && e.message != ""){
               toastr.error(e.message)
             }else{
-              toastr.error('Error, did not add')
+              toastr.error('Internal Server Error')
             }
 
           }

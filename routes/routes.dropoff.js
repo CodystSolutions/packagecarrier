@@ -246,8 +246,8 @@ router.get('/view/label/:id', rbacMiddleware.checkPermission(), async(req, res)=
               code: response.dropoff.code,
               sender_first_name: response.dropoff.sender_first_name,
               sender_last_name: response.dropoff.sender_last_name,
-              receiver_first_name: response.receiver_first_name,
-              receiver_last_name:  response.receiver_last_name,
+              receiver_first_name: response.packages[0].receiver_first_name,
+              receiver_last_name:  response.packages[0].receiver_last_name,
               weight: response.packages[0].weight,
               category: response.packages[0].category,
               source: response.packages[0].source,
@@ -284,7 +284,6 @@ router.post('/email/receipt/:id', rbacMiddleware.checkPermission(), async(req, r
     
       var response = await dataService.emailReceiptInfo(req.params.id);
       if(response.status == 200) {
-        console.log("receipt response", response)
         return res.send({status: 200, message: "successful"});
 
           

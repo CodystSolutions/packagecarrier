@@ -414,12 +414,13 @@ body {
   </div>
   
   <div class="footer">
-    <div class="eta">Same Day Delivery</div>
+    <div class="eta">24-48 Hours Delivery</div>
     <div class="printType">customer copy <span id="test"></span> </div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.4/dist/JsBarcode.all.min.js"></script>
-<script src="/templates/qrcode.min.js"></script>
+<!-- <script src="/templates/qrcode.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
 
@@ -433,7 +434,7 @@ JsBarcode("#barcode", receiptID, {
 });
 var receiptQRID = document.getElementById('codetext').innerText;
 var qrcode = new QRCode(document.getElementById("qrcode"), {
-  text: "http://localhost:4000/" + receiptID,
+  text: "https://www.speedzexpresscourier.com/dropoff/details/" + receiptID,
   colorDark: "#000000",
   colorLight: "#FFFFFF",
   width: 100,

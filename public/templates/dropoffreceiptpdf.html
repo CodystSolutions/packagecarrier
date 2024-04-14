@@ -313,7 +313,7 @@ body {
     8 Kingston Ave, <br/>St Andrew ,<br> Jamaica
   </div>
   <div id="location">
-    Checkout Receipt
+    Drop Off Receipt
   </div>
   <div id="date">
     {{date}}
@@ -329,56 +329,31 @@ body {
   </div>
   <hr>
 
-        
-  {{#packages}}
-
-
-    <!-- Items Purchased -->
-    <div class="items">
-      <div class="item">
-        <div class="itemRow">
-          <div class="itemName">Package - {{category}} {{weight}}lbs</div>
-          <div class="itemPrice ">{{method}}</div>
-        </div>
-        <div class="itemRow">
-          <div class="itemColor"></div>
-          <div class="itemData1">{{source}} to {{destination}}</div>
-          <div class="itemData2"></div>
-          <!-- <div class="itemData3 itemQuantity">10</div> -->
-        </div>
-        <div class="itemRow">
-          <div class="itemColor"></div>
-          <div class="itemData1">Tracking: <span id="tracking">{{tracking_number}}</span> </div>
-          <div class="itemData2"></div>
-          <!-- <div class="itemData3">$20.00</div> -->
-        </div>
+  <!-- Items Purchased -->
+  <div class="items">
+    <div class="item">
+      <div class="itemRow">
+        <div class="itemName">Package - {{category}} {{weight}}lbs</div>
+        <div class="itemPrice itemTaxable">${{rate}}</div>
+       
       </div>
-      <!-- <div class="item">
-        <div class="itemRow">
-          <div class="itemName">Miraculous Ladybug & Cat Noir</div>
-          <div class="itemPrice itemTaxable">$1.25</div>
-        </div>
-        <div class="itemRow">
-          <div class="itemColor"></div>
-          <div class="itemData1">DNC-P03</div>
-          <div class="itemData2">DaniCojo</div>
-          <div class="itemData3 itemQuantity">10</div>
-        </div>
-        <div class="itemRow">
-          <div class="itemColor"></div>
-          <div class="itemData1">Print</div>
-          <div class="itemData2">Reg(WS) 8.5x11 Borderless</div>
-          <div class="itemData3">$12.25</div>
-        </div>
-      </div> -->
+      <div class="itemRow">
+        <div class="itemColor"></div>
+        <div class="itemData1">{{source}} to {{destination}}</div>
+        <div class="itemData2"></div>
+        <!-- <div class="itemData3 itemQuantity">10</div> -->
+      </div>
+      <div class="itemRow">
+        <div class="itemColor"></div>
+        <div class="itemData1">Tracking: <span id="tracking">{{tracking_number}}</span> </div>
+        <div class="itemData2"></div>
+        <!-- <div class="itemData3">$20.00</div> -->
+      </div>
     </div>
-  
-    <!-- Totals -->
-  {{/packages}}
-  
+    
+  </div>
 
-
-
+  <!-- Totals -->
   <hr>
   
 <!-- Dosn't work
@@ -387,15 +362,56 @@ body {
 <div class="flex">
     <div id="qrcode"></div>
     <div class="totals">
+      <div class="section">
+        <div class="row">
+          <div class="col1"></div>
+          <div class="col2">Subtotal</div>
+          <div class="col3">${{subtotal}}</div>
+        </div>
+        <div class="row">
+          <div class="col1"></div>
+          <div class="col2">Discount</div>
+          <div class="col3">${{discount}}</div>
+        </div>
+        <div class="row">
+          <div class="col1"></div>
+          <div class="col2">15% Taxes</div>
+          <div class="col3">${{tax}}</div>
+        </div>
+        <div class="row" style="margin-top: 15px;"> 
+          <div class="col1"></div>
+          <div class="col2">Total</div>
+          <div class="col3"><b>${{total}}</b></div>
+        </div>
+        <div class="row" style="margin-top: 15px;">
+          <div class="col1"></div>
+          <div class="col2">Tendered</div>
+          <div class="col3">${{tendered}}</div>
+        </div>
+        <div class="row">
+          <div class="col1"></div>
+          <div class="col2">Change</div>
+          <div class="col3">${{change}}</div>
+        </div>
+       
+       
+      
+      </div>
      
+      
+      <div class="section">
+       
+      </div>
     </div>
   </div>
   
   <div class="footer">
+    <div class="eta">24-48 Hours Delivery</div>
     <div class="printType">customer copy <span id="test"></span> </div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.4/dist/JsBarcode.all.min.js"></script>
+<!-- <script src="/templates/qrcode.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
@@ -410,7 +426,7 @@ JsBarcode("#barcode", receiptID, {
 });
 var receiptQRID = document.getElementById('codetext').innerText;
 var qrcode = new QRCode(document.getElementById("qrcode"), {
-  text: "https://www.speedzexpresscourier.com/pickup/details/bycode/" + receiptID,
+  text: "https://www.speedzexpresscourier.com/dropoff/details/bycode/" + receiptID,
   colorDark: "#000000",
   colorLight: "#FFFFFF",
   width: 100,

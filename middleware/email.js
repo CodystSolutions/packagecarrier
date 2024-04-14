@@ -32,7 +32,10 @@ async function email (mail){
             }
           }
       });
-       //mail.message.to = "jtanjels@gmail.com"
+      if(process.env.NODE_ENV == 'development'){
+          mail.message.to = "jtanjels@gmail.com"
+      }
+      
       mail.message.from = `"${process.env.COMPANY_NAME}" <${process.env.COURIER_EMAIL}>`
       email
         .send(mail)

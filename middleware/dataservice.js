@@ -2528,7 +2528,7 @@ class DataService {
     
                 }
             }
-
+          
             if(method == 'prepaid' || method == 'pay on collect' ) whereclause.method = method
             const transactions_list  = await models.requests.findAll({ 
                 where: whereclause,
@@ -2654,6 +2654,49 @@ class DataService {
                     [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on')), 'createdOn'],
                     [models.sequelize.fn('sum', models.sequelize.col('total')), 'total'],
 
+               
+                ],
+             
+                raw: true
+            })
+            return {status: registeredcodes.SUCCESS, message: "Successful", transactions_list}
+
+            
+        }
+        catch (ex) 
+        {
+            console.log(ex)
+        }
+        return {status: registeredcodes.FAILED_DELETE, message: "Failed to retrieving report"}
+
+    }
+
+    async getPackageDataAnalytics(rangetype,  rangenumber = 0 , startofrangetype = 'year', startrangenumber, method='all', key = null, value=null){
+        
+        try{
+            
+            var whereclause = {
+              
+                is_deleted: false,
+                created_on: {
+                    [Op.lte]: moment().endOf(`${rangetype}`).subtract(rangenumber, `${rangetype}s`).toDate(),
+                    [Op.gte]: moment().startOf(`${startofrangetype}`).subtract(startrangenumber, `${rangetype}s`).toDate()
+    
+                }
+            }
+            console.log('value and key', value, key,value != null , key == 'sourcebranch' )
+            if(value != null && key == 'sourcebranch') whereclause.source = value
+            if(value != null && key == 'destinationbranch') whereclause.destination = value
+
+            if(method == 'prepaid' || method == 'pay on collect' ) whereclause.method = method
+            const transactions_list  = await models.packages.findAll({ 
+                where: whereclause,
+                group: [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on'))],
+    
+                attributes: [
+                   [models.sequelize.literal("COUNT(DISTINCT(id))"), "count"],
+                    [models.sequelize.fn('date_trunc', `${rangetype}`, models.sequelize.col('created_on')), 'createdOn'],
+                  
                
                 ],
              

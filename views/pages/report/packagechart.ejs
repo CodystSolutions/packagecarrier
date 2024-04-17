@@ -103,9 +103,11 @@
                         <div class="form-group">
                            <label>Select branch</label>
                            <select name="sourcebranch"  id="name" class="form-control mb-3">
-                              <option selected=""></option>
-                              <option value="kingston">kingston</option>
-                              <option value="may pen">may pen</option>
+                            <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                               
+                                   <option><%= branches[i].name %></option>
+                            
+                             <% }%>
                            </select>
                         </div>
 
@@ -122,9 +124,11 @@
                         <div class="form-group">
                            <label>Select branch</label>
                            <select name="destinationbranch"  id="destinationbranch" class="form-control mb-3">
-                              <option selected=""></option>
-                              <option value="kingston">kingston</option>
-                              <option value="may pen">may pen</option>
+                            <% for(var  i = 0; i < branches.length ; i++ ) { %>
+                               
+                                <option><%= branches[i].name %></option>
+                         
+                          <% }%>
                            </select>
                         </div>
 

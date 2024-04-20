@@ -170,3 +170,62 @@ $("#createBaseRate").submit(function(e){
 return false;
 });
 
+function deleterate(){
+  var rate_id = document.getElementById('rate_id').value;
+  console.log("Ratre", rate_id)
+  $.ajax({
+      url: `/charge/remove/${rate_id}`,
+      data: $("#removerateform").serialize(), 
+      type: "POST", 
+      dataType: 'json',
+      success: function (e) {
+  //alert("success")
+      console.log(JSON.stringify(e));
+      $('#exampleModal').modal('hide');
+      toastr.success('Successfully updated')
+      setTimeout(function(){  window.location.reload();
+      }, 3000);
+
+      
+
+  },
+  error:function(e){
+      toastr.error('Unable to change. Please try again.')
+      console.log(JSON.stringify(e));
+
+  }
+  }); 
+
+  return false;
+}
+  
+$("#removerateform").submit(function(e){
+  e.preventDefault()
+  var rate_id = document.getElementById('rate_id').value;
+  console.log("Ratre")
+  $.ajax({
+      url: `/charge/remove/${rate_id}`,
+      data: $("#removerateform").serialize(), 
+      type: "POST", 
+      dataType: 'json',
+      success: function (e) {
+  //alert("success")
+      console.log(JSON.stringify(e));
+      $('#exampleModal').modal('hide');
+      toastr.success('Successfully updated')
+      setTimeout(function(){  window.location.reload();
+      }, 3000);
+
+      
+
+  },
+  error:function(e){
+      toastr.error('Unable to change. Please try again.')
+      console.log(JSON.stringify(e));
+
+  }
+  }); 
+
+  return false;
+});
+

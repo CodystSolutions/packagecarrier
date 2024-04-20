@@ -4,7 +4,10 @@
     "password": "postgres",
     "database": "packagecarrier",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "dialectOptions": {
+      "useUTC": false
+    }
   },
   "test": {
     "username": "postgres",
@@ -25,6 +28,9 @@
           "require": true,
           "rejectUnauthorized": false
       }
+    
+       
+     
    }
   }
 

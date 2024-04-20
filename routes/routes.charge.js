@@ -108,4 +108,32 @@ router.post('/update/increment', rbacMiddleware.checkPermission(), async(req, re
 
 });
 
+router.post('/remove/:rate_id', async(req, res)=> {
+
+    try{
+        console.log("removing rate", req.params['rate_id'] )
+       
+        var data  = {id: req.params['rate_id']}
+        var response = await dataService.deleteRate(data);
+        if(response.status == 200) {
+        
+            return res.send({status: 200, message: "Successfully removed"});
+
+
+        }else if(response ){
+            return res.send({status: response.status, message: response.message});
+        }
+        return res.send({status: 505, message: "Could not be updated"});
+
+    }
+    catch (error){
+        console.log(error)
+        logger.error(`Rate Exception for get request /remove/${rate_id} - for company ${req.session.company} `, error)
+    }
+    return res.send({status: registeredcodes.SERVER_ERROR, message: "Could not remove rate" });
+    
+
+});
+
+
 module.exports = router ;

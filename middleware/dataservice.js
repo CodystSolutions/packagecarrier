@@ -373,8 +373,8 @@ class DataService {
        
         try{
             //ensure weight doesnt exist
-            var weightexist = await models.rates.findOne({where:{ weight: data.weight}})
-            if(weightexist) return  res.status(registeredcodes.SUCCESS).json({status: registeredcodes.DUPLICATE, role: roleexist, message: "Weight already defined. Please update rate."});
+            var weightexist = await models.rates.findOne({where:{ weight: data.weight,    is_deleted: false}})
+            if(weightexist) return  {status: registeredcodes.DUPLICATE,  message: "Weight already defined. Please update rate."};
 
         
         
@@ -410,6 +410,7 @@ class DataService {
              const result = await models.rates.update(requestdata, {
                  where: {
                      id: data.id ,
+                     is_deleted: false
                  }
              })
              console.log("result", result)
@@ -432,6 +433,29 @@ class DataService {
     
     } 
 
+    async deleteRate(data){
+        var response = {status: 500, rates: []}
+        try{
+
+            
+             const result = await models.rates.update({is_deleted: true}, {
+                 where: {
+                     id: data.id ,
+                 }
+             })
+             console.log("result", result)
+
+             if(result.length > 0){
+                console.log("result ", result.length)
+                 return  {success: true, status: registeredcodes.SUCCESS, message: "Successfully Deleted"};
+             } 
+          
+
+        } catch(err){
+            console.log("err", err)
+        }
+        return  response;
+    }
 
     async findAllRates() {
         var response = {status: 404, rates: []}

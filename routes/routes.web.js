@@ -7,7 +7,7 @@ const rbacMiddleware = require('../middleware/rbacMiddleware');
 
 router.get('/', async (req, res) => {
   
-  return res.redirect('/auth/login')
+  return res.render('pages/landingpage')
 })
 
 

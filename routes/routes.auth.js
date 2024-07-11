@@ -8,6 +8,11 @@ router.get('/login', async (req, res) => {
        res.render('pages/auth/login', {message: "", returnurl: req.query.returnurl})
  })
 
+
+router.get('/admin/login', async (req, res) => {
+    res.render('pages/auth/login', {message: "", returnurl: req.query.returnurl})
+})
+
 router.post('/login', async(req, res)=> {
     try{
 

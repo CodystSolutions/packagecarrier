@@ -263,39 +263,44 @@
             </div>
             </div>
             <div class="col-lg-5">
-            <div class="bg-primary py-5 px-4 px-sm-5">
-            <form class="py-5">
+            <div class="bg-primary py-4 px-4 px-sm-5">
+            <form id="calculator" class="py-5">
                 <p class="mb-4 text-white"><b>Branch to Branch Delivery Calculator</b> </p>
 
-            <div class="form-group">
-            <input type="number" class="form-control border-0 p-4" placeholder="Item Weight" required="required">
-            </div>
-            <div class="form-group">
-                <select class="custom-select border-0 px-4" style="height: 47px;">
-                    <option selected="">Select Branch</option>
-                    <option>Kingston</option>
-                    <option>Brown's Town</option>
-                    <option>Ocho Rios</option>
-                    <option>Portmore</option>
-                    <option>Buff Bay </option>
-                    <option>Santa Cruz </option>
-                    <option>Port Antonio </option>
-                    <option>Spawling </option>
+                <div class="form-group">
+                    <label class="text-white">Weight (LBs)</label>
+                    <input type="number" value="0" name="weight" class="form-control border-0 p-4" placeholder="Item Weight" required="required">
+                </div>
+                <div class="form-group">
+                    
+                    <!-- <select class="custom-select border-0 px-4" style="height: 47px;">
+                        <option selected="">Select Branch</option>
+                        <option>Kingston</option>
+                        <option>Brown's Town</option>
+                        <option>Ocho Rios</option>
+                        <option>Portmore</option>
+                        <option>Buff Bay </option>
+                        <option>Santa Cruz </option>
+                        <option>Port Antonio </option>
+                        <option>Spawling </option>
 
 
-                 </select>
-            </div>
-            <div class="form-group">
-            <!-- <select class="custom-select border-0 px-4" style="height: 47px;">
-            <option selected="">Select A Service</option>
-            <option value="1">Service 1</option>
-            <option value="2">Service 1</option>
-            <option value="3">Service 1</option>
-            </select> -->
-            </div>
-            <div>
-            <button class="btn btn-dark btn-block border-0 py-3" type="submit">Calculate Rate</button>
-            </div>
+                    </select> -->
+                </div>
+                <div class="form-group">
+                    <!-- <select class="custom-select border-0 px-4" style="height: 47px;">
+                    <option selected="">Select A Service</option>
+                    <option value="1">Service 1</option>
+                    <option value="2">Service 1</option>
+                    <option value="3">Service 1</option>
+                    </select> -->
+                 </div>
+                <div>
+                    <button class="btn btn-dark btn-block border-0 py-3 submit" type="submit">Calculate Rate</button>
+                </div>
+
+                <p class=" mt-3 text-white" style="text-align: center; font-size: 30px;"><b> <span id="ratespan">$0.00</span></b> </p>
+
             </form>
             </div>
             </div>
@@ -833,6 +838,42 @@ directly to the destination address, once your pickup has been booked before 11:
 
     <!-- Template Javascript -->
     <script src="landingpagetheme/js/main.js"></script>
+
+    <script>
+
+    $("#calculator").submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url: `/calculator`,
+                data: $("#calculator").serialize(), 
+                type: "POST", 
+                dataType: 'json',
+                success: function (result) {
+                    if(result.status == 200){
+                      
+                        $('#ratespan').text(parseFloat(result.response.rate).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) )
+                    
+
+                    }else{
+                        toastr.error(result.status + " " + result.message)
+                    }
+            
+                
+
+            },
+            error:function(e){
+                toastr.error('Unable to add. Please try again.')
+                console.log(JSON.stringify(e));
+
+            }
+            }); 
+        
+            return false;
+        });
+
+
+
+    </script>
 </body>
 
 </html>

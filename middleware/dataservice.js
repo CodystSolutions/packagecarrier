@@ -493,6 +493,16 @@ class DataService {
     }
     async findRatebyWeight(weight) {
         var response = {status: 404}
+        if(weight == 0){
+            response.status = 200
+            response.rate = 0;
+            response.weight = 0;
+            response.charges = 0
+            response.subtotal = 0
+            response.total = 0
+            return response;
+
+        }
         weight = Math.ceil(weight)
         try{
             var rate = await models.rates.findOne({where: {weight: weight}});

@@ -89,6 +89,22 @@ router.get('/profile',  async (req, res) => {
 })
 
 
+router.post('/calculator',  async (req, res) => {
+    try{
+      var rateresponse = await  dataService.findRatebyWeight(req.body.weight);
+      if(rateresponse.status == 200){
+      
+          response = rateresponse
+          return res.send({status: 200,  response:response})
+      }
+    }catch(error){
+      console.log("error", error)
+    }
+
+    return res.send({status: 500})
+})
+
+
 
 
  module.exports = router ;

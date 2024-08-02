@@ -13,7 +13,7 @@ router.get('/admin/login', async (req, res) => {
     res.render('pages/auth/login', {message: "", returnurl: req.query.returnurl})
 })
 
-router.post('/login', async(req, res)=> {
+router.post('/admin/login', async(req, res)=> {
     try{
 
         //admin user logged in and go to dashboard
